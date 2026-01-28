@@ -175,7 +175,7 @@ export function LetterCombinationsVisualizer() {
         <h3 className="text-sm font-semibold text-slate-400 mb-4">Phone Keypad</h3>
         <div className="flex justify-center">
           <div className="grid grid-cols-3 gap-2">
-            {['2', '3', '4', '5', '6', '7', '8', '9'].map((digit, idx) => {
+            {['2', '3', '4', '5', '6', '7', '8', '9'].map((digit, _idx) => {
               const isActive = currentStepData?.digits[currentStepData.digitIndex] === digit;
               const letters = PHONE_MAP[digit];
               return (
@@ -278,7 +278,7 @@ export function LetterCombinationsVisualizer() {
         </h3>
         <div className="flex gap-2 flex-wrap min-h-[40px]">
           <AnimatePresence>
-            {currentStepData?.combinations.map((combo, i) => (
+            {currentStepData?.combinations.map((combo, _i) => (
               <motion.div
                 key={combo}
                 initial={{ opacity: 0, scale: 0 }}

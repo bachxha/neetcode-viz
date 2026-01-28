@@ -224,7 +224,7 @@ export function SubsetsVisualizer() {
           <svg viewBox="0 0 800 400" className="w-full h-80">
             {/* Draw edges first */}
             {allNodes.map(node => 
-              node.children.map((child, i) => (
+              node.children.map((child, _i) => (
                 <line
                   key={`edge-${node.id}-${child.id}`}
                   x1={node.x}

@@ -299,9 +299,6 @@ export function PacificAtlanticVisualizer() {
     return 'bg-slate-700';
   };
   
-  const rows = heights.length;
-  const cols = heights[0]?.length || 0;
-  
   return (
     <div className="p-6 max-w-5xl mx-auto">
       <div className="mb-6">
