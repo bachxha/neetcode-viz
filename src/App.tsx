@@ -44,6 +44,7 @@ import { EvaluateReversePolishNotationVisualizer } from './visualizers/EvaluateR
 import { ThreeSumVisualizer } from './visualizers/ThreeSumVisualizer';
 import { LRUCacheVisualizer } from './visualizers/LRUCacheVisualizer';
 import { AddTwoNumbersVisualizer } from './visualizers/AddTwoNumbersVisualizer';
+import { RemoveNthNodeFromEndVisualizer } from './visualizers/RemoveNthNodeFromEndVisualizer';
 import { problems, categories, type Problem, type Category } from './data/problems';
 import { ChevronRight, ChevronDown, ExternalLink, Play, Lock } from 'lucide-react';
 
@@ -315,6 +316,8 @@ function Visualizer({ problemId }: { problemId: string }) {
       return <ReverseLinkedListVisualizer />;
     case 'merge-two-sorted-lists':
       return <MergeTwoSortedListsVisualizer />;
+    case 'remove-nth-node-from-end':
+      return <RemoveNthNodeFromEndVisualizer />;
     case 'add-two-numbers':
       return <AddTwoNumbersVisualizer />;
     case 'lru-cache':

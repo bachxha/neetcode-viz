@@ -78,7 +78,7 @@ export const problems: Problem[] = [
   { id: 'merge-two-sorted-lists', title: 'Merge Two Sorted Lists', category: 'Linked List', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/merge-two-sorted-lists/', hasVisualization: true },
   { id: 'linked-list-cycle', title: 'Linked List Cycle', category: 'Linked List', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/linked-list-cycle/', hasVisualization: false },
   { id: 'reorder-list', title: 'Reorder List', category: 'Linked List', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/reorder-list/', hasVisualization: false },
-  { id: 'remove-nth-node-from-end', title: 'Remove Nth Node From End of List', category: 'Linked List', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/remove-nth-node-from-end-of-list/', hasVisualization: false },
+  { id: 'remove-nth-node-from-end', title: 'Remove Nth Node From End of List', category: 'Linked List', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/remove-nth-node-from-end-of-list/', hasVisualization: true },
   { id: 'copy-list-with-random-pointer', title: 'Copy List with Random Pointer', category: 'Linked List', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/copy-list-with-random-pointer/', hasVisualization: false },
   { id: 'add-two-numbers', title: 'Add Two Numbers', category: 'Linked List', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/add-two-numbers/', hasVisualization: true },
   { id: 'find-the-duplicate-number', title: 'Find the Duplicate Number', category: 'Linked List', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/find-the-duplicate-number/', hasVisualization: false },
