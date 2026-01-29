@@ -15,6 +15,7 @@ import { PalindromePartitioningVisualizer } from './visualizers/PalindromePartit
 import { ClimbingStairsVisualizer } from './visualizers/ClimbingStairsVisualizer';
 import { TwoPointersVisualizer } from './visualizers/TwoPointersVisualizer';
 import { BinarySearchVisualizer } from './visualizers/BinarySearchVisualizer';
+import { SearchInRotatedSortedArrayVisualizer } from './visualizers/SearchInRotatedSortedArrayVisualizer';
 import { NumberOfIslandsVisualizer } from './visualizers/NumberOfIslandsVisualizer';
 import { PacificAtlanticVisualizer } from './visualizers/PacificAtlanticVisualizer';
 import { RottingOrangesVisualizer } from './visualizers/RottingOrangesVisualizer';
@@ -272,6 +273,8 @@ function Visualizer({ problemId }: { problemId: string }) {
     // Binary Search
     case 'binary-search':
       return <BinarySearchVisualizer />;
+    case 'search-in-rotated-sorted-array':
+      return <SearchInRotatedSortedArrayVisualizer />;
     // Heap / Priority Queue
     case 'kth-largest-element-in-stream':
       return <KthLargestVisualizer />;
