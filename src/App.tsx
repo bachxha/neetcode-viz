@@ -36,6 +36,7 @@ import { CloneGraphVisualizer } from './visualizers/CloneGraphVisualizer';
 import { CourseScheduleVisualizer } from './visualizers/CourseScheduleVisualizer';
 import { DailyTemperaturesVisualizer } from './visualizers/DailyTemperaturesVisualizer';
 import { ThreeSumVisualizer } from './visualizers/ThreeSumVisualizer';
+import { LRUCacheVisualizer } from './visualizers/LRUCacheVisualizer';
 import { problems, categories, type Problem, type Category } from './data/problems';
 import { ChevronRight, ChevronDown, ExternalLink, Play, Lock } from 'lucide-react';
 
@@ -295,6 +296,8 @@ function Visualizer({ problemId }: { problemId: string }) {
     // Linked List
     case 'reverse-linked-list':
       return <ReverseLinkedListVisualizer />;
+    case 'lru-cache':
+      return <LRUCacheVisualizer />;
     // Sliding Window
     case 'best-time-to-buy-and-sell-stock':
       return <BestTimeToBuyAndSellStockVisualizer />;
