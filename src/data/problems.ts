@@ -159,7 +159,7 @@ export const problems: Problem[] = [
   { id: 'longest-palindromic-substring', title: 'Longest Palindromic Substring', category: '1-D Dynamic Programming', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/longest-palindromic-substring/', hasVisualization: false },
   { id: 'palindromic-substrings', title: 'Palindromic Substrings', category: '1-D Dynamic Programming', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/palindromic-substrings/', hasVisualization: false },
   { id: 'decode-ways', title: 'Decode Ways', category: '1-D Dynamic Programming', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/decode-ways/', hasVisualization: false },
-  { id: 'coin-change', title: 'Coin Change', category: '1-D Dynamic Programming', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/coin-change/', hasVisualization: false },
+  { id: 'coin-change', title: 'Coin Change', category: '1-D Dynamic Programming', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/coin-change/', hasVisualization: true },
   { id: 'maximum-product-subarray', title: 'Maximum Product Subarray', category: '1-D Dynamic Programming', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/maximum-product-subarray/', hasVisualization: false },
   { id: 'word-break', title: 'Word Break', category: '1-D Dynamic Programming', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/word-break/', hasVisualization: false },
   { id: 'longest-increasing-subsequence', title: 'Longest Increasing Subsequence', category: '1-D Dynamic Programming', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/longest-increasing-subsequence/', hasVisualization: false },

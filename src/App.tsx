@@ -14,6 +14,7 @@ import { CombinationSumIIVisualizer } from './visualizers/CombinationSumIIVisual
 import { PalindromePartitioningVisualizer } from './visualizers/PalindromePartitioningVisualizer';
 import { GenerateParenthesesVisualizer } from './visualizers/GenerateParenthesesVisualizer';
 import { ClimbingStairsVisualizer } from './visualizers/ClimbingStairsVisualizer';
+import { CoinChangeVisualizer } from './visualizers/CoinChangeVisualizer';
 import { TwoPointersVisualizer } from './visualizers/TwoPointersVisualizer';
 import { BinarySearchVisualizer } from './visualizers/BinarySearchVisualizer';
 import { SearchInRotatedSortedArrayVisualizer } from './visualizers/SearchInRotatedSortedArrayVisualizer';
@@ -247,6 +248,8 @@ function Visualizer({ problemId }: { problemId: string }) {
     // 1-D Dynamic Programming
     case 'climbing-stairs':
       return <ClimbingStairsVisualizer />;
+    case 'coin-change':
+      return <CoinChangeVisualizer />;
     // Graphs
     case 'number-of-islands':
       return <NumberOfIslandsVisualizer />;
