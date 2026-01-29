@@ -21,6 +21,7 @@ import { RottingOrangesVisualizer } from './visualizers/RottingOrangesVisualizer
 import { ValidParenthesesVisualizer } from './visualizers/ValidParenthesesVisualizer';
 import { KthLargestVisualizer } from './visualizers/KthLargestVisualizer';
 import { BinaryTreeLevelOrderVisualizer } from './visualizers/BinaryTreeLevelOrderVisualizer';
+import { InvertBinaryTreeVisualizer } from './visualizers/InvertBinaryTreeVisualizer';
 import { ReverseLinkedListVisualizer } from './visualizers/ReverseLinkedListVisualizer';
 import { BestTimeToBuyAndSellStockVisualizer } from './visualizers/BestTimeToBuyAndSellStockVisualizer';
 import { problems, categories, type Problem, type Category } from './data/problems';
@@ -253,6 +254,8 @@ function Visualizer({ problemId }: { problemId: string }) {
     // Trees
     case 'binary-tree-level-order-traversal':
       return <BinaryTreeLevelOrderVisualizer />;
+    case 'invert-binary-tree':
+      return <InvertBinaryTreeVisualizer />;
     // Linked List
     case 'reverse-linked-list':
       return <ReverseLinkedListVisualizer />;

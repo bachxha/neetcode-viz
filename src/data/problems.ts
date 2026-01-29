@@ -87,7 +87,7 @@ export const problems: Problem[] = [
   { id: 'reverse-nodes-in-k-group', title: 'Reverse Nodes in k-Group', category: 'Linked List', difficulty: 'Hard', leetcodeUrl: 'https://leetcode.com/problems/reverse-nodes-in-k-group/', hasVisualization: false },
 
   // Trees
-  { id: 'invert-binary-tree', title: 'Invert Binary Tree', category: 'Trees', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/invert-binary-tree/', hasVisualization: false },
+  { id: 'invert-binary-tree', title: 'Invert Binary Tree', category: 'Trees', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/invert-binary-tree/', hasVisualization: true },
   { id: 'maximum-depth-of-binary-tree', title: 'Maximum Depth of Binary Tree', category: 'Trees', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/maximum-depth-of-binary-tree/', hasVisualization: false },
   { id: 'diameter-of-binary-tree', title: 'Diameter of Binary Tree', category: 'Trees', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/diameter-of-binary-tree/', hasVisualization: false },
   { id: 'balanced-binary-tree', title: 'Balanced Binary Tree', category: 'Trees', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/balanced-binary-tree/', hasVisualization: false },
