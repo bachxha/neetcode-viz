@@ -38,6 +38,7 @@ import { BestTimeToBuyAndSellStockVisualizer } from './visualizers/BestTimeToBuy
 import { CloneGraphVisualizer } from './visualizers/CloneGraphVisualizer';
 import { CourseScheduleVisualizer } from './visualizers/CourseScheduleVisualizer';
 import { DailyTemperaturesVisualizer } from './visualizers/DailyTemperaturesVisualizer';
+import { MinStackVisualizer } from './visualizers/MinStackVisualizer';
 import { ThreeSumVisualizer } from './visualizers/ThreeSumVisualizer';
 import { LRUCacheVisualizer } from './visualizers/LRUCacheVisualizer';
 import { problems, categories, type Problem, type Category } from './data/problems';
@@ -271,6 +272,8 @@ function Visualizer({ problemId }: { problemId: string }) {
       return <ValidParenthesesVisualizer />;
     case 'daily-temperatures':
       return <DailyTemperaturesVisualizer />;
+    case 'min-stack':
+      return <MinStackVisualizer />;
     // Binary Search
     case 'binary-search':
       return <BinarySearchVisualizer />;
