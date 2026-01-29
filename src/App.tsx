@@ -237,6 +237,9 @@ function Visualizer({ problemId }: { problemId: string }) {
     // Two Pointers
     case 'container-with-most-water':
       return <TwoPointersVisualizer />;
+    // Stack
+    case 'valid-parentheses':
+      return <ValidParenthesesVisualizer />;
     // Binary Search
     case 'binary-search':
       return <BinarySearchVisualizer />;
