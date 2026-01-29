@@ -131,7 +131,7 @@ export const problems: Problem[] = [
   // Graphs
   { id: 'number-of-islands', title: 'Number of Islands', category: 'Graphs', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/number-of-islands/', hasVisualization: true },
   { id: 'max-area-of-island', title: 'Max Area of Island', category: 'Graphs', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/max-area-of-island/', hasVisualization: false },
-  { id: 'clone-graph', title: 'Clone Graph', category: 'Graphs', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/clone-graph/', hasVisualization: false },
+  { id: 'clone-graph', title: 'Clone Graph', category: 'Graphs', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/clone-graph/', hasVisualization: true },
   { id: 'walls-and-gates', title: 'Walls and Gates', category: 'Graphs', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/walls-and-gates/', hasVisualization: false },
   { id: 'rotting-oranges', title: 'Rotting Oranges', category: 'Graphs', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/rotting-oranges/', hasVisualization: true },
   { id: 'pacific-atlantic-water-flow', title: 'Pacific Atlantic Water Flow', category: 'Graphs', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/pacific-atlantic-water-flow/', hasVisualization: true },

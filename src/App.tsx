@@ -31,6 +31,7 @@ import { SameTreeVisualizer } from './visualizers/SameTreeVisualizer';
 import { CountGoodNodesInBinaryTreeVisualizer } from './visualizers/CountGoodNodesInBinaryTreeVisualizer';
 import { ReverseLinkedListVisualizer } from './visualizers/ReverseLinkedListVisualizer';
 import { BestTimeToBuyAndSellStockVisualizer } from './visualizers/BestTimeToBuyAndSellStockVisualizer';
+import { CloneGraphVisualizer } from './visualizers/CloneGraphVisualizer';
 import { problems, categories, type Problem, type Category } from './data/problems';
 import { ChevronRight, ChevronDown, ExternalLink, Play, Lock } from 'lucide-react';
 
@@ -233,6 +234,8 @@ function Visualizer({ problemId }: { problemId: string }) {
     // Graphs
     case 'number-of-islands':
       return <NumberOfIslandsVisualizer />;
+    case 'clone-graph':
+      return <CloneGraphVisualizer />;
     case 'pacific-atlantic-water-flow':
       return <PacificAtlanticVisualizer />;
     case 'rotting-oranges':
