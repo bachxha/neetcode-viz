@@ -59,7 +59,7 @@ export const problems: Problem[] = [
   { id: 'valid-parentheses', title: 'Valid Parentheses', category: 'Stack', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/valid-parentheses/', hasVisualization: true },
   { id: 'min-stack', title: 'Min Stack', category: 'Stack', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/min-stack/', hasVisualization: true },
   { id: 'evaluate-reverse-polish-notation', title: 'Evaluate Reverse Polish Notation', category: 'Stack', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/evaluate-reverse-polish-notation/', hasVisualization: false },
-  { id: 'generate-parentheses', title: 'Generate Parentheses', category: 'Stack', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/generate-parentheses/', hasVisualization: false },
+  { id: 'generate-parentheses', title: 'Generate Parentheses', category: 'Stack', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/generate-parentheses/', hasVisualization: true },
   { id: 'daily-temperatures', title: 'Daily Temperatures', category: 'Stack', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/daily-temperatures/', hasVisualization: true },
   { id: 'car-fleet', title: 'Car Fleet', category: 'Stack', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/car-fleet/', hasVisualization: false },
   { id: 'largest-rectangle-in-histogram', title: 'Largest Rectangle in Histogram', category: 'Stack', difficulty: 'Hard', leetcodeUrl: 'https://leetcode.com/problems/largest-rectangle-in-histogram/', hasVisualization: false },

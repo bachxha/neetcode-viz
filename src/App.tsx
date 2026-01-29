@@ -12,6 +12,7 @@ import { LetterCombinationsVisualizer } from './visualizers/LetterCombinationsVi
 import { SubsetsIIVisualizer } from './visualizers/SubsetsIIVisualizer';
 import { CombinationSumIIVisualizer } from './visualizers/CombinationSumIIVisualizer';
 import { PalindromePartitioningVisualizer } from './visualizers/PalindromePartitioningVisualizer';
+import { GenerateParenthesesVisualizer } from './visualizers/GenerateParenthesesVisualizer';
 import { ClimbingStairsVisualizer } from './visualizers/ClimbingStairsVisualizer';
 import { TwoPointersVisualizer } from './visualizers/TwoPointersVisualizer';
 import { BinarySearchVisualizer } from './visualizers/BinarySearchVisualizer';
@@ -270,6 +271,8 @@ function Visualizer({ problemId }: { problemId: string }) {
     // Stack
     case 'valid-parentheses':
       return <ValidParenthesesVisualizer />;
+    case 'generate-parentheses':
+      return <GenerateParenthesesVisualizer />;
     case 'daily-temperatures':
       return <DailyTemperaturesVisualizer />;
     case 'min-stack':
