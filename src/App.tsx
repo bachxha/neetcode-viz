@@ -17,6 +17,7 @@ import { ClimbingStairsVisualizer } from './visualizers/ClimbingStairsVisualizer
 import { TwoPointersVisualizer } from './visualizers/TwoPointersVisualizer';
 import { BinarySearchVisualizer } from './visualizers/BinarySearchVisualizer';
 import { SearchInRotatedSortedArrayVisualizer } from './visualizers/SearchInRotatedSortedArrayVisualizer';
+import { FindMinimumInRotatedSortedArrayVisualizer } from './visualizers/FindMinimumInRotatedSortedArrayVisualizer';
 import { KokoEatingBananasVisualizer } from './visualizers/KokoEatingBananasVisualizer';
 import { NumberOfIslandsVisualizer } from './visualizers/NumberOfIslandsVisualizer';
 import { PacificAtlanticVisualizer } from './visualizers/PacificAtlanticVisualizer';
@@ -289,6 +290,8 @@ function Visualizer({ problemId }: { problemId: string }) {
       return <KokoEatingBananasVisualizer />;
     case 'search-in-rotated-sorted-array':
       return <SearchInRotatedSortedArrayVisualizer />;
+    case 'find-minimum-in-rotated-sorted-array':
+      return <FindMinimumInRotatedSortedArrayVisualizer />;
     // Heap / Priority Queue
     case 'kth-largest-element-in-stream':
       return <KthLargestVisualizer />;
