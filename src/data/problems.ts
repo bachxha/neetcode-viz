@@ -136,7 +136,7 @@ export const problems: Problem[] = [
   { id: 'rotting-oranges', title: 'Rotting Oranges', category: 'Graphs', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/rotting-oranges/', hasVisualization: true },
   { id: 'pacific-atlantic-water-flow', title: 'Pacific Atlantic Water Flow', category: 'Graphs', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/pacific-atlantic-water-flow/', hasVisualization: true },
   { id: 'surrounded-regions', title: 'Surrounded Regions', category: 'Graphs', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/surrounded-regions/', hasVisualization: false },
-  { id: 'course-schedule', title: 'Course Schedule', category: 'Graphs', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/course-schedule/', hasVisualization: false },
+  { id: 'course-schedule', title: 'Course Schedule', category: 'Graphs', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/course-schedule/', hasVisualization: true },
   { id: 'course-schedule-ii', title: 'Course Schedule II', category: 'Graphs', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/course-schedule-ii/', hasVisualization: false },
   { id: 'graph-valid-tree', title: 'Graph Valid Tree', category: 'Graphs', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/graph-valid-tree/', hasVisualization: false },
   { id: 'connected-components', title: 'Number of Connected Components', category: 'Graphs', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/', hasVisualization: false },
