@@ -48,7 +48,7 @@ export const problems: Problem[] = [
   { id: 'trapping-rain-water', title: 'Trapping Rain Water', category: 'Two Pointers', difficulty: 'Hard', leetcodeUrl: 'https://leetcode.com/problems/trapping-rain-water/', hasVisualization: false },
 
   // Sliding Window
-  { id: 'best-time-to-buy-and-sell-stock', title: 'Best Time to Buy and Sell Stock', category: 'Sliding Window', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/best-time-to-buy-and-sell-stock/', hasVisualization: false },
+  { id: 'best-time-to-buy-and-sell-stock', title: 'Best Time to Buy and Sell Stock', category: 'Sliding Window', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/best-time-to-buy-and-sell-stock/', hasVisualization: true },
   { id: 'longest-substring-without-repeating', title: 'Longest Substring Without Repeating Characters', category: 'Sliding Window', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/longest-substring-without-repeating-characters/', hasVisualization: false },
   { id: 'longest-repeating-character-replacement', title: 'Longest Repeating Character Replacement', category: 'Sliding Window', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/longest-repeating-character-replacement/', hasVisualization: false },
   { id: 'permutation-in-string', title: 'Permutation in String', category: 'Sliding Window', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/permutation-in-string/', hasVisualization: false },
