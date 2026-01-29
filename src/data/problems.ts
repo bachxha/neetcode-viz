@@ -74,7 +74,7 @@ export const problems: Problem[] = [
   { id: 'median-of-two-sorted-arrays', title: 'Median of Two Sorted Arrays', category: 'Binary Search', difficulty: 'Hard', leetcodeUrl: 'https://leetcode.com/problems/median-of-two-sorted-arrays/', hasVisualization: false },
 
   // Linked List
-  { id: 'reverse-linked-list', title: 'Reverse Linked List', category: 'Linked List', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/reverse-linked-list/', hasVisualization: false },
+  { id: 'reverse-linked-list', title: 'Reverse Linked List', category: 'Linked List', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/reverse-linked-list/', hasVisualization: true },
   { id: 'merge-two-sorted-lists', title: 'Merge Two Sorted Lists', category: 'Linked List', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/merge-two-sorted-lists/', hasVisualization: false },
   { id: 'linked-list-cycle', title: 'Linked List Cycle', category: 'Linked List', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/linked-list-cycle/', hasVisualization: false },
   { id: 'reorder-list', title: 'Reorder List', category: 'Linked List', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/reorder-list/', hasVisualization: false },

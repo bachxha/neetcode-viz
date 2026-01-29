@@ -21,6 +21,7 @@ import { RottingOrangesVisualizer } from './visualizers/RottingOrangesVisualizer
 import { ValidParenthesesVisualizer } from './visualizers/ValidParenthesesVisualizer';
 import { KthLargestVisualizer } from './visualizers/KthLargestVisualizer';
 import { BinaryTreeLevelOrderVisualizer } from './visualizers/BinaryTreeLevelOrderVisualizer';
+import { ReverseLinkedListVisualizer } from './visualizers/ReverseLinkedListVisualizer';
 import { problems, categories, type Problem, type Category } from './data/problems';
 import { ChevronRight, ChevronDown, ExternalLink, Play, Lock } from 'lucide-react';
 
@@ -251,6 +252,9 @@ function Visualizer({ problemId }: { problemId: string }) {
     // Trees
     case 'binary-tree-level-order-traversal':
       return <BinaryTreeLevelOrderVisualizer />;
+    // Linked List
+    case 'reverse-linked-list':
+      return <ReverseLinkedListVisualizer />;
     default:
       return (
         <div className="p-8 text-center">
