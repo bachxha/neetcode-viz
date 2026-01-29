@@ -52,13 +52,14 @@ import { ReorderListVisualizer } from './visualizers/ReorderListVisualizer';
 import { PatternsPage } from './patterns/PatternsPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { PatternTrainerPage } from './pages/PatternTrainerPage';
+import { VerbalTrainerPage } from './pages/VerbalTrainerPage';
 import { CompanyPathsPage } from './pages/CompanyPathsPage';
 import { CompanyPathDetailPage } from './pages/CompanyPathDetailPage';
 import { ProgressTracker, ProgressBadge } from './components/ProgressTracker';
 import { problems, categories, type Problem, type Category } from './data/problems';
-import { ChevronRight, ChevronDown, ExternalLink, Play, Lock, Lightbulb, LayoutDashboard, Brain, Building2 } from 'lucide-react';
+import { ChevronRight, ChevronDown, ExternalLink, Play, Lock, Lightbulb, LayoutDashboard, Brain, Building2, Mic } from 'lucide-react';
 
-type View = 'home' | 'patterns' | 'dashboard' | 'trainer' | 'company-paths' | string;
+type View = 'home' | 'patterns' | 'dashboard' | 'trainer' | 'verbal-trainer' | 'company-paths' | string;
 
 function DifficultyBadge({ difficulty }: { difficulty: Problem['difficulty'] }) {
   const colors = {
@@ -197,6 +198,14 @@ function HomePage({ onSelect }: { onSelect: (view: View) => void }) {
           >
             <Brain size={18} />
             Pattern Trainer
+            <ChevronRight size={16} />
+          </button>
+          <button
+            onClick={() => onSelect('verbal-trainer')}
+            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-500/20 to-pink-500/20 border border-orange-500/30 rounded-lg hover:border-orange-400 transition-all font-medium text-orange-400 hover:text-orange-300"
+          >
+            <Mic size={18} />
+            Verbal Trainer
             <ChevronRight size={16} />
           </button>
           <button
@@ -434,6 +443,8 @@ function App() {
             <span className="text-white font-medium">Progress Dashboard</span>
           ) : view === 'trainer' ? (
             <span className="text-white font-medium">Pattern Trainer</span>
+          ) : view === 'verbal-trainer' ? (
+            <span className="text-white font-medium">Verbal Trainer</span>
           ) : view === 'company-paths' ? (
             <>
               <span className="text-white font-medium">Company Interview Paths</span>
@@ -472,6 +483,8 @@ function App() {
         <DashboardPage onSelectProblem={setView} />
       ) : view === 'trainer' ? (
         <PatternTrainerPage />
+      ) : view === 'verbal-trainer' ? (
+        <VerbalTrainerPage />
       ) : view === 'company-paths' ? (
         selectedCompany ? (
           <CompanyPathDetailPage
