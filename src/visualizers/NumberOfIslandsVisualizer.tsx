@@ -11,10 +11,12 @@ interface Step {
   type: 'start' | 'found-land' | 'explore' | 'mark-visited' | 'water' | 'already-visited' | 'island-complete' | 'done';
   grid: string[][];
   visited: boolean[][];
+  islandMap: number[][]; // Maps cells to island numbers (-1 for water, 0 for unvisited land, 1+ for island number)
   currentCell: Cell | null;
   queue: Cell[];
   islandCount: number;
   currentIslandCells: Cell[];
+  currentIslandNumber: number;
   description: string;
 }
 
@@ -24,33 +26,47 @@ function generateSteps(initialGrid: string[][]): Step[] {
   const cols = initialGrid[0].length;
   const grid = initialGrid.map(row => [...row]);
   const visited: boolean[][] = Array(rows).fill(null).map(() => Array(cols).fill(false));
+  const islandMap: number[][] = Array(rows).fill(null).map(() => Array(cols).fill(0));
   let islandCount = 0;
+  
+  // Initialize island map: -1 for water, 0 for unvisited land
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      islandMap[r][c] = grid[r][c] === '0' ? -1 : 0;
+    }
+  }
   
   steps.push({
     type: 'start',
     grid: grid.map(row => [...row]),
     visited: visited.map(row => [...row]),
+    islandMap: islandMap.map(row => [...row]),
     currentCell: null,
     queue: [],
     islandCount: 0,
     currentIslandCells: [],
+    currentIslandNumber: 0,
     description: 'Start scanning the grid for islands (connected land masses)',
   });
   
   function bfs(startRow: number, startCol: number) {
+    const currentIslandId = islandCount + 1;
     const queue: Cell[] = [{ row: startRow, col: startCol }];
     const islandCells: Cell[] = [];
     visited[startRow][startCol] = true;
+    islandMap[startRow][startCol] = currentIslandId;
     
     steps.push({
       type: 'found-land',
       grid: grid.map(row => [...row]),
       visited: visited.map(row => [...row]),
+      islandMap: islandMap.map(row => [...row]),
       currentCell: { row: startRow, col: startCol },
       queue: [...queue],
       islandCount,
       currentIslandCells: [],
-      description: `Found unvisited land at (${startRow},${startCol})! Starting BFS to explore island #${islandCount + 1}`,
+      currentIslandNumber: currentIslandId,
+      description: `Found unvisited land at (${startRow},${startCol})! Starting BFS to explore island #${currentIslandId}`,
     });
     
     while (queue.length > 0) {
@@ -61,10 +77,12 @@ function generateSteps(initialGrid: string[][]): Step[] {
         type: 'explore',
         grid: grid.map(row => [...row]),
         visited: visited.map(row => [...row]),
+        islandMap: islandMap.map(row => [...row]),
         currentCell: current,
         queue: [...queue],
         islandCount,
         currentIslandCells: [...islandCells],
+        currentIslandNumber: currentIslandId,
         description: `Exploring (${current.row},${current.col}), checking 4 neighbors`,
       });
       
@@ -82,10 +100,12 @@ function generateSteps(initialGrid: string[][]): Step[] {
             type: 'already-visited',
             grid: grid.map(row => [...row]),
             visited: visited.map(row => [...row]),
+            islandMap: islandMap.map(row => [...row]),
             currentCell: { row: newRow, col: newCol },
             queue: [...queue],
             islandCount,
             currentIslandCells: [...islandCells],
+            currentIslandNumber: currentIslandId,
             description: `(${newRow},${newCol}) already visited, skip`,
           });
           continue;
@@ -96,27 +116,32 @@ function generateSteps(initialGrid: string[][]): Step[] {
             type: 'water',
             grid: grid.map(row => [...row]),
             visited: visited.map(row => [...row]),
+            islandMap: islandMap.map(row => [...row]),
             currentCell: { row: newRow, col: newCol },
             queue: [...queue],
             islandCount,
             currentIslandCells: [...islandCells],
+            currentIslandNumber: currentIslandId,
             description: `(${newRow},${newCol}) is water, skip`,
           });
           continue;
         }
         
         visited[newRow][newCol] = true;
+        islandMap[newRow][newCol] = currentIslandId;
         queue.push({ row: newRow, col: newCol });
         
         steps.push({
           type: 'mark-visited',
           grid: grid.map(row => [...row]),
           visited: visited.map(row => [...row]),
+          islandMap: islandMap.map(row => [...row]),
           currentCell: { row: newRow, col: newCol },
           queue: [...queue],
           islandCount,
           currentIslandCells: [...islandCells],
-          description: `(${newRow},${newCol}) is land! Mark visited and add to queue`,
+          currentIslandNumber: currentIslandId,
+          description: `(${newRow},${newCol}) is land! Mark visited and add to queue for island #${currentIslandId}`,
         });
       }
     }
@@ -126,11 +151,13 @@ function generateSteps(initialGrid: string[][]): Step[] {
       type: 'island-complete',
       grid: grid.map(row => [...row]),
       visited: visited.map(row => [...row]),
+      islandMap: islandMap.map(row => [...row]),
       currentCell: null,
       queue: [],
       islandCount,
       currentIslandCells: [...islandCells],
-      description: `Island #${islandCount} fully explored! (${islandCells.length} cells)`,
+      currentIslandNumber: currentIslandId,
+      description: `Island #${currentIslandId} fully explored! (${islandCells.length} cells)`,
     });
   }
   
@@ -146,10 +173,12 @@ function generateSteps(initialGrid: string[][]): Step[] {
     type: 'done',
     grid: grid.map(row => [...row]),
     visited: visited.map(row => [...row]),
+    islandMap: islandMap.map(row => [...row]),
     currentCell: null,
     queue: [],
     islandCount,
     currentIslandCells: [],
+    currentIslandNumber: 0,
     description: `Done! Found ${islandCount} island${islandCount !== 1 ? 's' : ''}`,
   });
   
@@ -168,6 +197,29 @@ function parseGrid(input: string): string[][] {
     ];
   }
 }
+
+const PRESETS = [
+  {
+    label: 'Example 1',
+    grid: [["1","1","1","1","0"],["1","1","0","1","0"],["1","1","0","0","0"],["0","0","0","0","0"]]
+  },
+  {
+    label: 'Example 2',  
+    grid: [["1","1","0","0","0"],["1","1","0","0","0"],["0","0","1","0","0"],["0","0","0","1","1"]]
+  },
+  {
+    label: 'Multiple Islands',
+    grid: [["1","0","1","0","1"],["0","0","0","0","0"],["1","0","1","0","1"],["0","0","0","0","0"],["1","0","1","0","1"]]
+  },
+  {
+    label: 'Single Island',
+    grid: [["1","1","1"],["0","1","0"],["1","1","1"]]
+  },
+  {
+    label: 'No Islands',
+    grid: [["0","0","0"],["0","0","0"],["0","0","0"]]
+  }
+];
 
 export function NumberOfIslandsVisualizer() {
   const [gridInput, setGridInput] = useState('[["1","1","1","1","0"],["1","1","0","1","0"],["1","1","0","0","0"],["0","0","0","0","0"]]');
@@ -206,36 +258,56 @@ export function NumberOfIslandsVisualizer() {
   const currentStepData = steps[currentStep];
   const grid = currentStepData?.grid || [];
   const visited = currentStepData?.visited || [];
+  const islandMap = currentStepData?.islandMap || [];
   
+  // Array of distinct colors for different islands
+  const islandColors = [
+    'bg-emerald-500',   // Island 1
+    'bg-rose-500',      // Island 2  
+    'bg-violet-500',    // Island 3
+    'bg-cyan-500',      // Island 4
+    'bg-orange-500',    // Island 5
+    'bg-pink-500',      // Island 6
+    'bg-indigo-500',    // Island 7
+    'bg-lime-500',      // Island 8
+  ];
+
   const getCellStyle = (row: number, col: number) => {
     if (!currentStepData) return 'bg-blue-900';
     
     const isLand = grid[row]?.[col] === '1';
+    const isWater = grid[row]?.[col] === '0';
     const isVisited = visited[row]?.[col];
     const isCurrent = currentStepData.currentCell?.row === row && currentStepData.currentCell?.col === col;
     const isInQueue = currentStepData.queue.some(c => c.row === row && c.col === col);
-    const isInCurrentIsland = currentStepData.currentIslandCells.some(c => c.row === row && c.col === col);
+    const islandNumber = islandMap[row]?.[col] || 0;
     
+    // Current cell being examined gets highest priority
     if (isCurrent) {
-      if (currentStepData.type === 'water') return 'bg-blue-500 ring-2 ring-white';
-      if (currentStepData.type === 'already-visited') return 'bg-orange-500 ring-2 ring-white';
-      return 'bg-yellow-500 ring-2 ring-white';
+      if (currentStepData.type === 'water') return 'bg-blue-400 ring-2 ring-white';
+      if (currentStepData.type === 'already-visited') return 'bg-orange-400 ring-2 ring-white';
+      return 'bg-yellow-400 ring-2 ring-white';
     }
     
+    // Cells in BFS queue (frontier) are highlighted
     if (isInQueue) {
-      return 'bg-purple-500';
+      return 'bg-purple-400';
     }
     
-    if (isInCurrentIsland && currentStepData.type === 'island-complete') {
-      return 'bg-green-500';
+    // Completed islands get their distinct colors
+    if (islandNumber > 0) {
+      const colorIndex = (islandNumber - 1) % islandColors.length;
+      return islandColors[colorIndex];
     }
     
-    if (isVisited && isLand) {
-      return 'bg-green-600';
+    // Unvisited land is brown/amber
+    if (isLand && !isVisited) {
+      return 'bg-amber-600';
     }
     
-    if (isLand) {
-      return 'bg-amber-700';
+    // Water is blue
+    if (isWater) {
+      return 'bg-blue-700';
     }
     
     return 'bg-blue-900';
@@ -250,16 +322,43 @@ export function NumberOfIslandsVisualizer() {
         </p>
       </div>
       
+      {/* Presets */}
+      <div className="mb-4">
+        <span className="text-sm text-slate-400 mb-2 block">Quick Examples:</span>
+        <div className="flex flex-wrap gap-2">
+          {PRESETS.map((preset, i) => (
+            <button
+              key={i}
+              onClick={() => {
+                setGridInput(JSON.stringify(preset.grid));
+                setTimeout(initializeSteps, 0);
+              }}
+              className="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 rounded text-sm transition-colors"
+            >
+              {preset.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
       <div className="mb-6">
         <label className="text-sm text-slate-400 block mb-1">Grid (2D array of '1' land and '0' water):</label>
-        <input
-          type="text"
-          value={gridInput}
-          onChange={(e) => setGridInput(e.target.value)}
-          onBlur={initializeSteps}
-          onKeyDown={(e) => e.key === 'Enter' && initializeSteps()}
-          className="w-full px-3 py-2 bg-slate-800 rounded-lg border border-slate-600 focus:border-blue-500 outline-none font-mono text-sm"
-        />
+        <div className="flex gap-2">
+          <input
+            type="text"
+            value={gridInput}
+            onChange={(e) => setGridInput(e.target.value)}
+            onBlur={initializeSteps}
+            onKeyDown={(e) => e.key === 'Enter' && initializeSteps()}
+            className="flex-1 px-3 py-2 bg-slate-800 rounded-lg border border-slate-600 focus:border-blue-500 outline-none font-mono text-sm"
+          />
+          <button
+            onClick={initializeSteps}
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg transition-colors text-sm"
+          >
+            Apply
+          </button>
+        </div>
       </div>
       
       <div className="grid md:grid-cols-2 gap-6 mb-6">
@@ -285,18 +384,30 @@ export function NumberOfIslandsVisualizer() {
             ))}
           </div>
           
-          <div className="flex gap-3 mt-4 text-xs justify-center flex-wrap">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-4 text-xs">
             <span className="flex items-center gap-1">
-              <span className="w-3 h-3 rounded bg-amber-700"></span> Unvisited Land
+              <span className="w-3 h-3 rounded bg-blue-700"></span> Water
             </span>
             <span className="flex items-center gap-1">
-              <span className="w-3 h-3 rounded bg-green-600"></span> Visited Land
+              <span className="w-3 h-3 rounded bg-amber-600"></span> Unvisited Land
             </span>
             <span className="flex items-center gap-1">
-              <span className="w-3 h-3 rounded bg-purple-500"></span> In Queue
+              <span className="w-3 h-3 rounded bg-purple-400"></span> BFS Queue
             </span>
             <span className="flex items-center gap-1">
-              <span className="w-3 h-3 rounded bg-yellow-500"></span> Current
+              <span className="w-3 h-3 rounded bg-yellow-400"></span> Current Cell
+            </span>
+            <span className="flex items-center gap-1">
+              <span className="w-3 h-3 rounded bg-emerald-500"></span> Island #1
+            </span>
+            <span className="flex items-center gap-1">
+              <span className="w-3 h-3 rounded bg-rose-500"></span> Island #2
+            </span>
+            <span className="flex items-center gap-1">
+              <span className="w-3 h-3 rounded bg-violet-500"></span> Island #3
+            </span>
+            <span className="flex items-center gap-1">
+              <span className="text-slate-400">+ more...</span>
             </span>
           </div>
         </div>
@@ -337,14 +448,21 @@ export function NumberOfIslandsVisualizer() {
             }`}>
               {currentStepData?.description || 'Ready'}
             </p>
+            {currentStepData?.currentIslandNumber > 0 && (
+              <p className="text-xs text-slate-400 mt-1">
+                Exploring Island #{currentStepData.currentIslandNumber}
+              </p>
+            )}
           </div>
           
           <div className="bg-slate-800 rounded-lg p-4">
-            <h3 className="text-sm font-semibold text-slate-400 mb-2">Algorithm Insight</h3>
-            <p className="text-sm text-slate-300">
-              BFS explores all neighbors level by level. When we find unvisited land, 
-              we start BFS and mark all connected land as visited — that's one island!
-            </p>
+            <h3 className="text-sm font-semibold text-slate-400 mb-2">💡 Algorithm Insight</h3>
+            <div className="text-sm text-slate-300 space-y-2">
+              <p><strong>Key Idea:</strong> Each island is a connected component of land cells.</p>
+              <p><strong>BFS Strategy:</strong> When we find unvisited land, BFS explores the entire island and marks it with a unique color/ID.</p>
+              <p><strong>Why BFS?</strong> Systematically explores neighbors level by level, perfect for flood-fill operations.</p>
+              <p><strong>Interview Tip:</strong> This pattern works for any "connected components" problem!</p>
+            </div>
           </div>
         </div>
       </div>
