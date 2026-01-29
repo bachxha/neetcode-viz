@@ -30,15 +30,15 @@ export interface Problem {
 
 export const problems: Problem[] = [
   // Arrays & Hashing
-  { id: 'contains-duplicate', title: 'Contains Duplicate', category: 'Arrays & Hashing', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/contains-duplicate/', hasVisualization: false },
-  { id: 'valid-anagram', title: 'Valid Anagram', category: 'Arrays & Hashing', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/valid-anagram/', hasVisualization: false },
-  { id: 'two-sum', title: 'Two Sum', category: 'Arrays & Hashing', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/two-sum/', hasVisualization: false },
-  { id: 'group-anagrams', title: 'Group Anagrams', category: 'Arrays & Hashing', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/group-anagrams/', hasVisualization: false },
-  { id: 'top-k-frequent-elements', title: 'Top K Frequent Elements', category: 'Arrays & Hashing', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/top-k-frequent-elements/', hasVisualization: false },
-  { id: 'encode-and-decode-strings', title: 'Encode and Decode Strings', category: 'Arrays & Hashing', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/encode-and-decode-strings/', hasVisualization: false },
-  { id: 'product-of-array-except-self', title: 'Product of Array Except Self', category: 'Arrays & Hashing', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/product-of-array-except-self/', hasVisualization: false },
-  { id: 'valid-sudoku', title: 'Valid Sudoku', category: 'Arrays & Hashing', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/valid-sudoku/', hasVisualization: false },
-  { id: 'longest-consecutive-sequence', title: 'Longest Consecutive Sequence', category: 'Arrays & Hashing', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/longest-consecutive-sequence/', hasVisualization: false },
+  { id: 'contains-duplicate', title: 'Contains Duplicate', category: 'Arrays & Hashing', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/contains-duplicate/', hasVisualization: true },
+  { id: 'valid-anagram', title: 'Valid Anagram', category: 'Arrays & Hashing', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/valid-anagram/', hasVisualization: true },
+  { id: 'two-sum', title: 'Two Sum', category: 'Arrays & Hashing', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/two-sum/', hasVisualization: true },
+  { id: 'group-anagrams', title: 'Group Anagrams', category: 'Arrays & Hashing', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/group-anagrams/', hasVisualization: true },
+  { id: 'top-k-frequent-elements', title: 'Top K Frequent Elements', category: 'Arrays & Hashing', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/top-k-frequent-elements/', hasVisualization: true },
+  { id: 'encode-and-decode-strings', title: 'Encode and Decode Strings', category: 'Arrays & Hashing', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/encode-and-decode-strings/', hasVisualization: true },
+  { id: 'product-of-array-except-self', title: 'Product of Array Except Self', category: 'Arrays & Hashing', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/product-of-array-except-self/', hasVisualization: true },
+  { id: 'valid-sudoku', title: 'Valid Sudoku', category: 'Arrays & Hashing', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/valid-sudoku/', hasVisualization: true },
+  { id: 'longest-consecutive-sequence', title: 'Longest Consecutive Sequence', category: 'Arrays & Hashing', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/longest-consecutive-sequence/', hasVisualization: true },
 
   // Two Pointers
   { id: 'valid-palindrome', title: 'Valid Palindrome', category: 'Two Pointers', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/valid-palindrome/', hasVisualization: false },
