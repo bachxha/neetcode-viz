@@ -50,10 +50,12 @@ import { AddTwoNumbersVisualizer } from './visualizers/AddTwoNumbersVisualizer';
 import { RemoveNthNodeFromEndVisualizer } from './visualizers/RemoveNthNodeFromEndVisualizer';
 import { ReorderListVisualizer } from './visualizers/ReorderListVisualizer';
 import { PatternsPage } from './patterns/PatternsPage';
+import { DashboardPage } from './pages/DashboardPage';
+import { ProgressTracker, ProgressBadge } from './components/ProgressTracker';
 import { problems, categories, type Problem, type Category } from './data/problems';
-import { ChevronRight, ChevronDown, ExternalLink, Play, Lock, Lightbulb } from 'lucide-react';
+import { ChevronRight, ChevronDown, ExternalLink, Play, Lock, Lightbulb, LayoutDashboard } from 'lucide-react';
 
-type View = 'home' | 'patterns' | string;
+type View = 'home' | 'patterns' | 'dashboard' | string;
 
 function DifficultyBadge({ difficulty }: { difficulty: Problem['difficulty'] }) {
   const colors = {
@@ -88,6 +90,7 @@ function ProblemCard({ problem, onSelect }: { problem: Problem; onSelect: (id: s
             {problem.title}
           </span>
           <DifficultyBadge difficulty={problem.difficulty} />
+          <ProgressBadge problemId={problem.id} />
         </div>
       </div>
       
@@ -175,8 +178,16 @@ function HomePage({ onSelect }: { onSelect: (view: View) => void }) {
           </div>
         </div>
         
-        {/* Navigation to Patterns */}
-        <div className="mt-6 flex justify-center">
+        {/* Navigation to Patterns and Dashboard */}
+        <div className="mt-6 flex justify-center gap-4 flex-wrap">
+          <button
+            onClick={() => onSelect('dashboard')}
+            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 rounded-lg hover:border-purple-400 transition-all font-medium text-purple-400 hover:text-purple-300"
+          >
+            <LayoutDashboard size={18} />
+            Progress Dashboard
+            <ChevronRight size={16} />
+          </button>
           <button
             onClick={() => onSelect('patterns')}
             className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 border border-emerald-500/30 rounded-lg hover:border-emerald-400 transition-all font-medium text-emerald-400 hover:text-emerald-300"
@@ -232,6 +243,22 @@ function HomePage({ onSelect }: { onSelect: (view: View) => void }) {
         <p>More visualizations coming soon...</p>
         <p className="mt-1">Built for interview prep 🎯</p>
       </div>
+    </div>
+  );
+}
+
+// Wrapper that adds ProgressTracker to visualizers
+function VisualizerWithProgress({ problemId }: { problemId: string }) {
+  const problem = problems.find(p => p.id === problemId);
+  
+  return (
+    <div>
+      <Visualizer problemId={problemId} />
+      {problem && (
+        <div className="max-w-6xl mx-auto px-6 pb-6">
+          <ProgressTracker problemId={problemId} difficulty={problem.difficulty} />
+        </div>
+      )}
     </div>
   );
 }
@@ -377,6 +404,8 @@ function App() {
           <span className="text-slate-600">|</span>
           {view === 'patterns' ? (
             <span className="text-white font-medium">Algorithm Patterns</span>
+          ) : view === 'dashboard' ? (
+            <span className="text-white font-medium">Progress Dashboard</span>
           ) : (
             <>
               <span className="text-slate-400">{currentProblem?.category}</span>
@@ -401,8 +430,10 @@ function App() {
         <HomePage onSelect={setView} />
       ) : view === 'patterns' ? (
         <PatternsPage onSelectPattern={(patternId) => setView(patternId)} />
+      ) : view === 'dashboard' ? (
+        <DashboardPage onSelectProblem={setView} />
       ) : (
-        <Visualizer problemId={view} />
+        <VisualizerWithProgress problemId={view} />
       )}
     </div>
   );
