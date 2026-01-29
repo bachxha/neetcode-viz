@@ -28,6 +28,7 @@ import { LowestCommonAncestorBSTVisualizer } from './visualizers/LowestCommonAnc
 import { BinaryTreeRightSideViewVisualizer } from './visualizers/BinaryTreeRightSideViewVisualizer';
 import { SubtreeOfAnotherTreeVisualizer } from './visualizers/SubtreeOfAnotherTreeVisualizer';
 import { SameTreeVisualizer } from './visualizers/SameTreeVisualizer';
+import { CountGoodNodesInBinaryTreeVisualizer } from './visualizers/CountGoodNodesInBinaryTreeVisualizer';
 import { ReverseLinkedListVisualizer } from './visualizers/ReverseLinkedListVisualizer';
 import { BestTimeToBuyAndSellStockVisualizer } from './visualizers/BestTimeToBuyAndSellStockVisualizer';
 import { problems, categories, type Problem, type Category } from './data/problems';
@@ -262,6 +263,8 @@ function Visualizer({ problemId }: { problemId: string }) {
       return <BinaryTreeLevelOrderVisualizer />;
     case 'binary-tree-right-side-view':
       return <BinaryTreeRightSideViewVisualizer />;
+    case 'count-good-nodes':
+      return <CountGoodNodesInBinaryTreeVisualizer />;
     case 'invert-binary-tree':
       return <InvertBinaryTreeVisualizer />;
     case 'maximum-depth-of-binary-tree':
