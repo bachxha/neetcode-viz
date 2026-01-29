@@ -37,6 +37,7 @@ import { CountGoodNodesInBinaryTreeVisualizer } from './visualizers/CountGoodNod
 import { ReverseLinkedListVisualizer } from './visualizers/ReverseLinkedListVisualizer';
 import { MergeTwoSortedListsVisualizer } from './visualizers/MergeTwoSortedListsVisualizer';
 import { BestTimeToBuyAndSellStockVisualizer } from './visualizers/BestTimeToBuyAndSellStockVisualizer';
+import { LongestSubstringWithoutRepeatingVisualizer } from './visualizers/LongestSubstringWithoutRepeatingVisualizer';
 import { CloneGraphVisualizer } from './visualizers/CloneGraphVisualizer';
 import { CourseScheduleVisualizer } from './visualizers/CourseScheduleVisualizer';
 import { DailyTemperaturesVisualizer } from './visualizers/DailyTemperaturesVisualizer';
@@ -328,6 +329,8 @@ function Visualizer({ problemId }: { problemId: string }) {
     // Sliding Window
     case 'best-time-to-buy-and-sell-stock':
       return <BestTimeToBuyAndSellStockVisualizer />;
+    case 'longest-substring-without-repeating':
+      return <LongestSubstringWithoutRepeatingVisualizer />;
     default:
       return (
         <div className="p-8 text-center">

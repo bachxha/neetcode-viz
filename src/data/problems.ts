@@ -49,7 +49,7 @@ export const problems: Problem[] = [
 
   // Sliding Window
   { id: 'best-time-to-buy-and-sell-stock', title: 'Best Time to Buy and Sell Stock', category: 'Sliding Window', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/best-time-to-buy-and-sell-stock/', hasVisualization: true },
-  { id: 'longest-substring-without-repeating', title: 'Longest Substring Without Repeating Characters', category: 'Sliding Window', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/longest-substring-without-repeating-characters/', hasVisualization: false },
+  { id: 'longest-substring-without-repeating', title: 'Longest Substring Without Repeating Characters', category: 'Sliding Window', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/longest-substring-without-repeating-characters/', hasVisualization: true },
   { id: 'longest-repeating-character-replacement', title: 'Longest Repeating Character Replacement', category: 'Sliding Window', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/longest-repeating-character-replacement/', hasVisualization: false },
   { id: 'permutation-in-string', title: 'Permutation in String', category: 'Sliding Window', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/permutation-in-string/', hasVisualization: false },
   { id: 'minimum-window-substring', title: 'Minimum Window Substring', category: 'Sliding Window', difficulty: 'Hard', leetcodeUrl: 'https://leetcode.com/problems/minimum-window-substring/', hasVisualization: false },
