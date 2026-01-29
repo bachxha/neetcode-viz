@@ -19,6 +19,12 @@ function CategoryCard({
     blue: { border: 'border-blue-500/30', bg: 'from-blue-500/10 to-blue-600/5', text: 'text-blue-400', badge: 'bg-blue-500/20 text-blue-400' },
     purple: { border: 'border-purple-500/30', bg: 'from-purple-500/10 to-purple-600/5', text: 'text-purple-400', badge: 'bg-purple-500/20 text-purple-400' },
     green: { border: 'border-green-500/30', bg: 'from-green-500/10 to-green-600/5', text: 'text-green-400', badge: 'bg-green-500/20 text-green-400' },
+    emerald: { border: 'border-emerald-500/30', bg: 'from-emerald-500/10 to-emerald-600/5', text: 'text-emerald-400', badge: 'bg-emerald-500/20 text-emerald-400' },
+    cyan: { border: 'border-cyan-500/30', bg: 'from-cyan-500/10 to-cyan-600/5', text: 'text-cyan-400', badge: 'bg-cyan-500/20 text-cyan-400' },
+    yellow: { border: 'border-yellow-500/30', bg: 'from-yellow-500/10 to-yellow-600/5', text: 'text-yellow-400', badge: 'bg-yellow-500/20 text-yellow-400' },
+    red: { border: 'border-red-500/30', bg: 'from-red-500/10 to-red-600/5', text: 'text-red-400', badge: 'bg-red-500/20 text-red-400' },
+    orange: { border: 'border-orange-500/30', bg: 'from-orange-500/10 to-orange-600/5', text: 'text-orange-400', badge: 'bg-orange-500/20 text-orange-400' },
+    pink: { border: 'border-pink-500/30', bg: 'from-pink-500/10 to-pink-600/5', text: 'text-pink-400', badge: 'bg-pink-500/20 text-pink-400' },
   };
   
   const colors = colorClasses[category.color] || colorClasses.blue;

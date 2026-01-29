@@ -49,10 +49,11 @@ import { LRUCacheVisualizer } from './visualizers/LRUCacheVisualizer';
 import { AddTwoNumbersVisualizer } from './visualizers/AddTwoNumbersVisualizer';
 import { RemoveNthNodeFromEndVisualizer } from './visualizers/RemoveNthNodeFromEndVisualizer';
 import { ReorderListVisualizer } from './visualizers/ReorderListVisualizer';
+import { PatternsPage } from './patterns/PatternsPage';
 import { problems, categories, type Problem, type Category } from './data/problems';
-import { ChevronRight, ChevronDown, ExternalLink, Play, Lock } from 'lucide-react';
+import { ChevronRight, ChevronDown, ExternalLink, Play, Lock, Lightbulb } from 'lucide-react';
 
-type View = 'home' | string;
+type View = 'home' | 'patterns' | string;
 
 function DifficultyBadge({ difficulty }: { difficulty: Problem['difficulty'] }) {
   const colors = {
@@ -172,6 +173,18 @@ function HomePage({ onSelect }: { onSelect: (view: View) => void }) {
           <div className="px-4 py-2 bg-slate-800 rounded-lg">
             <span className="text-slate-400">{categories.length} categories</span>
           </div>
+        </div>
+        
+        {/* Navigation to Patterns */}
+        <div className="mt-6 flex justify-center">
+          <button
+            onClick={() => onSelect('patterns')}
+            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 border border-emerald-500/30 rounded-lg hover:border-emerald-400 transition-all font-medium text-emerald-400 hover:text-emerald-300"
+          >
+            <Lightbulb size={18} />
+            Explore Algorithm Patterns
+            <ChevronRight size={16} />
+          </button>
         </div>
       </div>
       
@@ -362,24 +375,32 @@ function App() {
             ← Back
           </button>
           <span className="text-slate-600">|</span>
-          <span className="text-slate-400">{currentProblem?.category}</span>
-          <span className="text-slate-600">/</span>
-          <span className="text-white font-medium">{currentProblem?.title}</span>
-          {currentProblem && (
-            <a
-              href={currentProblem.leetcodeUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="ml-auto flex items-center gap-1 text-sm text-slate-400 hover:text-blue-400 transition-colors"
-            >
-              LeetCode <ExternalLink size={14} />
-            </a>
+          {view === 'patterns' ? (
+            <span className="text-white font-medium">Algorithm Patterns</span>
+          ) : (
+            <>
+              <span className="text-slate-400">{currentProblem?.category}</span>
+              <span className="text-slate-600">/</span>
+              <span className="text-white font-medium">{currentProblem?.title}</span>
+              {currentProblem && (
+                <a
+                  href={currentProblem.leetcodeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="ml-auto flex items-center gap-1 text-sm text-slate-400 hover:text-blue-400 transition-colors"
+                >
+                  LeetCode <ExternalLink size={14} />
+                </a>
+              )}
+            </>
           )}
         </nav>
       )}
       
       {view === 'home' ? (
         <HomePage onSelect={setView} />
+      ) : view === 'patterns' ? (
+        <PatternsPage onSelectPattern={(patternId) => setView(patternId)} />
       ) : (
         <Visualizer problemId={view} />
       )}
