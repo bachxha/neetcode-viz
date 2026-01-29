@@ -201,7 +201,6 @@ export function ContainsDuplicateVisualizer() {
             <span className="text-slate-500 italic">Empty</span>
           )}
           {step && [...step.hashSet].map((val) => {
-            const isNew = step.type === 'add' && step.currentIndex >= 0 && step.array[step.currentIndex] === val && step.currentIndex === step.array.indexOf(val) === -1;
             return (
               <motion.div key={val}
                 initial={{ scale: 0, opacity: 0 }}

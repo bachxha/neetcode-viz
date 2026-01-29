@@ -220,7 +220,7 @@ export function SlidingWindowVisualizer() {
       <div className="bg-slate-800 rounded-lg p-4 mb-6">
         <h3 className="text-sm font-semibold text-slate-400 mb-3">Character Set (unique chars in window)</h3>
         <div className="flex gap-2 justify-center flex-wrap min-h-[40px]">
-          {currentStepData && Array.from(currentStepData.charSet).map((char, i) => (
+          {currentStepData && Array.from(currentStepData.charSet).map((char) => (
             <motion.div
               key={char}
               initial={{ scale: 0 }}
