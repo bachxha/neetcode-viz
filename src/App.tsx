@@ -160,10 +160,10 @@ function HomePage({ onSelect }: { onSelect: (view: View) => void }) {
     <div className="p-6 max-w-4xl mx-auto">
       <div className="mb-8 text-center">
         <h1 className="text-4xl font-bold mb-3 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-          NeetCode Visualizer
+          AlgoForge
         </h1>
         <p className="text-slate-400 text-lg mb-4">
-          Interactive algorithm visualizations for interview prep
+          Master algorithm patterns through interactive visualizations
         </p>
         <div className="flex justify-center gap-6 text-sm">
           <div className="px-4 py-2 bg-slate-800 rounded-lg">

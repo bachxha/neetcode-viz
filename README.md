@@ -1,73 +1,105 @@
-# React + TypeScript + Vite
+# AlgoForge
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Master Algorithm Patterns Through Interactive Visualizations**
 
-Currently, two official plugins are available:
+AlgoForge is an interactive algorithm pattern learning platform designed specifically for coding interview preparation. Built with React and TypeScript, it transforms abstract algorithms into engaging visual experiences that help you truly understand the patterns behind common coding problems.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Features
 
-## React Compiler
+- **60+ Interactive Visualizers** - Watch algorithms execute step by step with detailed animations
+- **27 Algorithm Patterns** - Master the core patterns that appear in coding interviews
+- **Code Templates** - Get started quickly with pre-built templates for each pattern
+- **Interview-Focused** - Specifically designed for technical interview preparation
+- **Multiple Categories** - Organized by topic areas like Dynamic Programming, Graphs, Trees, and more
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🎯 Perfect For
 
-## Expanding the ESLint configuration
+- Software engineers preparing for technical interviews
+- Students learning data structures and algorithms
+- Anyone who wants to visualize complex algorithmic concepts
+- Developers looking to strengthen their problem-solving patterns
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🚀 Algorithm Categories
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **Arrays & Hashing** - Core data manipulation techniques
+- **Two Pointers** - Efficient array traversal patterns
+- **Sliding Window** - Dynamic subarray optimization
+- **Stack & Queue** - LIFO/FIFO problem solving
+- **Binary Search** - Efficient searching algorithms
+- **Linked Lists** - Pointer manipulation and traversal
+- **Trees & BSTs** - Hierarchical data structures
+- **Graphs** - Network traversal and pathfinding
+- **Dynamic Programming** - Optimization through memoization
+- **Backtracking** - Systematic solution space exploration
+- **Intervals** - Range-based problem solving
+- **And many more...**
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 🛠️ Tech Stack
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- **React 18** - Modern React with hooks and functional components
+- **TypeScript** - Type-safe development
+- **Vite** - Fast build tool and development server
+- **Tailwind CSS** - Utility-first styling
+- **Framer Motion** - Smooth animations for visualizations
+- **Lucide React** - Beautiful icons
+
+## 🏃‍♂️ Getting Started
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/your-username/algoforge.git
+   cd algoforge
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Start the development server**
+   ```bash
+   npm run dev
+   ```
+
+4. **Open your browser**
+   Navigate to `http://localhost:5173`
+
+## 🏗️ Building for Production
+
+```bash
+npm run build
+npm run preview
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🎨 What Makes AlgoForge Special
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+1. **Visual Learning** - Complex algorithms become intuitive through step-by-step animations
+2. **Pattern Recognition** - Learn to identify which pattern applies to different problem types
+3. **Interactive Practice** - Don't just read about algorithms, interact with them
+4. **Interview Ready** - Focus specifically on patterns that appear in technical interviews
+5. **Progressive Learning** - Start with basics and work up to advanced concepts
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 📚 Learning Path
+
+1. **Start with Patterns** - Understand the core algorithmic patterns
+2. **Practice Visualizations** - Watch algorithms execute on sample data
+3. **Implement Solutions** - Use the provided code templates as starting points
+4. **Solve Related Problems** - Practice on LeetCode with newfound understanding
+
+## 🤝 Contributing
+
+We welcome contributions! Whether it's:
+- Adding new algorithm visualizations
+- Improving existing animations
+- Writing better documentation
+- Reporting bugs or suggesting features
+
+Feel free to open an issue or submit a pull request.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+**Ready to forge your algorithm skills?** Start exploring patterns and master technical interviews! 🔨⚡
