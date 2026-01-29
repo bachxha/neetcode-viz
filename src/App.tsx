@@ -53,13 +53,14 @@ import { PatternsPage } from './patterns/PatternsPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { PatternTrainerPage } from './pages/PatternTrainerPage';
 import { VerbalTrainerPage } from './pages/VerbalTrainerPage';
+import { BugHunterPage } from './pages/BugHunterPage';
 import { CompanyPathsPage } from './pages/CompanyPathsPage';
 import { CompanyPathDetailPage } from './pages/CompanyPathDetailPage';
 import { ProgressTracker, ProgressBadge } from './components/ProgressTracker';
 import { problems, categories, type Problem, type Category } from './data/problems';
-import { ChevronRight, ChevronDown, ExternalLink, Play, Lock, Lightbulb, LayoutDashboard, Brain, Building2, Mic } from 'lucide-react';
+import { ChevronRight, ChevronDown, ExternalLink, Play, Lock, Lightbulb, LayoutDashboard, Brain, Building2, Mic, Bug } from 'lucide-react';
 
-type View = 'home' | 'patterns' | 'dashboard' | 'trainer' | 'verbal-trainer' | 'company-paths' | string;
+type View = 'home' | 'patterns' | 'dashboard' | 'trainer' | 'verbal-trainer' | 'bug-hunter' | 'company-paths' | string;
 
 function DifficultyBadge({ difficulty }: { difficulty: Problem['difficulty'] }) {
   const colors = {
@@ -206,6 +207,14 @@ function HomePage({ onSelect }: { onSelect: (view: View) => void }) {
           >
             <Mic size={18} />
             Verbal Trainer
+            <ChevronRight size={16} />
+          </button>
+          <button
+            onClick={() => onSelect('bug-hunter')}
+            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-red-500/20 to-orange-500/20 border border-red-500/30 rounded-lg hover:border-red-400 transition-all font-medium text-red-400 hover:text-red-300"
+          >
+            <Bug size={18} />
+            Bug Hunter
             <ChevronRight size={16} />
           </button>
           <button
@@ -445,6 +454,8 @@ function App() {
             <span className="text-white font-medium">Pattern Trainer</span>
           ) : view === 'verbal-trainer' ? (
             <span className="text-white font-medium">Verbal Trainer</span>
+          ) : view === 'bug-hunter' ? (
+            <span className="text-white font-medium">Bug Hunter</span>
           ) : view === 'company-paths' ? (
             <>
               <span className="text-white font-medium">Company Interview Paths</span>
@@ -485,6 +496,8 @@ function App() {
         <PatternTrainerPage />
       ) : view === 'verbal-trainer' ? (
         <VerbalTrainerPage />
+      ) : view === 'bug-hunter' ? (
+        <BugHunterPage />
       ) : view === 'company-paths' ? (
         selectedCompany ? (
           <CompanyPathDetailPage
