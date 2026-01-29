@@ -13,6 +13,7 @@ import { SubsetsIIVisualizer } from './visualizers/SubsetsIIVisualizer';
 import { CombinationSumIIVisualizer } from './visualizers/CombinationSumIIVisualizer';
 import { PalindromePartitioningVisualizer } from './visualizers/PalindromePartitioningVisualizer';
 import { ClimbingStairsVisualizer } from './visualizers/ClimbingStairsVisualizer';
+import { TwoPointersVisualizer } from './visualizers/TwoPointersVisualizer';
 import { NumberOfIslandsVisualizer } from './visualizers/NumberOfIslandsVisualizer';
 import { PacificAtlanticVisualizer } from './visualizers/PacificAtlanticVisualizer';
 import { RottingOrangesVisualizer } from './visualizers/RottingOrangesVisualizer';
@@ -231,6 +232,9 @@ function Visualizer({ problemId }: { problemId: string }) {
       return <NonOverlappingIntervalsVisualizer />;
     case 'meeting-rooms-ii':
       return <MeetingRoomsIIVisualizer />;
+    // Two Pointers
+    case 'container-with-most-water':
+      return <TwoPointersVisualizer />;
     default:
       return (
         <div className="p-8 text-center">

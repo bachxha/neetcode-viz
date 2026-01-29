@@ -44,7 +44,7 @@ export const problems: Problem[] = [
   { id: 'valid-palindrome', title: 'Valid Palindrome', category: 'Two Pointers', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/valid-palindrome/', hasVisualization: false },
   { id: 'two-sum-ii', title: 'Two Sum II', category: 'Two Pointers', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/', hasVisualization: false },
   { id: '3sum', title: '3Sum', category: 'Two Pointers', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/3sum/', hasVisualization: false },
-  { id: 'container-with-most-water', title: 'Container With Most Water', category: 'Two Pointers', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/container-with-most-water/', hasVisualization: false },
+  { id: 'container-with-most-water', title: 'Container With Most Water', category: 'Two Pointers', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/container-with-most-water/', hasVisualization: true },
   { id: 'trapping-rain-water', title: 'Trapping Rain Water', category: 'Two Pointers', difficulty: 'Hard', leetcodeUrl: 'https://leetcode.com/problems/trapping-rain-water/', hasVisualization: false },
 
   // Sliding Window
