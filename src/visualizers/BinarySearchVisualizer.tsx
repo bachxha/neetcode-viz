@@ -71,7 +71,6 @@ function generateSteps(array: number[], target: number): Step[] {
       });
       return steps;
     } else if (array[mid] < target) {
-      const oldLeft = left;
       left = mid + 1;
       steps.push({
         type: 'search-right',
@@ -84,7 +83,6 @@ function generateSteps(array: number[], target: number): Step[] {
         description: `${array[mid]} < ${target}. Target is in right half. Set left = ${mid} + 1 = ${left}`,
       });
     } else {
-      const oldRight = right;
       right = mid - 1;
       steps.push({
         type: 'search-left',
