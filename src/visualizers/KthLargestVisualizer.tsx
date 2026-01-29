@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Controls } from '../components/Controls';
 
 interface Step {
@@ -275,10 +275,6 @@ function getTreePosition(index: number, totalNodes: number) {
 // Helper to get parent/child relationships
 function getParentIndex(index: number): number {
   return Math.floor((index - 1) / 2);
-}
-
-function getChildIndices(index: number): [number, number] {
-  return [2 * index + 1, 2 * index + 2];
 }
 
 export function KthLargestVisualizer() {
