@@ -35,6 +35,7 @@ import { BestTimeToBuyAndSellStockVisualizer } from './visualizers/BestTimeToBuy
 import { CloneGraphVisualizer } from './visualizers/CloneGraphVisualizer';
 import { CourseScheduleVisualizer } from './visualizers/CourseScheduleVisualizer';
 import { DailyTemperaturesVisualizer } from './visualizers/DailyTemperaturesVisualizer';
+import { ThreeSumVisualizer } from './visualizers/ThreeSumVisualizer';
 import { problems, categories, type Problem, type Category } from './data/problems';
 import { ChevronRight, ChevronDown, ExternalLink, Play, Lock } from 'lucide-react';
 
@@ -255,6 +256,8 @@ function Visualizer({ problemId }: { problemId: string }) {
     case 'meeting-rooms-ii':
       return <MeetingRoomsIIVisualizer />;
     // Two Pointers
+    case '3sum':
+      return <ThreeSumVisualizer />;
     case 'container-with-most-water':
       return <TwoPointersVisualizer />;
     case 'trapping-rain-water':
