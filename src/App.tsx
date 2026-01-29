@@ -25,6 +25,7 @@ import { InvertBinaryTreeVisualizer } from './visualizers/InvertBinaryTreeVisual
 import { MaximumDepthOfBinaryTreeVisualizer } from './visualizers/MaximumDepthOfBinaryTreeVisualizer';
 import { ValidateBinarySearchTreeVisualizer } from './visualizers/ValidateBinarySearchTreeVisualizer';
 import { LowestCommonAncestorBSTVisualizer } from './visualizers/LowestCommonAncestorBSTVisualizer';
+import { TrappingRainWaterVisualizer } from './visualizers/TrappingRainWaterVisualizer';
 import { BinaryTreeRightSideViewVisualizer } from './visualizers/BinaryTreeRightSideViewVisualizer';
 import { SubtreeOfAnotherTreeVisualizer } from './visualizers/SubtreeOfAnotherTreeVisualizer';
 import { SameTreeVisualizer } from './visualizers/SameTreeVisualizer';
@@ -255,6 +256,8 @@ function Visualizer({ problemId }: { problemId: string }) {
     // Two Pointers
     case 'container-with-most-water':
       return <TwoPointersVisualizer />;
+    case 'trapping-rain-water':
+      return <TrappingRainWaterVisualizer />;
     // Stack
     case 'valid-parentheses':
       return <ValidParenthesesVisualizer />;

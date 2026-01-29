@@ -45,7 +45,7 @@ export const problems: Problem[] = [
   { id: 'two-sum-ii', title: 'Two Sum II', category: 'Two Pointers', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/', hasVisualization: false },
   { id: '3sum', title: '3Sum', category: 'Two Pointers', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/3sum/', hasVisualization: false },
   { id: 'container-with-most-water', title: 'Container With Most Water', category: 'Two Pointers', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/container-with-most-water/', hasVisualization: true },
-  { id: 'trapping-rain-water', title: 'Trapping Rain Water', category: 'Two Pointers', difficulty: 'Hard', leetcodeUrl: 'https://leetcode.com/problems/trapping-rain-water/', hasVisualization: false },
+  { id: 'trapping-rain-water', title: 'Trapping Rain Water', category: 'Two Pointers', difficulty: 'Hard', leetcodeUrl: 'https://leetcode.com/problems/trapping-rain-water/', hasVisualization: true },
 
   // Sliding Window
   { id: 'best-time-to-buy-and-sell-stock', title: 'Best Time to Buy and Sell Stock', category: 'Sliding Window', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/best-time-to-buy-and-sell-stock/', hasVisualization: true },
