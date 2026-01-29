@@ -51,11 +51,12 @@ import { RemoveNthNodeFromEndVisualizer } from './visualizers/RemoveNthNodeFromE
 import { ReorderListVisualizer } from './visualizers/ReorderListVisualizer';
 import { PatternsPage } from './patterns/PatternsPage';
 import { DashboardPage } from './pages/DashboardPage';
+import { PatternTrainerPage } from './pages/PatternTrainerPage';
 import { ProgressTracker, ProgressBadge } from './components/ProgressTracker';
 import { problems, categories, type Problem, type Category } from './data/problems';
-import { ChevronRight, ChevronDown, ExternalLink, Play, Lock, Lightbulb, LayoutDashboard } from 'lucide-react';
+import { ChevronRight, ChevronDown, ExternalLink, Play, Lock, Lightbulb, LayoutDashboard, Brain } from 'lucide-react';
 
-type View = 'home' | 'patterns' | 'dashboard' | string;
+type View = 'home' | 'patterns' | 'dashboard' | 'trainer' | string;
 
 function DifficultyBadge({ difficulty }: { difficulty: Problem['difficulty'] }) {
   const colors = {
@@ -178,8 +179,16 @@ function HomePage({ onSelect }: { onSelect: (view: View) => void }) {
           </div>
         </div>
         
-        {/* Navigation to Patterns and Dashboard */}
+        {/* Navigation to Patterns, Dashboard, and Trainer */}
         <div className="mt-6 flex justify-center gap-4 flex-wrap">
+          <button
+            onClick={() => onSelect('trainer')}
+            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-pink-500/20 to-purple-500/20 border border-pink-500/30 rounded-lg hover:border-pink-400 transition-all font-medium text-pink-400 hover:text-pink-300"
+          >
+            <Brain size={18} />
+            Pattern Trainer
+            <ChevronRight size={16} />
+          </button>
           <button
             onClick={() => onSelect('dashboard')}
             className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 rounded-lg hover:border-purple-400 transition-all font-medium text-purple-400 hover:text-purple-300"
@@ -406,6 +415,8 @@ function App() {
             <span className="text-white font-medium">Algorithm Patterns</span>
           ) : view === 'dashboard' ? (
             <span className="text-white font-medium">Progress Dashboard</span>
+          ) : view === 'trainer' ? (
+            <span className="text-white font-medium">Pattern Trainer</span>
           ) : (
             <>
               <span className="text-slate-400">{currentProblem?.category}</span>
@@ -432,6 +443,8 @@ function App() {
         <PatternsPage onSelectPattern={(patternId) => setView(patternId)} />
       ) : view === 'dashboard' ? (
         <DashboardPage onSelectProblem={setView} />
+      ) : view === 'trainer' ? (
+        <PatternTrainerPage />
       ) : (
         <VisualizerWithProgress problemId={view} />
       )}
