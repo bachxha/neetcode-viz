@@ -14,9 +14,11 @@ import { CombinationSumIIVisualizer } from './visualizers/CombinationSumIIVisual
 import { PalindromePartitioningVisualizer } from './visualizers/PalindromePartitioningVisualizer';
 import { ClimbingStairsVisualizer } from './visualizers/ClimbingStairsVisualizer';
 import { TwoPointersVisualizer } from './visualizers/TwoPointersVisualizer';
+import { BinarySearchVisualizer } from './visualizers/BinarySearchVisualizer';
 import { NumberOfIslandsVisualizer } from './visualizers/NumberOfIslandsVisualizer';
 import { PacificAtlanticVisualizer } from './visualizers/PacificAtlanticVisualizer';
 import { RottingOrangesVisualizer } from './visualizers/RottingOrangesVisualizer';
+import { ValidParenthesesVisualizer } from './visualizers/ValidParenthesesVisualizer';
 import { problems, categories, type Problem, type Category } from './data/problems';
 import { ChevronRight, ChevronDown, ExternalLink, Play, Lock } from 'lucide-react';
 
@@ -235,6 +237,9 @@ function Visualizer({ problemId }: { problemId: string }) {
     // Two Pointers
     case 'container-with-most-water':
       return <TwoPointersVisualizer />;
+    // Binary Search
+    case 'binary-search':
+      return <BinarySearchVisualizer />;
     default:
       return (
         <div className="p-8 text-center">

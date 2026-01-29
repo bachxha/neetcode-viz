@@ -56,7 +56,7 @@ export const problems: Problem[] = [
   { id: 'sliding-window-maximum', title: 'Sliding Window Maximum', category: 'Sliding Window', difficulty: 'Hard', leetcodeUrl: 'https://leetcode.com/problems/sliding-window-maximum/', hasVisualization: false },
 
   // Stack
-  { id: 'valid-parentheses', title: 'Valid Parentheses', category: 'Stack', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/valid-parentheses/', hasVisualization: false },
+  { id: 'valid-parentheses', title: 'Valid Parentheses', category: 'Stack', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/valid-parentheses/', hasVisualization: true },
   { id: 'min-stack', title: 'Min Stack', category: 'Stack', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/min-stack/', hasVisualization: false },
   { id: 'evaluate-reverse-polish-notation', title: 'Evaluate Reverse Polish Notation', category: 'Stack', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/evaluate-reverse-polish-notation/', hasVisualization: false },
   { id: 'generate-parentheses', title: 'Generate Parentheses', category: 'Stack', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/generate-parentheses/', hasVisualization: false },
@@ -65,7 +65,7 @@ export const problems: Problem[] = [
   { id: 'largest-rectangle-in-histogram', title: 'Largest Rectangle in Histogram', category: 'Stack', difficulty: 'Hard', leetcodeUrl: 'https://leetcode.com/problems/largest-rectangle-in-histogram/', hasVisualization: false },
 
   // Binary Search
-  { id: 'binary-search', title: 'Binary Search', category: 'Binary Search', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/binary-search/', hasVisualization: false },
+  { id: 'binary-search', title: 'Binary Search', category: 'Binary Search', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/binary-search/', hasVisualization: true },
   { id: 'search-2d-matrix', title: 'Search a 2D Matrix', category: 'Binary Search', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/search-a-2d-matrix/', hasVisualization: false },
   { id: 'koko-eating-bananas', title: 'Koko Eating Bananas', category: 'Binary Search', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/koko-eating-bananas/', hasVisualization: false },
   { id: 'find-minimum-in-rotated-sorted-array', title: 'Find Minimum in Rotated Sorted Array', category: 'Binary Search', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/', hasVisualization: false },
