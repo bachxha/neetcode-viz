@@ -25,6 +25,7 @@ import { InvertBinaryTreeVisualizer } from './visualizers/InvertBinaryTreeVisual
 import { MaximumDepthOfBinaryTreeVisualizer } from './visualizers/MaximumDepthOfBinaryTreeVisualizer';
 import { ValidateBinarySearchTreeVisualizer } from './visualizers/ValidateBinarySearchTreeVisualizer';
 import { LowestCommonAncestorBSTVisualizer } from './visualizers/LowestCommonAncestorBSTVisualizer';
+import { BinaryTreeRightSideViewVisualizer } from './visualizers/BinaryTreeRightSideViewVisualizer';
 import { ReverseLinkedListVisualizer } from './visualizers/ReverseLinkedListVisualizer';
 import { BestTimeToBuyAndSellStockVisualizer } from './visualizers/BestTimeToBuyAndSellStockVisualizer';
 import { problems, categories, type Problem, type Category } from './data/problems';
@@ -257,6 +258,8 @@ function Visualizer({ problemId }: { problemId: string }) {
     // Trees
     case 'binary-tree-level-order-traversal':
       return <BinaryTreeLevelOrderVisualizer />;
+    case 'binary-tree-right-side-view':
+      return <BinaryTreeRightSideViewVisualizer />;
     case 'invert-binary-tree':
       return <InvertBinaryTreeVisualizer />;
     case 'maximum-depth-of-binary-tree':
