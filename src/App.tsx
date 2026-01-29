@@ -22,6 +22,7 @@ import { ValidParenthesesVisualizer } from './visualizers/ValidParenthesesVisual
 import { KthLargestVisualizer } from './visualizers/KthLargestVisualizer';
 import { BinaryTreeLevelOrderVisualizer } from './visualizers/BinaryTreeLevelOrderVisualizer';
 import { InvertBinaryTreeVisualizer } from './visualizers/InvertBinaryTreeVisualizer';
+import { MaximumDepthOfBinaryTreeVisualizer } from './visualizers/MaximumDepthOfBinaryTreeVisualizer';
 import { ReverseLinkedListVisualizer } from './visualizers/ReverseLinkedListVisualizer';
 import { BestTimeToBuyAndSellStockVisualizer } from './visualizers/BestTimeToBuyAndSellStockVisualizer';
 import { problems, categories, type Problem, type Category } from './data/problems';
@@ -256,6 +257,8 @@ function Visualizer({ problemId }: { problemId: string }) {
       return <BinaryTreeLevelOrderVisualizer />;
     case 'invert-binary-tree':
       return <InvertBinaryTreeVisualizer />;
+    case 'maximum-depth-of-binary-tree':
+      return <MaximumDepthOfBinaryTreeVisualizer />;
     // Linked List
     case 'reverse-linked-list':
       return <ReverseLinkedListVisualizer />;
