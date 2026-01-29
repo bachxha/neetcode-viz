@@ -91,7 +91,7 @@ export const problems: Problem[] = [
   { id: 'maximum-depth-of-binary-tree', title: 'Maximum Depth of Binary Tree', category: 'Trees', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/maximum-depth-of-binary-tree/', hasVisualization: true },
   { id: 'diameter-of-binary-tree', title: 'Diameter of Binary Tree', category: 'Trees', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/diameter-of-binary-tree/', hasVisualization: false },
   { id: 'balanced-binary-tree', title: 'Balanced Binary Tree', category: 'Trees', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/balanced-binary-tree/', hasVisualization: false },
-  { id: 'same-tree', title: 'Same Tree', category: 'Trees', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/same-tree/', hasVisualization: false },
+  { id: 'same-tree', title: 'Same Tree', category: 'Trees', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/same-tree/', hasVisualization: true },
   { id: 'subtree-of-another-tree', title: 'Subtree of Another Tree', category: 'Trees', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/subtree-of-another-tree/', hasVisualization: true },
   { id: 'lowest-common-ancestor-bst', title: 'Lowest Common Ancestor of BST', category: 'Trees', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/', hasVisualization: true },
   { id: 'binary-tree-level-order-traversal', title: 'Binary Tree Level Order Traversal', category: 'Trees', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/binary-tree-level-order-traversal/', hasVisualization: true },

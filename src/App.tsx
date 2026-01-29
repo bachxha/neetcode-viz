@@ -27,6 +27,7 @@ import { ValidateBinarySearchTreeVisualizer } from './visualizers/ValidateBinary
 import { LowestCommonAncestorBSTVisualizer } from './visualizers/LowestCommonAncestorBSTVisualizer';
 import { BinaryTreeRightSideViewVisualizer } from './visualizers/BinaryTreeRightSideViewVisualizer';
 import { SubtreeOfAnotherTreeVisualizer } from './visualizers/SubtreeOfAnotherTreeVisualizer';
+import { SameTreeVisualizer } from './visualizers/SameTreeVisualizer';
 import { ReverseLinkedListVisualizer } from './visualizers/ReverseLinkedListVisualizer';
 import { BestTimeToBuyAndSellStockVisualizer } from './visualizers/BestTimeToBuyAndSellStockVisualizer';
 import { problems, categories, type Problem, type Category } from './data/problems';
@@ -269,6 +270,8 @@ function Visualizer({ problemId }: { problemId: string }) {
       return <ValidateBinarySearchTreeVisualizer />;
     case 'lowest-common-ancestor-bst':
       return <LowestCommonAncestorBSTVisualizer />;
+    case 'same-tree':
+      return <SameTreeVisualizer />;
     case 'subtree-of-another-tree':
       return <SubtreeOfAnotherTreeVisualizer />;
     // Linked List
