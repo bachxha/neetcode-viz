@@ -40,6 +40,7 @@ import { CloneGraphVisualizer } from './visualizers/CloneGraphVisualizer';
 import { CourseScheduleVisualizer } from './visualizers/CourseScheduleVisualizer';
 import { DailyTemperaturesVisualizer } from './visualizers/DailyTemperaturesVisualizer';
 import { MinStackVisualizer } from './visualizers/MinStackVisualizer';
+import { EvaluateReversePolishNotationVisualizer } from './visualizers/EvaluateReversePolishNotationVisualizer';
 import { ThreeSumVisualizer } from './visualizers/ThreeSumVisualizer';
 import { LRUCacheVisualizer } from './visualizers/LRUCacheVisualizer';
 import { problems, categories, type Problem, type Category } from './data/problems';
@@ -277,6 +278,8 @@ function Visualizer({ problemId }: { problemId: string }) {
       return <DailyTemperaturesVisualizer />;
     case 'min-stack':
       return <MinStackVisualizer />;
+    case 'evaluate-reverse-polish-notation':
+      return <EvaluateReversePolishNotationVisualizer />;
     // Binary Search
     case 'binary-search':
       return <BinarySearchVisualizer />;
