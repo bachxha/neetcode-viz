@@ -52,11 +52,13 @@ import { ReorderListVisualizer } from './visualizers/ReorderListVisualizer';
 import { PatternsPage } from './patterns/PatternsPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { PatternTrainerPage } from './pages/PatternTrainerPage';
+import { CompanyPathsPage } from './pages/CompanyPathsPage';
+import { CompanyPathDetailPage } from './pages/CompanyPathDetailPage';
 import { ProgressTracker, ProgressBadge } from './components/ProgressTracker';
 import { problems, categories, type Problem, type Category } from './data/problems';
-import { ChevronRight, ChevronDown, ExternalLink, Play, Lock, Lightbulb, LayoutDashboard, Brain } from 'lucide-react';
+import { ChevronRight, ChevronDown, ExternalLink, Play, Lock, Lightbulb, LayoutDashboard, Brain, Building2 } from 'lucide-react';
 
-type View = 'home' | 'patterns' | 'dashboard' | 'trainer' | string;
+type View = 'home' | 'patterns' | 'dashboard' | 'trainer' | 'company-paths' | string;
 
 function DifficultyBadge({ difficulty }: { difficulty: Problem['difficulty'] }) {
   const colors = {
@@ -181,6 +183,14 @@ function HomePage({ onSelect }: { onSelect: (view: View) => void }) {
         
         {/* Navigation to Patterns, Dashboard, and Trainer */}
         <div className="mt-6 flex justify-center gap-4 flex-wrap">
+          <button
+            onClick={() => onSelect('company-paths')}
+            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 border border-blue-500/30 rounded-lg hover:border-blue-400 transition-all font-medium text-blue-400 hover:text-blue-300"
+          >
+            <Building2 size={18} />
+            Company Paths
+            <ChevronRight size={16} />
+          </button>
           <button
             onClick={() => onSelect('trainer')}
             className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-pink-500/20 to-purple-500/20 border border-pink-500/30 rounded-lg hover:border-pink-400 transition-all font-medium text-pink-400 hover:text-pink-300"
@@ -398,6 +408,7 @@ function Visualizer({ problemId }: { problemId: string }) {
 
 function App() {
   const [view, setView] = useState<View>('home');
+  const [selectedCompany, setSelectedCompany] = useState<string | null>(null);
   const currentProblem = problems.find(p => p.id === view);
   
   return (
@@ -405,7 +416,13 @@ function App() {
       {view !== 'home' && (
         <nav className="border-b border-slate-700 px-6 py-3 flex items-center gap-4">
           <button
-            onClick={() => setView('home')}
+            onClick={() => {
+              if (selectedCompany) {
+                setSelectedCompany(null);
+              } else {
+                setView('home');
+              }
+            }}
             className="text-slate-400 hover:text-white transition-colors"
           >
             ← Back
@@ -417,6 +434,16 @@ function App() {
             <span className="text-white font-medium">Progress Dashboard</span>
           ) : view === 'trainer' ? (
             <span className="text-white font-medium">Pattern Trainer</span>
+          ) : view === 'company-paths' ? (
+            <>
+              <span className="text-white font-medium">Company Interview Paths</span>
+              {selectedCompany && (
+                <>
+                  <span className="text-slate-600">/</span>
+                  <span className="text-blue-400 font-medium capitalize">{selectedCompany}</span>
+                </>
+              )}
+            </>
           ) : (
             <>
               <span className="text-slate-400">{currentProblem?.category}</span>
@@ -445,6 +472,20 @@ function App() {
         <DashboardPage onSelectProblem={setView} />
       ) : view === 'trainer' ? (
         <PatternTrainerPage />
+      ) : view === 'company-paths' ? (
+        selectedCompany ? (
+          <CompanyPathDetailPage
+            companyId={selectedCompany}
+            onSelectProblem={(problemId) => {
+              setView(problemId);
+            }}
+            onBack={() => setSelectedCompany(null)}
+          />
+        ) : (
+          <CompanyPathsPage
+            onSelectCompany={(companyId) => setSelectedCompany(companyId)}
+          />
+        )
       ) : (
         <VisualizerWithProgress problemId={view} />
       )}
