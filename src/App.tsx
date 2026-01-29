@@ -19,6 +19,8 @@ import { NumberOfIslandsVisualizer } from './visualizers/NumberOfIslandsVisualiz
 import { PacificAtlanticVisualizer } from './visualizers/PacificAtlanticVisualizer';
 import { RottingOrangesVisualizer } from './visualizers/RottingOrangesVisualizer';
 import { ValidParenthesesVisualizer } from './visualizers/ValidParenthesesVisualizer';
+import { KthLargestVisualizer } from './visualizers/KthLargestVisualizer';
+import { BinaryTreeLevelOrderVisualizer } from './visualizers/BinaryTreeLevelOrderVisualizer';
 import { problems, categories, type Problem, type Category } from './data/problems';
 import { ChevronRight, ChevronDown, ExternalLink, Play, Lock } from 'lucide-react';
 
@@ -243,6 +245,12 @@ function Visualizer({ problemId }: { problemId: string }) {
     // Binary Search
     case 'binary-search':
       return <BinarySearchVisualizer />;
+    // Heap / Priority Queue
+    case 'kth-largest-element-in-stream':
+      return <KthLargestVisualizer />;
+    // Trees
+    case 'binary-tree-level-order-traversal':
+      return <BinaryTreeLevelOrderVisualizer />;
     default:
       return (
         <div className="p-8 text-center">

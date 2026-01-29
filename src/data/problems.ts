@@ -94,7 +94,7 @@ export const problems: Problem[] = [
   { id: 'same-tree', title: 'Same Tree', category: 'Trees', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/same-tree/', hasVisualization: false },
   { id: 'subtree-of-another-tree', title: 'Subtree of Another Tree', category: 'Trees', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/subtree-of-another-tree/', hasVisualization: false },
   { id: 'lowest-common-ancestor-bst', title: 'Lowest Common Ancestor of BST', category: 'Trees', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/', hasVisualization: false },
-  { id: 'binary-tree-level-order-traversal', title: 'Binary Tree Level Order Traversal', category: 'Trees', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/binary-tree-level-order-traversal/', hasVisualization: false },
+  { id: 'binary-tree-level-order-traversal', title: 'Binary Tree Level Order Traversal', category: 'Trees', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/binary-tree-level-order-traversal/', hasVisualization: true },
   { id: 'binary-tree-right-side-view', title: 'Binary Tree Right Side View', category: 'Trees', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/binary-tree-right-side-view/', hasVisualization: false },
   { id: 'count-good-nodes', title: 'Count Good Nodes in Binary Tree', category: 'Trees', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/count-good-nodes-in-binary-tree/', hasVisualization: false },
   { id: 'validate-bst', title: 'Validate Binary Search Tree', category: 'Trees', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/validate-binary-search-tree/', hasVisualization: false },
@@ -109,7 +109,7 @@ export const problems: Problem[] = [
   { id: 'word-search-ii', title: 'Word Search II', category: 'Tries', difficulty: 'Hard', leetcodeUrl: 'https://leetcode.com/problems/word-search-ii/', hasVisualization: false },
 
   // Heap / Priority Queue
-  { id: 'kth-largest-element-in-stream', title: 'Kth Largest Element in a Stream', category: 'Heap / Priority Queue', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/kth-largest-element-in-a-stream/', hasVisualization: false },
+  { id: 'kth-largest-element-in-stream', title: 'Kth Largest Element in a Stream', category: 'Heap / Priority Queue', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/kth-largest-element-in-a-stream/', hasVisualization: true },
   { id: 'last-stone-weight', title: 'Last Stone Weight', category: 'Heap / Priority Queue', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/last-stone-weight/', hasVisualization: false },
   { id: 'k-closest-points', title: 'K Closest Points to Origin', category: 'Heap / Priority Queue', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/k-closest-points-to-origin/', hasVisualization: false },
   { id: 'kth-largest-element-in-array', title: 'Kth Largest Element in an Array', category: 'Heap / Priority Queue', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/kth-largest-element-in-an-array/', hasVisualization: false },
