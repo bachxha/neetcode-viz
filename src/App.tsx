@@ -50,6 +50,8 @@ import { AddTwoNumbersVisualizer } from './visualizers/AddTwoNumbersVisualizer';
 import { RemoveNthNodeFromEndVisualizer } from './visualizers/RemoveNthNodeFromEndVisualizer';
 import { ReorderListVisualizer } from './visualizers/ReorderListVisualizer';
 import { PatternsPage } from './patterns/PatternsPage';
+import { PatternDetailPage } from './pages/PatternDetailPage';
+import { patterns } from './data/patterns';
 import { DashboardPage } from './pages/DashboardPage';
 import { PatternTrainerPage } from './pages/PatternTrainerPage';
 import { VerbalTrainerPage } from './pages/VerbalTrainerPage';
@@ -437,6 +439,8 @@ function App() {
             onClick={() => {
               if (selectedCompany) {
                 setSelectedCompany(null);
+              } else if (patterns.find(p => p.id === view)) {
+                setView('patterns');
               } else {
                 setView('home');
               }
@@ -448,6 +452,12 @@ function App() {
           <span className="text-slate-600">|</span>
           {view === 'patterns' ? (
             <span className="text-white font-medium">Algorithm Patterns</span>
+          ) : patterns.find(p => p.id === view) ? (
+            <>
+              <span className="text-slate-400">Patterns</span>
+              <span className="text-slate-600">/</span>
+              <span className="text-white font-medium">{patterns.find(p => p.id === view)?.name}</span>
+            </>
           ) : view === 'dashboard' ? (
             <span className="text-white font-medium">Progress Dashboard</span>
           ) : view === 'trainer' ? (
@@ -490,6 +500,12 @@ function App() {
         <HomePage onSelect={setView} />
       ) : view === 'patterns' ? (
         <PatternsPage onSelectPattern={(patternId) => setView(patternId)} />
+      ) : patterns.find(p => p.id === view) ? (
+        <PatternDetailPage
+          pattern={patterns.find(p => p.id === view)!}
+          onBack={() => setView('patterns')}
+          onSelectProblem={(id) => setView(id)}
+        />
       ) : view === 'dashboard' ? (
         <DashboardPage onSelectProblem={setView} />
       ) : view === 'trainer' ? (
