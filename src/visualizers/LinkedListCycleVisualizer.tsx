@@ -1,254 +1,470 @@
 import { useState, useEffect, useCallback } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Controls } from '../components/Controls';
 
-interface Step {
-  type: 'start' | 'move' | 'meet' | 'no-cycle' | 'done';
-  nodes: number[];
-  cycleStart: number; // -1 means no cycle
-  slow: number;
-  fast: number;
-  description: string;
-  phase: 'detection' | 'complete';
+interface ListNode {
+  val: number;
+  index: number;
 }
 
-function generateSteps(values: number[], cyclePos: number): Step[] {
+interface Step {
+  type: 'init' | 'move' | 'cycle-detected' | 'no-cycle';
+  slowIndex: number;
+  fastIndex: number | null;
+  description: string;
+  codeHighlight: number;
+  hasMet: boolean;
+}
+
+function generateSteps(nodes: ListNode[], cycleStart: number | null): Step[] {
   const steps: Step[] = [];
-  const n = values.length;
   
-  if (n === 0) {
+  if (nodes.length === 0) {
     steps.push({
-      type: 'done',
-      nodes: [],
-      cycleStart: -1,
-      slow: -1,
-      fast: -1,
-      description: 'Empty list - no cycle possible',
-      phase: 'complete',
+      type: 'no-cycle',
+      slowIndex: -1,
+      fastIndex: null,
+      description: 'Empty list - no cycle possible.',
+      codeHighlight: 1,
+      hasMet: false,
     });
     return steps;
   }
-  
-  const hasCycle = cyclePos >= 0 && cyclePos < n;
-  
-  steps.push({
-    type: 'start',
-    nodes: values,
-    cycleStart: hasCycle ? cyclePos : -1,
-    slow: 0,
-    fast: 0,
-    description: `Floyd's Cycle Detection: slow moves 1 step, fast moves 2 steps. ${hasCycle ? `Cycle at index ${cyclePos}` : 'No cycle'}`,
-    phase: 'detection',
-  });
-  
+
+  // Initialize pointers
   let slow = 0;
-  let fast = 0;
-  let stepCount = 0;
-  const maxSteps = n * 3; // Prevent infinite loops in visualization
-  
-  // Helper to get next index
-  const getNext = (i: number): number => {
-    if (i === n - 1) {
-      return hasCycle ? cyclePos : -1; // -1 means null
-    }
-    return i + 1;
-  };
-  
-  while (stepCount < maxSteps) {
-    // Move slow by 1
-    const nextSlow = getNext(slow);
-    // Move fast by 2
-    const nextFast1 = getNext(fast);
-    const nextFast = nextFast1 >= 0 ? getNext(nextFast1) : -1;
-    
-    // Check if fast hit null (no cycle)
-    if (nextFast1 < 0 || nextFast < 0) {
+  let fast: number | null = 0;
+
+  steps.push({
+    type: 'init',
+    slowIndex: slow,
+    fastIndex: fast,
+    description: 'Initialize slow and fast pointers at the head of the list.',
+    codeHighlight: 2,
+    hasMet: false,
+  });
+
+  // Run Floyd's algorithm
+  while (fast !== null) {
+    // Move fast pointer first (2 steps)
+    // Step 1 for fast
+    const fast1Next = getNext(fast, nodes.length, cycleStart);
+    if (fast1Next === null) {
       steps.push({
         type: 'no-cycle',
-        nodes: values,
-        cycleStart: -1,
-        slow: nextSlow >= 0 ? nextSlow : slow,
-        fast: nextFast1 >= 0 ? nextFast1 : fast,
-        description: 'Fast pointer reached null - No cycle detected!',
-        phase: 'complete',
+        slowIndex: slow,
+        fastIndex: null,
+        description: 'Fast pointer reached null. No cycle detected!',
+        codeHighlight: 4,
+        hasMet: false,
       });
-      return steps;
+      break;
     }
     
-    slow = nextSlow;
-    fast = nextFast;
+    // Step 2 for fast  
+    const fast2Next = getNext(fast1Next, nodes.length, cycleStart);
+    fast = fast2Next;
     
-    steps.push({
-      type: 'move',
-      nodes: values,
-      cycleStart: hasCycle ? cyclePos : -1,
-      slow,
-      fast,
-      description: `Slow → node ${slow} (val=${values[slow]}), Fast → node ${fast} (val=${values[fast]})`,
-      phase: 'detection',
-    });
-    
+    // Move slow pointer (1 step)
+    const slowNext = getNext(slow, nodes.length, cycleStart);
+    slow = slowNext!;
+
+    // Check if fast is null after moves
+    if (fast === null) {
+      steps.push({
+        type: 'no-cycle',
+        slowIndex: slow,
+        fastIndex: null,
+        description: 'Fast pointer reached null. No cycle detected!',
+        codeHighlight: 4,
+        hasMet: false,
+      });
+      break;
+    }
+
     // Check if they meet
     if (slow === fast) {
       steps.push({
-        type: 'meet',
-        nodes: values,
-        cycleStart: hasCycle ? cyclePos : -1,
-        slow,
-        fast,
-        description: `🎯 Pointers meet at node ${slow}! Cycle detected!`,
-        phase: 'complete',
+        type: 'cycle-detected',
+        slowIndex: slow,
+        fastIndex: fast,
+        description: `Slow and fast pointers meet at node ${nodes[slow].val}! Cycle detected!`,
+        codeHighlight: 6,
+        hasMet: true,
       });
-      
-      steps.push({
-        type: 'done',
-        nodes: values,
-        cycleStart: hasCycle ? cyclePos : -1,
-        slow,
-        fast,
-        description: `Cycle confirmed! The linked list has a cycle starting at index ${cyclePos}`,
-        phase: 'complete',
-      });
-      return steps;
+      break;
     }
-    
-    stepCount++;
+
+    steps.push({
+      type: 'move',
+      slowIndex: slow,
+      fastIndex: fast,
+      description: `Move slow to node ${nodes[slow].val}, fast to node ${nodes[fast].val}.`,
+      codeHighlight: 3,
+      hasMet: false,
+    });
+
+    // Safety: prevent infinite loop in step generation
+    if (steps.length > nodes.length * 3) break;
   }
-  
+
   return steps;
 }
 
+function getNext(index: number, length: number, cycleStart: number | null): number | null {
+  if (index === length - 1) {
+    // Last node - points to cycleStart if cycle exists, otherwise null
+    return cycleStart;
+  }
+  return index + 1;
+}
+
+const PRESETS = [
+  { label: 'With Cycle (pos=1)', nodes: [3, 2, 0, -4], cycleStart: 1 },
+  { label: 'With Cycle (pos=0)', nodes: [1, 2], cycleStart: 0 },
+  { label: 'No Cycle', nodes: [1, 2, 3, 4, 5], cycleStart: null },
+  { label: 'Single Node (No Cycle)', nodes: [1], cycleStart: null },
+  { label: 'Single Node with Cycle', nodes: [1], cycleStart: 0 },
+  { label: 'Longer Cycle', nodes: [1, 2, 3, 4, 5, 6], cycleStart: 2 },
+];
+
 export function LinkedListCycleVisualizer() {
-  const [input, setInput] = useState('3,2,0,-4');
-  const [cycleInput, setCycleInput] = useState('1');
+  const [selectedPreset, setSelectedPreset] = useState(0);
+  const [nodes, setNodes] = useState<ListNode[]>(
+    PRESETS[0].nodes.map((val, i) => ({ val, index: i }))
+  );
+  const [cycleStart, setCycleStart] = useState<number | null>(PRESETS[0].cycleStart);
   const [steps, setSteps] = useState<Step[]>([]);
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [speed, setSpeed] = useState(1);
-  
+
   const initializeSteps = useCallback(() => {
-    const values = input.split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n));
-    const cyclePos = parseInt(cycleInput.trim());
-    const validCyclePos = isNaN(cyclePos) ? -1 : cyclePos;
-    
-    if (values.length > 0 && values.length <= 10) {
-      const newSteps = generateSteps(values, validCyclePos);
-      setSteps(newSteps);
-      setCurrentStep(0);
-      setIsPlaying(false);
-    }
-  }, [input, cycleInput]);
-  
-  useEffect(() => {
-    initializeSteps();
-  }, []);
-  
+    const newSteps = generateSteps(nodes, cycleStart);
+    setSteps(newSteps);
+    setCurrentStep(0);
+    setIsPlaying(false);
+  }, [nodes, cycleStart]);
+
+  useEffect(() => { initializeSteps(); }, [initializeSteps]);
+
   useEffect(() => {
     if (!isPlaying || currentStep >= steps.length - 1) {
       if (currentStep >= steps.length - 1) setIsPlaying(false);
       return;
     }
-    const timer = setTimeout(() => setCurrentStep(s => s + 1), 1000 / speed);
+    const timer = setTimeout(() => setCurrentStep(s => s + 1), 1500 / speed);
     return () => clearTimeout(timer);
   }, [isPlaying, currentStep, steps.length, speed]);
-  
-  const currentStepData = steps[currentStep];
-  const hasCycle = currentStepData && currentStepData.cycleStart >= 0;
-  
-  // Calculate node positions for visualization
+
+  const handlePreset = (index: number) => {
+    setSelectedPreset(index);
+    const preset = PRESETS[index];
+    const newNodes = preset.nodes.map((val, i) => ({ val, index: i }));
+    setNodes(newNodes);
+    setCycleStart(preset.cycleStart);
+    const newSteps = generateSteps(newNodes, preset.cycleStart);
+    setSteps(newSteps);
+    setCurrentStep(0);
+    setIsPlaying(false);
+  };
+
+  const step = steps[currentStep];
+
+  // Calculate node positions in a horizontal layout with cycle arrow going back
   const getNodePosition = (index: number, total: number) => {
-    const centerX = 400;
-    const centerY = 150;
-    const radiusX = 180;
-    const radiusY = 80;
-    
-    // Arrange in an oval/arc shape
-    const angle = Math.PI - (index / (total - 1 || 1)) * Math.PI;
+    const spacing = Math.min(100, Math.max(70, 600 / total));
+    const startX = Math.max(80, (700 - (total - 1) * spacing) / 2);
     return {
-      x: centerX + radiusX * Math.cos(angle),
-      y: centerY - radiusY * Math.sin(angle),
+      x: startX + index * spacing,
+      y: 150,
     };
   };
-  
+
+  const renderNode = (node: ListNode, total: number) => {
+    const pos = getNodePosition(node.index, total);
+    
+    const isSlow = step?.slowIndex === node.index;
+    const isFast = step?.fastIndex === node.index;
+    const isMeetingPoint = step?.hasMet && isSlow && isFast;
+    const isInCycle = cycleStart !== null && node.index >= cycleStart;
+    
+    let nodeColor = '#475569'; // default slate
+    let strokeColor = '#64748b';
+    
+    if (isMeetingPoint) {
+      nodeColor = '#eab308'; // yellow for meeting point
+      strokeColor = '#ca8a04';
+    } else if (isSlow && isFast) {
+      // Both pointers on same node but not met yet (shouldn't happen normally)
+      nodeColor = '#8b5cf6';
+      strokeColor = '#7c3aed';
+    } else if (isSlow) {
+      nodeColor = '#22c55e'; // green for slow
+      strokeColor = '#16a34a';
+    } else if (isFast) {
+      nodeColor = '#3b82f6'; // blue for fast
+      strokeColor = '#2563eb';
+    } else if (isInCycle) {
+      nodeColor = '#6366f1'; // indigo for cycle portion
+      strokeColor = '#4f46e5';
+    }
+
+    return (
+      <motion.g key={`node-${node.index}`}>
+        {/* Cycle highlight ring */}
+        {isInCycle && !isSlow && !isFast && (
+          <motion.circle
+            cx={pos.x}
+            cy={pos.y}
+            r="32"
+            fill="none"
+            stroke="#6366f1"
+            strokeWidth="2"
+            strokeDasharray="4 2"
+            opacity={0.5}
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+          />
+        )}
+        
+        {/* Node circle */}
+        <motion.circle
+          cx={pos.x}
+          cy={pos.y}
+          r="28"
+          fill={nodeColor}
+          stroke={strokeColor}
+          strokeWidth="3"
+          animate={{
+            scale: isSlow || isFast ? 1.15 : 1,
+          }}
+          transition={{ type: 'spring', stiffness: 300 }}
+        />
+        
+        {/* Meeting point glow */}
+        {isMeetingPoint && (
+          <motion.circle
+            cx={pos.x}
+            cy={pos.y}
+            r="38"
+            fill="none"
+            stroke="#eab308"
+            strokeWidth="3"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: [0.3, 0.8, 0.3], scale: [0.9, 1.1, 0.9] }}
+            transition={{ repeat: Infinity, duration: 1 }}
+          />
+        )}
+        
+        {/* Node value */}
+        <text
+          x={pos.x}
+          y={pos.y}
+          textAnchor="middle"
+          dominantBaseline="central"
+          className="text-lg font-bold fill-white"
+        >
+          {node.val}
+        </text>
+        
+        {/* Pointer labels */}
+        <AnimatePresence>
+          {isSlow && !isFast && (
+            <motion.g
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+            >
+              <text
+                x={pos.x}
+                y={pos.y - 48}
+                textAnchor="middle"
+                className="text-sm font-bold fill-green-400"
+              >
+                slow
+              </text>
+            </motion.g>
+          )}
+          {isFast && !isSlow && (
+            <motion.g
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+            >
+              <text
+                x={pos.x}
+                y={pos.y - 48}
+                textAnchor="middle"
+                className="text-sm font-bold fill-blue-400"
+              >
+                fast
+              </text>
+            </motion.g>
+          )}
+          {isSlow && isFast && (
+            <motion.g
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+            >
+              <text
+                x={pos.x - 25}
+                y={pos.y - 48}
+                textAnchor="middle"
+                className="text-sm font-bold fill-green-400"
+              >
+                slow
+              </text>
+              <text
+                x={pos.x + 25}
+                y={pos.y - 48}
+                textAnchor="middle"
+                className="text-sm font-bold fill-blue-400"
+              >
+                fast
+              </text>
+            </motion.g>
+          )}
+        </AnimatePresence>
+        
+        {/* Index label */}
+        <text
+          x={pos.x}
+          y={pos.y + 48}
+          textAnchor="middle"
+          className="text-xs fill-slate-500"
+        >
+          [{node.index}]
+        </text>
+      </motion.g>
+    );
+  };
+
+  const renderArrows = () => {
+    const arrows: React.ReactNode[] = [];
+    const total = nodes.length;
+    
+    // Regular arrows between consecutive nodes
+    for (let i = 0; i < total - 1; i++) {
+      const fromPos = getNodePosition(i, total);
+      const toPos = getNodePosition(i + 1, total);
+      
+      arrows.push(
+        <motion.g key={`arrow-${i}`}>
+          <line
+            x1={fromPos.x + 30}
+            y1={fromPos.y}
+            x2={toPos.x - 35}
+            y2={toPos.y}
+            stroke="#64748b"
+            strokeWidth="2"
+            markerEnd="url(#arrowhead)"
+          />
+        </motion.g>
+      );
+    }
+    
+    // Cycle arrow (from last node back to cycleStart)
+    if (cycleStart !== null && total > 0) {
+      const fromPos = getNodePosition(total - 1, total);
+      const toPos = getNodePosition(cycleStart, total);
+      
+      // Draw curved arrow going below the nodes
+      const midY = fromPos.y + 70;
+      const path = `M ${fromPos.x} ${fromPos.y + 30} 
+                    Q ${fromPos.x} ${midY} ${(fromPos.x + toPos.x) / 2} ${midY}
+                    Q ${toPos.x} ${midY} ${toPos.x} ${toPos.y + 30}`;
+      
+      arrows.push(
+        <motion.g key="cycle-arrow">
+          <motion.path
+            d={path}
+            fill="none"
+            stroke="#f97316"
+            strokeWidth="3"
+            strokeDasharray="6 3"
+            markerEnd="url(#arrowhead-cycle)"
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ duration: 0.8 }}
+          />
+          <text
+            x={(fromPos.x + toPos.x) / 2}
+            y={midY + 20}
+            textAnchor="middle"
+            className="text-xs fill-orange-400 font-medium"
+          >
+            cycle
+          </text>
+        </motion.g>
+      );
+    }
+    
+    // Null pointer for no cycle
+    if (cycleStart === null && total > 0) {
+      const lastPos = getNodePosition(total - 1, total);
+      arrows.push(
+        <motion.g key="null-arrow">
+          <line
+            x1={lastPos.x + 30}
+            y1={lastPos.y}
+            x2={lastPos.x + 60}
+            y2={lastPos.y}
+            stroke="#64748b"
+            strokeWidth="2"
+          />
+          <text
+            x={lastPos.x + 75}
+            y={lastPos.y + 5}
+            className="text-sm fill-slate-500 font-mono"
+          >
+            null
+          </text>
+        </motion.g>
+      );
+    }
+    
+    return arrows;
+  };
+
   return (
-    <div className="p-6 max-w-5xl mx-auto">
+    <div className="p-6 max-w-7xl mx-auto">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold mb-2">Linked List Cycle Detection</h1>
+        <h1 className="text-3xl font-bold mb-2">Linked List Cycle</h1>
         <p className="text-slate-400">
-          Floyd's Tortoise and Hare algorithm. Slow pointer moves 1 step, fast moves 2.
-          If they meet, there's a cycle!
+          Detect if a linked list has a cycle using Floyd's Tortoise and Hare algorithm.
+          <br />
+          Slow pointer moves 1 step, fast pointer moves 2 steps. If they meet, there's a cycle!
         </p>
       </div>
-      
-      <div className="mb-6 flex gap-4 items-center flex-wrap">
-        <div className="flex gap-2 items-center flex-1 min-w-[200px]">
-          <label className="text-sm text-slate-400">Node values:</label>
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onBlur={initializeSteps}
-            onKeyDown={(e) => e.key === 'Enter' && initializeSteps()}
-            className="flex-1 px-3 py-2 bg-slate-800 rounded-lg border border-slate-600 focus:border-blue-500 outline-none font-mono"
-          />
-        </div>
-        <div className="flex gap-2 items-center">
-          <label className="text-sm text-slate-400">Cycle at index (-1 for no cycle):</label>
-          <input
-            type="number"
-            value={cycleInput}
-            onChange={(e) => setCycleInput(e.target.value)}
-            onBlur={initializeSteps}
-            onKeyDown={(e) => e.key === 'Enter' && initializeSteps()}
-            className="w-20 px-3 py-2 bg-slate-800 rounded-lg border border-slate-600 focus:border-blue-500 outline-none font-mono"
-            min="-1"
-          />
+
+      {/* Preset Toggles */}
+      <div className="mb-6">
+        <div className="flex flex-wrap gap-2">
+          {PRESETS.map((preset, i) => (
+            <button
+              key={i}
+              onClick={() => handlePreset(i)}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                selectedPreset === i
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-slate-700 hover:bg-slate-600 text-slate-300'
+              }`}
+            >
+              {preset.label}
+            </button>
+          ))}
         </div>
       </div>
-      
-      {/* Linked list visualization */}
-      <div className="bg-slate-800 rounded-lg p-6 mb-6">
-        <h3 className="text-sm font-semibold text-slate-400 mb-4">Linked List</h3>
-        <div className="relative" style={{ height: '300px' }}>
-          <svg className="absolute inset-0 w-full h-full">
-            {/* Draw arrows between nodes */}
-            {currentStepData?.nodes.map((_, i) => {
-              if (i >= currentStepData.nodes.length - 1) return null;
-              const from = getNodePosition(i, currentStepData.nodes.length);
-              const to = getNodePosition(i + 1, currentStepData.nodes.length);
-              return (
-                <line
-                  key={`arrow-${i}`}
-                  x1={from.x + 25}
-                  y1={from.y}
-                  x2={to.x - 25}
-                  y2={to.y}
-                  stroke="#64748b"
-                  strokeWidth="2"
-                  markerEnd="url(#arrowhead)"
-                />
-              );
-            })}
-            
-            {/* Draw cycle arrow if present */}
-            {hasCycle && currentStepData && (
-              <path
-                d={(() => {
-                  const last = getNodePosition(currentStepData.nodes.length - 1, currentStepData.nodes.length);
-                  const cycleTarget = getNodePosition(currentStepData.cycleStart, currentStepData.nodes.length);
-                  // Draw a curved arrow going down and back
-                  return `M ${last.x} ${last.y + 25} 
-                          Q ${last.x + 50} ${last.y + 100} ${(last.x + cycleTarget.x) / 2} ${last.y + 120}
-                          Q ${cycleTarget.x - 50} ${cycleTarget.y + 100} ${cycleTarget.x} ${cycleTarget.y + 25}`;
-                })()}
-                fill="none"
-                stroke="#f59e0b"
-                strokeWidth="2"
-                strokeDasharray="5,5"
-                markerEnd="url(#arrowhead-cycle)"
-              />
-            )}
-            
+
+      {/* Visualization */}
+      <div className="bg-slate-800 rounded-lg p-6 mb-6 overflow-x-auto">
+        <h3 className="text-sm font-semibold text-slate-400 mb-4">
+          {cycleStart !== null ? `Linked List with Cycle (connects to index ${cycleStart})` : 'Linked List (No Cycle)'}
+        </h3>
+        <div className="flex justify-center">
+          <svg width="750" height="280" className="overflow-visible">
             {/* Arrow marker definitions */}
             <defs>
               <marker
@@ -269,118 +485,52 @@ export function LinkedListCycleVisualizer() {
                 refY="3.5"
                 orient="auto"
               >
-                <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b" />
+                <polygon points="0 0, 10 3.5, 0 7" fill="#f97316" />
               </marker>
             </defs>
-          </svg>
-          
-          {/* Render nodes */}
-          {currentStepData?.nodes.map((val, i) => {
-            const pos = getNodePosition(i, currentStepData.nodes.length);
-            const isSlow = i === currentStepData.slow;
-            const isFast = i === currentStepData.fast;
-            const isCycleStart = i === currentStepData.cycleStart;
-            const isMeetingPoint = isSlow && isFast && currentStepData.type === 'meet';
             
-            return (
-              <motion.div
-                key={i}
-                className="absolute flex flex-col items-center"
-                style={{
-                  left: pos.x - 25,
-                  top: pos.y - 25,
-                }}
-                animate={{
-                  scale: isSlow || isFast ? 1.2 : 1,
-                }}
-              >
-                {/* Pointer labels */}
-                <div className="absolute -top-8 flex gap-1">
-                  {isSlow && (
-                    <motion.span
-                      initial={{ y: -5, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      className="px-2 py-0.5 bg-green-500 text-black text-xs font-bold rounded"
-                    >
-                      🐢 Slow
-                    </motion.span>
-                  )}
-                  {isFast && (
-                    <motion.span
-                      initial={{ y: -5, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      className="px-2 py-0.5 bg-orange-500 text-black text-xs font-bold rounded"
-                    >
-                      🐇 Fast
-                    </motion.span>
-                  )}
-                </div>
-                
-                {/* Node */}
-                <motion.div
-                  className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg border-2 ${
-                    isMeetingPoint ? 'bg-purple-500 border-purple-300' :
-                    isSlow && isFast ? 'bg-purple-500 border-purple-300' :
-                    isSlow ? 'bg-green-500 border-green-300' :
-                    isFast ? 'bg-orange-500 border-orange-300' :
-                    isCycleStart ? 'bg-yellow-500/30 border-yellow-500' :
-                    'bg-slate-700 border-slate-600'
-                  }`}
-                  animate={{
-                    boxShadow: isMeetingPoint 
-                      ? '0 0 20px rgba(168, 85, 247, 0.5)' 
-                      : 'none',
-                  }}
-                >
-                  {val}
-                </motion.div>
-                
-                <span className="text-xs text-slate-500 mt-1">idx: {i}</span>
-                {isCycleStart && (
-                  <span className="text-xs text-yellow-500">↩ cycle</span>
-                )}
-              </motion.div>
-            );
-          })}
+            {/* Render arrows first (below nodes) */}
+            {renderArrows()}
+            
+            {/* Render nodes */}
+            {nodes.map((node) => renderNode(node, nodes.length))}
+          </svg>
+        </div>
+        
+        {/* Legend */}
+        <div className="flex gap-6 justify-center mt-6 text-sm flex-wrap">
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 rounded-full bg-green-500"></div>
+            <span className="text-slate-400">Slow (1 step)</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 rounded-full bg-blue-500"></div>
+            <span className="text-slate-400">Fast (2 steps)</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 rounded-full bg-yellow-500"></div>
+            <span className="text-slate-400">Meeting Point</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 rounded-full bg-indigo-500"></div>
+            <span className="text-slate-400">Cycle Portion</span>
+          </div>
         </div>
       </div>
-      
-      {/* Legend */}
-      <div className="bg-slate-800 rounded-lg p-4 mb-6">
-        <div className="flex gap-6 justify-center flex-wrap">
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-full bg-green-500" />
-            <span className="text-sm">🐢 Slow (1 step)</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-full bg-orange-500" />
-            <span className="text-sm">🐇 Fast (2 steps)</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-full bg-purple-500" />
-            <span className="text-sm">Meeting point</span>
-          </div>
-          {hasCycle && (
-            <div className="flex items-center gap-2">
-              <div className="w-6 h-1 bg-yellow-500" style={{ borderStyle: 'dashed' }} />
-              <span className="text-sm">Cycle link</span>
-            </div>
-          )}
-        </div>
-      </div>
-      
+
       {/* Status */}
       <div className="bg-slate-800 rounded-lg p-4 mb-6">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <span className={`w-3 h-3 rounded-full ${
-            currentStepData?.type === 'done' || currentStepData?.type === 'meet' ? 'bg-green-500' :
-            currentStepData?.type === 'no-cycle' ? 'bg-blue-500' :
-            'bg-yellow-500'
+            step?.type === 'cycle-detected' ? 'bg-yellow-500 animate-pulse' :
+            step?.type === 'no-cycle' ? 'bg-green-500' :
+            step?.type === 'move' ? 'bg-blue-500' :
+            'bg-slate-500'
           }`} />
-          <span className="text-lg">{currentStepData?.description || 'Ready'}</span>
+          <span className="text-lg">{step?.description || 'Ready to start'}</span>
         </div>
       </div>
-      
+
       <Controls
         isPlaying={isPlaying}
         onPlayPause={() => setIsPlaying(!isPlaying)}
@@ -394,9 +544,10 @@ export function LinkedListCycleVisualizer() {
         canStepBack={currentStep > 0}
         canStepForward={currentStep < steps.length - 1}
       />
-      
+
+      {/* Java Code */}
       <div className="mt-6 bg-slate-800 rounded-lg p-4">
-        <h3 className="text-sm font-semibold text-slate-400 mb-2">Java Code</h3>
+        <h3 className="text-sm font-semibold text-slate-400 mb-2">Java Code - Floyd's Cycle Detection</h3>
         <pre className="text-sm font-mono text-slate-300 overflow-x-auto">
 {`public boolean hasCycle(ListNode head) {
     if (head == null || head.next == null) {
@@ -407,29 +558,41 @@ export function LinkedListCycleVisualizer() {
     ListNode fast = head;
     
     while (fast != null && fast.next != null) {
-        slow = slow.next;         // Move 1 step
-        fast = fast.next.next;    // Move 2 steps
+        slow = slow.next;        // Move slow 1 step
+        fast = fast.next.next;   // Move fast 2 steps
         
-        if (slow == fast) {       // They meet = cycle!
-            return true;
+        if (slow == fast) {
+            return true;  // Cycle detected!
         }
     }
     
-    return false;  // Fast hit null = no cycle
-}`}
+    return false;  // No cycle - fast reached end
+}
+// Time: O(n)  |  Space: O(1)`}
         </pre>
       </div>
-      
+
+      {/* Key Insights */}
       <div className="mt-4 bg-slate-800 rounded-lg p-4">
-        <h3 className="text-sm font-semibold text-slate-400 mb-2">Why Does This Work?</h3>
-        <p className="text-slate-300">
-          If there's a cycle, the fast pointer will eventually "lap" the slow pointer 
-          inside the cycle. Think of it like two runners on a circular track - the faster 
-          one will catch up. If there's no cycle, fast will hit null first.
-        </p>
-        <p className="text-slate-300 mt-2">
-          <strong>Time:</strong> O(n) | <strong>Space:</strong> O(1)
-        </p>
+        <h3 className="text-sm font-semibold text-slate-400 mb-2">🎯 Key Algorithm Insights</h3>
+        <div className="text-slate-300 text-sm space-y-2">
+          <div><strong>Why does this work?</strong> If there's a cycle, fast will eventually "lap" slow inside the cycle. Think of it like two runners on a circular track.</div>
+          <div><strong>Why 2 steps?</strong> Fast moving 2 steps means it gains 1 node per iteration on slow. They're guaranteed to meet within one cycle loop.</div>
+          <div><strong>No cycle case:</strong> If fast reaches null, the list has an end, therefore no cycle.</div>
+          <div><strong>Follow-up:</strong> To find where the cycle starts, reset one pointer to head and move both 1 step at a time - they meet at the cycle start!</div>
+        </div>
+      </div>
+
+      {/* Interview Tips */}
+      <div className="mt-4 bg-slate-800 rounded-lg p-4">
+        <h3 className="text-sm font-semibold text-slate-400 mb-2">💡 Interview Tips</h3>
+        <ul className="text-slate-300 text-sm space-y-1">
+          <li>• <strong>Edge cases:</strong> Empty list, single node, single node pointing to itself</li>
+          <li>• <strong>Don't use extra space:</strong> HashSet works but uses O(n) space - Floyd's is O(1)</li>
+          <li>• <strong>Common follow-up:</strong> "Find where the cycle begins" (LeetCode 142)</li>
+          <li>• <strong>Visualization tip:</strong> Draw the cycle clearly and trace both pointers</li>
+          <li>• <strong>Mathematical proof:</strong> After they meet, distance from head to cycle start = distance from meeting point to cycle start</li>
+        </ul>
       </div>
     </div>
   );

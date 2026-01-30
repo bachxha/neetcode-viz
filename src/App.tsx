@@ -49,6 +49,7 @@ import { LRUCacheVisualizer } from './visualizers/LRUCacheVisualizer';
 import { AddTwoNumbersVisualizer } from './visualizers/AddTwoNumbersVisualizer';
 import { RemoveNthNodeFromEndVisualizer } from './visualizers/RemoveNthNodeFromEndVisualizer';
 import { ReorderListVisualizer } from './visualizers/ReorderListVisualizer';
+import { LinkedListCycleVisualizer } from './visualizers/LinkedListCycleVisualizer';
 import { PatternsPage } from './patterns/PatternsPage';
 import { PatternDetailPage } from './pages/PatternDetailPage';
 import { patterns } from './data/patterns';
@@ -405,6 +406,8 @@ function Visualizer({ problemId }: { problemId: string }) {
       return <MergeTwoSortedListsVisualizer />;
     case 'reorder-list':
       return <ReorderListVisualizer />;
+    case 'linked-list-cycle':
+      return <LinkedListCycleVisualizer />;
     case 'remove-nth-node-from-end':
       return <RemoveNthNodeFromEndVisualizer />;
     case 'add-two-numbers':
