@@ -28,6 +28,7 @@ import { RottingOrangesVisualizer } from './visualizers/RottingOrangesVisualizer
 import { SurroundedRegionsVisualizer } from './visualizers/SurroundedRegionsVisualizer';
 import { ValidParenthesesVisualizer } from './visualizers/ValidParenthesesVisualizer';
 import { KthLargestVisualizer } from './visualizers/KthLargestVisualizer';
+import { FindMedianFromDataStreamVisualizer } from './visualizers/FindMedianFromDataStreamVisualizer';
 import { BinaryTreeLevelOrderVisualizer } from './visualizers/BinaryTreeLevelOrderVisualizer';
 import { InvertBinaryTreeVisualizer } from './visualizers/InvertBinaryTreeVisualizer';
 import { MaximumDepthOfBinaryTreeVisualizer } from './visualizers/MaximumDepthOfBinaryTreeVisualizer';
@@ -398,6 +399,8 @@ function Visualizer({ problemId }: { problemId: string }) {
     // Heap / Priority Queue
     case 'kth-largest-element-in-stream':
       return <KthLargestVisualizer />;
+    case 'find-median-from-data-stream':
+      return <FindMedianFromDataStreamVisualizer />;
     // Trees
     case 'binary-tree-level-order-traversal':
       return <BinaryTreeLevelOrderVisualizer />;

@@ -115,7 +115,7 @@ export const problems: Problem[] = [
   { id: 'kth-largest-element-in-array', title: 'Kth Largest Element in an Array', category: 'Heap / Priority Queue', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/kth-largest-element-in-an-array/', hasVisualization: false },
   { id: 'task-scheduler', title: 'Task Scheduler', category: 'Heap / Priority Queue', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/task-scheduler/', hasVisualization: false },
   { id: 'design-twitter', title: 'Design Twitter', category: 'Heap / Priority Queue', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/design-twitter/', hasVisualization: false },
-  { id: 'find-median-from-data-stream', title: 'Find Median from Data Stream', category: 'Heap / Priority Queue', difficulty: 'Hard', leetcodeUrl: 'https://leetcode.com/problems/find-median-from-data-stream/', hasVisualization: false },
+  { id: 'find-median-from-data-stream', title: 'Find Median from Data Stream', category: 'Heap / Priority Queue', difficulty: 'Hard', leetcodeUrl: 'https://leetcode.com/problems/find-median-from-data-stream/', hasVisualization: true },
 
   // Backtracking
   { id: 'subsets', title: 'Subsets', category: 'Backtracking', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/subsets/', hasVisualization: true },
