@@ -162,7 +162,7 @@ export const problems: Problem[] = [
   { id: 'coin-change', title: 'Coin Change', category: '1-D Dynamic Programming', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/coin-change/', hasVisualization: true },
   { id: 'maximum-product-subarray', title: 'Maximum Product Subarray', category: '1-D Dynamic Programming', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/maximum-product-subarray/', hasVisualization: false },
   { id: 'word-break', title: 'Word Break', category: '1-D Dynamic Programming', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/word-break/', hasVisualization: false },
-  { id: 'longest-increasing-subsequence', title: 'Longest Increasing Subsequence', category: '1-D Dynamic Programming', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/longest-increasing-subsequence/', hasVisualization: false },
+  { id: 'longest-increasing-subsequence', title: 'Longest Increasing Subsequence', category: '1-D Dynamic Programming', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/longest-increasing-subsequence/', hasVisualization: true },
   { id: 'partition-equal-subset-sum', title: 'Partition Equal Subset Sum', category: '1-D Dynamic Programming', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/partition-equal-subset-sum/', hasVisualization: false },
 
   // 2-D Dynamic Programming

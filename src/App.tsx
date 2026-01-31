@@ -48,6 +48,7 @@ import { DailyTemperaturesVisualizer } from './visualizers/DailyTemperaturesVisu
 import { MinStackVisualizer } from './visualizers/MinStackVisualizer';
 import { EvaluateReversePolishNotationVisualizer } from './visualizers/EvaluateReversePolishNotationVisualizer';
 import { LargestRectangleInHistogramVisualizer } from './visualizers/LargestRectangleInHistogramVisualizer';
+import { LongestIncreasingSubsequenceVisualizer } from './visualizers/LongestIncreasingSubsequenceVisualizer';
 import { ThreeSumVisualizer } from './visualizers/ThreeSumVisualizer';
 import { LRUCacheVisualizer } from './visualizers/LRUCacheVisualizer';
 import { AddTwoNumbersVisualizer } from './visualizers/AddTwoNumbersVisualizer';
@@ -335,6 +336,8 @@ function Visualizer({ problemId }: { problemId: string }) {
       return <ClimbingStairsVisualizer />;
     case 'coin-change':
       return <CoinChangeVisualizer />;
+    case 'longest-increasing-subsequence':
+      return <LongestIncreasingSubsequenceVisualizer />;
     // Graphs
     case 'number-of-islands':
       return <NumberOfIslandsVisualizer />;
