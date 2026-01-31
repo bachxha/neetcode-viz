@@ -51,6 +51,7 @@ import { AddTwoNumbersVisualizer } from './visualizers/AddTwoNumbersVisualizer';
 import { RemoveNthNodeFromEndVisualizer } from './visualizers/RemoveNthNodeFromEndVisualizer';
 import { ReorderListVisualizer } from './visualizers/ReorderListVisualizer';
 import { LinkedListCycleVisualizer } from './visualizers/LinkedListCycleVisualizer';
+import { FindTheDuplicateNumberVisualizer } from './visualizers/FindTheDuplicateNumberVisualizer';
 import { PatternsPage } from './patterns/PatternsPage';
 import { PatternDetailPage } from './pages/PatternDetailPage';
 import { patterns } from './data/patterns';
@@ -415,6 +416,8 @@ function Visualizer({ problemId }: { problemId: string }) {
       return <RemoveNthNodeFromEndVisualizer />;
     case 'add-two-numbers':
       return <AddTwoNumbersVisualizer />;
+    case 'find-the-duplicate-number':
+      return <FindTheDuplicateNumberVisualizer />;
     case 'lru-cache':
       return <LRUCacheVisualizer />;
     // Sliding Window
