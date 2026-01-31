@@ -23,6 +23,7 @@ import { KokoEatingBananasVisualizer } from './visualizers/KokoEatingBananasVisu
 import { NumberOfIslandsVisualizer } from './visualizers/NumberOfIslandsVisualizer';
 import { PacificAtlanticVisualizer } from './visualizers/PacificAtlanticVisualizer';
 import { RottingOrangesVisualizer } from './visualizers/RottingOrangesVisualizer';
+import { SurroundedRegionsVisualizer } from './visualizers/SurroundedRegionsVisualizer';
 import { ValidParenthesesVisualizer } from './visualizers/ValidParenthesesVisualizer';
 import { KthLargestVisualizer } from './visualizers/KthLargestVisualizer';
 import { BinaryTreeLevelOrderVisualizer } from './visualizers/BinaryTreeLevelOrderVisualizer';
@@ -341,6 +342,8 @@ function Visualizer({ problemId }: { problemId: string }) {
       return <PacificAtlanticVisualizer />;
     case 'rotting-oranges':
       return <RottingOrangesVisualizer />;
+    case 'surrounded-regions':
+      return <SurroundedRegionsVisualizer />;
     // Intervals
     case 'merge-intervals':
       return <MergeIntervalsVisualizer />;
