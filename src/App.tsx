@@ -45,6 +45,7 @@ import { CourseScheduleVisualizer } from './visualizers/CourseScheduleVisualizer
 import { DailyTemperaturesVisualizer } from './visualizers/DailyTemperaturesVisualizer';
 import { MinStackVisualizer } from './visualizers/MinStackVisualizer';
 import { EvaluateReversePolishNotationVisualizer } from './visualizers/EvaluateReversePolishNotationVisualizer';
+import { LargestRectangleInHistogramVisualizer } from './visualizers/LargestRectangleInHistogramVisualizer';
 import { ThreeSumVisualizer } from './visualizers/ThreeSumVisualizer';
 import { LRUCacheVisualizer } from './visualizers/LRUCacheVisualizer';
 import { AddTwoNumbersVisualizer } from './visualizers/AddTwoNumbersVisualizer';
@@ -372,6 +373,8 @@ function Visualizer({ problemId }: { problemId: string }) {
       return <MinStackVisualizer />;
     case 'evaluate-reverse-polish-notation':
       return <EvaluateReversePolishNotationVisualizer />;
+    case 'largest-rectangle-in-histogram':
+      return <LargestRectangleInHistogramVisualizer />;
     // Binary Search
     case 'binary-search':
       return <BinarySearchVisualizer />;

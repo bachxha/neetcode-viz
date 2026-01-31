@@ -62,7 +62,7 @@ export const problems: Problem[] = [
   { id: 'generate-parentheses', title: 'Generate Parentheses', category: 'Stack', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/generate-parentheses/', hasVisualization: true },
   { id: 'daily-temperatures', title: 'Daily Temperatures', category: 'Stack', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/daily-temperatures/', hasVisualization: true },
   { id: 'car-fleet', title: 'Car Fleet', category: 'Stack', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/car-fleet/', hasVisualization: false },
-  { id: 'largest-rectangle-in-histogram', title: 'Largest Rectangle in Histogram', category: 'Stack', difficulty: 'Hard', leetcodeUrl: 'https://leetcode.com/problems/largest-rectangle-in-histogram/', hasVisualization: false },
+  { id: 'largest-rectangle-in-histogram', title: 'Largest Rectangle in Histogram', category: 'Stack', difficulty: 'Hard', leetcodeUrl: 'https://leetcode.com/problems/largest-rectangle-in-histogram/', hasVisualization: true },
 
   // Binary Search
   { id: 'binary-search', title: 'Binary Search', category: 'Binary Search', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/binary-search/', hasVisualization: true },
