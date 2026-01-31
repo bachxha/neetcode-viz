@@ -37,6 +37,7 @@ import { BinaryTreeRightSideViewVisualizer } from './visualizers/BinaryTreeRight
 import { SubtreeOfAnotherTreeVisualizer } from './visualizers/SubtreeOfAnotherTreeVisualizer';
 import { SameTreeVisualizer } from './visualizers/SameTreeVisualizer';
 import { CountGoodNodesInBinaryTreeVisualizer } from './visualizers/CountGoodNodesInBinaryTreeVisualizer';
+import { KthSmallestElementInBSTVisualizer } from './visualizers/KthSmallestElementInBSTVisualizer';
 import { ReverseLinkedListVisualizer } from './visualizers/ReverseLinkedListVisualizer';
 import { MergeTwoSortedListsVisualizer } from './visualizers/MergeTwoSortedListsVisualizer';
 import { BestTimeToBuyAndSellStockVisualizer } from './visualizers/BestTimeToBuyAndSellStockVisualizer';
@@ -403,6 +404,8 @@ function Visualizer({ problemId }: { problemId: string }) {
       return <MaximumDepthOfBinaryTreeVisualizer />;
     case 'validate-bst':
       return <ValidateBinarySearchTreeVisualizer />;
+    case 'kth-smallest-in-bst':
+      return <KthSmallestElementInBSTVisualizer />;
     case 'lowest-common-ancestor-bst':
       return <LowestCommonAncestorBSTVisualizer />;
     case 'same-tree':
