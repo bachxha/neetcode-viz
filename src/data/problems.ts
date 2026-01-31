@@ -181,7 +181,7 @@ export const problems: Problem[] = [
 
   // Greedy
   { id: 'maximum-subarray', title: 'Maximum Subarray', category: 'Greedy', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/maximum-subarray/', hasVisualization: false },
-  { id: 'jump-game', title: 'Jump Game', category: 'Greedy', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/jump-game/', hasVisualization: false },
+  { id: 'jump-game', title: 'Jump Game', category: 'Greedy', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/jump-game/', hasVisualization: true },
   { id: 'jump-game-ii', title: 'Jump Game II', category: 'Greedy', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/jump-game-ii/', hasVisualization: false },
   { id: 'gas-station', title: 'Gas Station', category: 'Greedy', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/gas-station/', hasVisualization: false },
   { id: 'hand-of-straights', title: 'Hand of Straights', category: 'Greedy', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/hand-of-straights/', hasVisualization: false },

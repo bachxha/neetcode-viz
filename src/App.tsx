@@ -59,6 +59,7 @@ import { RemoveNthNodeFromEndVisualizer } from './visualizers/RemoveNthNodeFromE
 import { ReorderListVisualizer } from './visualizers/ReorderListVisualizer';
 import { LinkedListCycleVisualizer } from './visualizers/LinkedListCycleVisualizer';
 import { FindTheDuplicateNumberVisualizer } from './visualizers/FindTheDuplicateNumberVisualizer';
+import { JumpGameVisualizer } from './visualizers/JumpGameVisualizer';
 import { PatternsPage } from './patterns/PatternsPage';
 import { PatternDetailPage } from './pages/PatternDetailPage';
 import { patterns } from './data/patterns';
@@ -446,6 +447,9 @@ function Visualizer({ problemId }: { problemId: string }) {
       return <LongestSubstringWithoutRepeatingVisualizer />;
     case 'minimum-window-substring':
       return <MinimumWindowSubstringVisualizer />;
+    // Greedy
+    case 'jump-game':
+      return <JumpGameVisualizer />;
     default:
       return (
         <div className="p-8 text-center">
