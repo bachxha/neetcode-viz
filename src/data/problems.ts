@@ -126,6 +126,7 @@ export const problems: Problem[] = [
   { id: 'word-search', title: 'Word Search', category: 'Backtracking', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/word-search/', hasVisualization: true },
   { id: 'palindrome-partitioning', title: 'Palindrome Partitioning', category: 'Backtracking', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/palindrome-partitioning/', hasVisualization: true },
   { id: 'letter-combinations', title: 'Letter Combinations of a Phone Number', category: 'Backtracking', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/letter-combinations-of-a-phone-number/', hasVisualization: true },
+  { id: 'sudoku-solver', title: 'Sudoku Solver', category: 'Backtracking', difficulty: 'Hard', leetcodeUrl: 'https://leetcode.com/problems/sudoku-solver/', hasVisualization: true },
   { id: 'n-queens', title: 'N-Queens', category: 'Backtracking', difficulty: 'Hard', leetcodeUrl: 'https://leetcode.com/problems/n-queens/', hasVisualization: true },
 
   // Graphs

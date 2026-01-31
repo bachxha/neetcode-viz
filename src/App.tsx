@@ -12,6 +12,7 @@ import { LetterCombinationsVisualizer } from './visualizers/LetterCombinationsVi
 import { SubsetsIIVisualizer } from './visualizers/SubsetsIIVisualizer';
 import { CombinationSumIIVisualizer } from './visualizers/CombinationSumIIVisualizer';
 import { PalindromePartitioningVisualizer } from './visualizers/PalindromePartitioningVisualizer';
+import { SudokuSolverVisualizer } from './visualizers/SudokuSolverVisualizer';
 import { GenerateParenthesesVisualizer } from './visualizers/GenerateParenthesesVisualizer';
 import { ClimbingStairsVisualizer } from './visualizers/ClimbingStairsVisualizer';
 import { CoinChangeVisualizer } from './visualizers/CoinChangeVisualizer';
@@ -329,6 +330,8 @@ function Visualizer({ problemId }: { problemId: string }) {
       return <PalindromePartitioningVisualizer />;
     case 'letter-combinations':
       return <LetterCombinationsVisualizer />;
+    case 'sudoku-solver':
+      return <SudokuSolverVisualizer />;
     case 'n-queens':
       return <NQueensVisualizer />;
     // 1-D Dynamic Programming
