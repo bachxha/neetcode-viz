@@ -43,6 +43,7 @@ import { ReverseLinkedListVisualizer } from './visualizers/ReverseLinkedListVisu
 import { MergeTwoSortedListsVisualizer } from './visualizers/MergeTwoSortedListsVisualizer';
 import { BestTimeToBuyAndSellStockVisualizer } from './visualizers/BestTimeToBuyAndSellStockVisualizer';
 import { LongestSubstringWithoutRepeatingVisualizer } from './visualizers/LongestSubstringWithoutRepeatingVisualizer';
+import { MinimumWindowSubstringVisualizer } from './visualizers/MinimumWindowSubstringVisualizer';
 import { CloneGraphVisualizer } from './visualizers/CloneGraphVisualizer';
 import { CourseScheduleVisualizer } from './visualizers/CourseScheduleVisualizer';
 import { DailyTemperaturesVisualizer } from './visualizers/DailyTemperaturesVisualizer';
@@ -440,6 +441,8 @@ function Visualizer({ problemId }: { problemId: string }) {
       return <BestTimeToBuyAndSellStockVisualizer />;
     case 'longest-substring-without-repeating':
       return <LongestSubstringWithoutRepeatingVisualizer />;
+    case 'minimum-window-substring':
+      return <MinimumWindowSubstringVisualizer />;
     default:
       return (
         <div className="p-8 text-center">

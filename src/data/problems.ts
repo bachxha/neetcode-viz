@@ -52,7 +52,7 @@ export const problems: Problem[] = [
   { id: 'longest-substring-without-repeating', title: 'Longest Substring Without Repeating Characters', category: 'Sliding Window', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/longest-substring-without-repeating-characters/', hasVisualization: true },
   { id: 'longest-repeating-character-replacement', title: 'Longest Repeating Character Replacement', category: 'Sliding Window', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/longest-repeating-character-replacement/', hasVisualization: false },
   { id: 'permutation-in-string', title: 'Permutation in String', category: 'Sliding Window', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/permutation-in-string/', hasVisualization: false },
-  { id: 'minimum-window-substring', title: 'Minimum Window Substring', category: 'Sliding Window', difficulty: 'Hard', leetcodeUrl: 'https://leetcode.com/problems/minimum-window-substring/', hasVisualization: false },
+  { id: 'minimum-window-substring', title: 'Minimum Window Substring', category: 'Sliding Window', difficulty: 'Hard', leetcodeUrl: 'https://leetcode.com/problems/minimum-window-substring/', hasVisualization: true },
   { id: 'sliding-window-maximum', title: 'Sliding Window Maximum', category: 'Sliding Window', difficulty: 'Hard', leetcodeUrl: 'https://leetcode.com/problems/sliding-window-maximum/', hasVisualization: false },
 
   // Stack
