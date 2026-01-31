@@ -193,7 +193,7 @@ export const problems: Problem[] = [
   { id: 'insert-interval', title: 'Insert Interval', category: 'Intervals', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/insert-interval/', hasVisualization: true },
   { id: 'merge-intervals', title: 'Merge Intervals', category: 'Intervals', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/merge-intervals/', hasVisualization: true },
   { id: 'non-overlapping-intervals', title: 'Non-overlapping Intervals', category: 'Intervals', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/non-overlapping-intervals/', hasVisualization: true },
-  { id: 'meeting-rooms', title: 'Meeting Rooms', category: 'Intervals', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/meeting-rooms/', hasVisualization: false },
+  { id: 'meeting-rooms', title: 'Meeting Rooms', category: 'Intervals', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/meeting-rooms/', hasVisualization: true },
   { id: 'meeting-rooms-ii', title: 'Meeting Rooms II', category: 'Intervals', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/meeting-rooms-ii/', hasVisualization: true },
   { id: 'minimum-interval', title: 'Minimum Interval to Include Each Query', category: 'Intervals', difficulty: 'Hard', leetcodeUrl: 'https://leetcode.com/problems/minimum-interval-to-include-each-query/', hasVisualization: false },
 

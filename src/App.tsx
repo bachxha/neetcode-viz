@@ -3,6 +3,7 @@ import { SubsetsVisualizer } from './visualizers/SubsetsVisualizer';
 import { MergeIntervalsVisualizer } from './visualizers/MergeIntervalsVisualizer';
 import { NQueensVisualizer } from './visualizers/NQueensVisualizer';
 import { MeetingRoomsIIVisualizer } from './visualizers/MeetingRoomsIIVisualizer';
+import { MeetingRoomsVisualizer } from './visualizers/MeetingRoomsVisualizer';
 import { InsertIntervalVisualizer } from './visualizers/InsertIntervalVisualizer';
 import { NonOverlappingIntervalsVisualizer } from './visualizers/NonOverlappingIntervalsVisualizer';
 import { CombinationSumVisualizer } from './visualizers/CombinationSumVisualizer';
@@ -364,6 +365,8 @@ function Visualizer({ problemId }: { problemId: string }) {
       return <InsertIntervalVisualizer />;
     case 'non-overlapping-intervals':
       return <NonOverlappingIntervalsVisualizer />;
+    case 'meeting-rooms':
+      return <MeetingRoomsVisualizer />;
     case 'meeting-rooms-ii':
       return <MeetingRoomsIIVisualizer />;
     // Two Pointers
