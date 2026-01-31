@@ -66,7 +66,7 @@ export const problems: Problem[] = [
 
   // Binary Search
   { id: 'binary-search', title: 'Binary Search', category: 'Binary Search', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/binary-search/', hasVisualization: true },
-  { id: 'search-2d-matrix', title: 'Search a 2D Matrix', category: 'Binary Search', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/search-a-2d-matrix/', hasVisualization: false },
+  { id: 'search-2d-matrix', title: 'Search a 2D Matrix', category: 'Binary Search', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/search-a-2d-matrix/', hasVisualization: true },
   { id: 'koko-eating-bananas', title: 'Koko Eating Bananas', category: 'Binary Search', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/koko-eating-bananas/', hasVisualization: true },
   { id: 'find-minimum-in-rotated-sorted-array', title: 'Find Minimum in Rotated Sorted Array', category: 'Binary Search', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/', hasVisualization: true },
   { id: 'search-in-rotated-sorted-array', title: 'Search in Rotated Sorted Array', category: 'Binary Search', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/search-in-rotated-sorted-array/', hasVisualization: true },
