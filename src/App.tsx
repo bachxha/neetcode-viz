@@ -48,6 +48,7 @@ import { LongestSubstringWithoutRepeatingVisualizer } from './visualizers/Longes
 import { MinimumWindowSubstringVisualizer } from './visualizers/MinimumWindowSubstringVisualizer';
 import { CloneGraphVisualizer } from './visualizers/CloneGraphVisualizer';
 import { CourseScheduleVisualizer } from './visualizers/CourseScheduleVisualizer';
+import { WordLadderVisualizer } from './visualizers/WordLadderVisualizer';
 import { ImplementTrieVisualizer } from './visualizers/ImplementTrieVisualizer';
 import { DailyTemperaturesVisualizer } from './visualizers/DailyTemperaturesVisualizer';
 import { MinStackVisualizer } from './visualizers/MinStackVisualizer';
@@ -365,6 +366,8 @@ function Visualizer({ problemId }: { problemId: string }) {
       return <RottingOrangesVisualizer />;
     case 'surrounded-regions':
       return <SurroundedRegionsVisualizer />;
+    case 'word-ladder':
+      return <WordLadderVisualizer />;
     // Intervals
     case 'merge-intervals':
       return <MergeIntervalsVisualizer />;

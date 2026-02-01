@@ -142,7 +142,7 @@ export const problems: Problem[] = [
   { id: 'graph-valid-tree', title: 'Graph Valid Tree', category: 'Graphs', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/graph-valid-tree/', hasVisualization: false },
   { id: 'connected-components', title: 'Number of Connected Components', category: 'Graphs', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/', hasVisualization: false },
   { id: 'redundant-connection', title: 'Redundant Connection', category: 'Graphs', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/redundant-connection/', hasVisualization: false },
-  { id: 'word-ladder', title: 'Word Ladder', category: 'Graphs', difficulty: 'Hard', leetcodeUrl: 'https://leetcode.com/problems/word-ladder/', hasVisualization: false },
+  { id: 'word-ladder', title: 'Word Ladder', category: 'Graphs', difficulty: 'Hard', leetcodeUrl: 'https://leetcode.com/problems/word-ladder/', hasVisualization: true },
 
   // Advanced Graphs
   { id: 'reconstruct-itinerary', title: 'Reconstruct Itinerary', category: 'Advanced Graphs', difficulty: 'Hard', leetcodeUrl: 'https://leetcode.com/problems/reconstruct-itinerary/', hasVisualization: false },
