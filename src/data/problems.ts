@@ -104,7 +104,7 @@ export const problems: Problem[] = [
   { id: 'serialize-deserialize-binary-tree', title: 'Serialize and Deserialize Binary Tree', category: 'Trees', difficulty: 'Hard', leetcodeUrl: 'https://leetcode.com/problems/serialize-and-deserialize-binary-tree/', hasVisualization: false },
 
   // Tries
-  { id: 'implement-trie', title: 'Implement Trie (Prefix Tree)', category: 'Tries', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/implement-trie-prefix-tree/', hasVisualization: false },
+  { id: 'implement-trie', title: 'Implement Trie (Prefix Tree)', category: 'Tries', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/implement-trie-prefix-tree/', hasVisualization: true },
   { id: 'design-add-search-words', title: 'Design Add and Search Words Data Structure', category: 'Tries', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/design-add-and-search-words-data-structure/', hasVisualization: false },
   { id: 'word-search-ii', title: 'Word Search II', category: 'Tries', difficulty: 'Hard', leetcodeUrl: 'https://leetcode.com/problems/word-search-ii/', hasVisualization: false },
 
