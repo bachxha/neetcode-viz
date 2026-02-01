@@ -62,6 +62,7 @@ import { ReorderListVisualizer } from './visualizers/ReorderListVisualizer';
 import { LinkedListCycleVisualizer } from './visualizers/LinkedListCycleVisualizer';
 import { FindTheDuplicateNumberVisualizer } from './visualizers/FindTheDuplicateNumberVisualizer';
 import { JumpGameVisualizer } from './visualizers/JumpGameVisualizer';
+import { UniquePathsVisualizer } from './visualizers/UniquePathsVisualizer';
 import { PatternsPage } from './patterns/PatternsPage';
 import { PatternDetailPage } from './pages/PatternDetailPage';
 import { patterns } from './data/patterns';
@@ -346,6 +347,9 @@ function Visualizer({ problemId }: { problemId: string }) {
       return <CoinChangeVisualizer />;
     case 'longest-increasing-subsequence':
       return <LongestIncreasingSubsequenceVisualizer />;
+    // 2-D Dynamic Programming  
+    case 'unique-paths':
+      return <UniquePathsVisualizer />;
     // Graphs
     case 'number-of-islands':
       return <NumberOfIslandsVisualizer />;

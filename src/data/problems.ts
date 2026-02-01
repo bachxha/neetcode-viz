@@ -167,7 +167,7 @@ export const problems: Problem[] = [
   { id: 'partition-equal-subset-sum', title: 'Partition Equal Subset Sum', category: '1-D Dynamic Programming', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/partition-equal-subset-sum/', hasVisualization: false },
 
   // 2-D Dynamic Programming
-  { id: 'unique-paths', title: 'Unique Paths', category: '2-D Dynamic Programming', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/unique-paths/', hasVisualization: false },
+  { id: 'unique-paths', title: 'Unique Paths', category: '2-D Dynamic Programming', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/unique-paths/', hasVisualization: true },
   { id: 'longest-common-subsequence', title: 'Longest Common Subsequence', category: '2-D Dynamic Programming', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/longest-common-subsequence/', hasVisualization: false },
   { id: 'best-time-to-buy-sell-stock-with-cooldown', title: 'Best Time to Buy and Sell Stock with Cooldown', category: '2-D Dynamic Programming', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/', hasVisualization: false },
   { id: 'coin-change-ii', title: 'Coin Change II', category: '2-D Dynamic Programming', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/coin-change-ii/', hasVisualization: false },
