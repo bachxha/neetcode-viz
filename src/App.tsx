@@ -77,8 +77,9 @@ import { BugHunterPage } from './pages/BugHunterPage';
 import { CompanyPathsPage } from './pages/CompanyPathsPage';
 import { CompanyPathDetailPage } from './pages/CompanyPathDetailPage';
 import { ProgressTracker, ProgressBadge } from './components/ProgressTracker';
+import { PrepDashboard } from './components/PrepDashboard';
 import { problems, categories, type Problem, type Category } from './data/problems';
-import { ChevronRight, ChevronDown, ExternalLink, Play, Lock, Lightbulb, LayoutDashboard, Brain, Building2, Mic, Bug } from 'lucide-react';
+import { ChevronRight, ChevronDown, ExternalLink, Play, Lock, Lightbulb, LayoutDashboard, Brain, Building2, Mic, Bug, TrendingUp } from 'lucide-react';
 
 type View = 'home' | 'patterns' | 'dashboard' | 'trainer' | 'verbal-trainer' | 'bug-hunter' | 'company-paths' | string;
 
@@ -238,6 +239,14 @@ function HomePage({ onSelect }: { onSelect: (view: View) => void }) {
             <ChevronRight size={16} />
           </button>
           <button
+            onClick={() => onSelect('prep-stats')}
+            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-500/20 to-teal-500/20 border border-emerald-500/30 rounded-lg hover:border-emerald-400 transition-all font-medium text-emerald-400 hover:text-emerald-300"
+          >
+            <TrendingUp size={18} />
+            Prep Dashboard
+            <ChevronRight size={16} />
+          </button>
+          <button
             onClick={() => onSelect('dashboard')}
             className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 rounded-lg hover:border-purple-400 transition-all font-medium text-purple-400 hover:text-purple-300"
           >
@@ -247,7 +256,7 @@ function HomePage({ onSelect }: { onSelect: (view: View) => void }) {
           </button>
           <button
             onClick={() => onSelect('patterns')}
-            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 border border-emerald-500/30 rounded-lg hover:border-emerald-400 transition-all font-medium text-emerald-400 hover:text-emerald-300"
+            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-500/30 rounded-lg hover:border-cyan-400 transition-all font-medium text-cyan-400 hover:text-cyan-300"
           >
             <Lightbulb size={18} />
             Explore Algorithm Patterns
@@ -518,6 +527,8 @@ function App() {
               <span className="text-slate-600">/</span>
               <span className="text-white font-medium">{patterns.find(p => p.id === view)?.name}</span>
             </>
+          ) : view === 'prep-stats' ? (
+            <span className="text-white font-medium">Prep Dashboard</span>
           ) : view === 'dashboard' ? (
             <span className="text-white font-medium">Progress Dashboard</span>
           ) : view === 'trainer' ? (
@@ -566,6 +577,8 @@ function App() {
           onBack={() => setView('patterns')}
           onSelectProblem={(id) => setView(id)}
         />
+      ) : view === 'prep-stats' ? (
+        <PrepDashboard />
       ) : view === 'dashboard' ? (
         <DashboardPage onSelectProblem={setView} />
       ) : view === 'trainer' ? (
