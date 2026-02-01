@@ -199,7 +199,7 @@ export const problems: Problem[] = [
 
   // Math & Geometry
   { id: 'rotate-image', title: 'Rotate Image', category: 'Math & Geometry', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/rotate-image/', hasVisualization: false },
-  { id: 'spiral-matrix', title: 'Spiral Matrix', category: 'Math & Geometry', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/spiral-matrix/', hasVisualization: false },
+  { id: 'spiral-matrix', title: 'Spiral Matrix', category: 'Math & Geometry', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/spiral-matrix/', hasVisualization: true },
   { id: 'set-matrix-zeroes', title: 'Set Matrix Zeroes', category: 'Math & Geometry', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/set-matrix-zeroes/', hasVisualization: false },
   { id: 'happy-number', title: 'Happy Number', category: 'Math & Geometry', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/happy-number/', hasVisualization: false },
   { id: 'plus-one', title: 'Plus One', category: 'Math & Geometry', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/plus-one/', hasVisualization: false },

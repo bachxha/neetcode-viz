@@ -64,6 +64,7 @@ import { FindTheDuplicateNumberVisualizer } from './visualizers/FindTheDuplicate
 import { JumpGameVisualizer } from './visualizers/JumpGameVisualizer';
 import { UniquePathsVisualizer } from './visualizers/UniquePathsVisualizer';
 import { CountingBitsVisualizer } from './visualizers/CountingBitsVisualizer';
+import { SpiralMatrixVisualizer } from './visualizers/SpiralMatrixVisualizer';
 import { PatternsPage } from './patterns/PatternsPage';
 import { PatternDetailPage } from './pages/PatternDetailPage';
 import { patterns } from './data/patterns';
@@ -465,6 +466,9 @@ function Visualizer({ problemId }: { problemId: string }) {
     // Bit Manipulation
     case 'counting-bits':
       return <CountingBitsVisualizer />;
+    // Math & Geometry
+    case 'spiral-matrix':
+      return <SpiralMatrixVisualizer />;
     default:
       return (
         <div className="p-8 text-center">
