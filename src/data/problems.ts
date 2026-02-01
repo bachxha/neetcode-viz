@@ -147,7 +147,7 @@ export const problems: Problem[] = [
   // Advanced Graphs
   { id: 'reconstruct-itinerary', title: 'Reconstruct Itinerary', category: 'Advanced Graphs', difficulty: 'Hard', leetcodeUrl: 'https://leetcode.com/problems/reconstruct-itinerary/', hasVisualization: false },
   { id: 'min-cost-to-connect-all-points', title: 'Min Cost to Connect All Points', category: 'Advanced Graphs', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/min-cost-to-connect-all-points/', hasVisualization: false },
-  { id: 'network-delay-time', title: 'Network Delay Time', category: 'Advanced Graphs', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/network-delay-time/', hasVisualization: false },
+  { id: 'network-delay-time', title: 'Network Delay Time', category: 'Advanced Graphs', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/network-delay-time/', hasVisualization: true },
   { id: 'swim-in-rising-water', title: 'Swim in Rising Water', category: 'Advanced Graphs', difficulty: 'Hard', leetcodeUrl: 'https://leetcode.com/problems/swim-in-rising-water/', hasVisualization: false },
   { id: 'alien-dictionary', title: 'Alien Dictionary', category: 'Advanced Graphs', difficulty: 'Hard', leetcodeUrl: 'https://leetcode.com/problems/alien-dictionary/', hasVisualization: false },
   { id: 'cheapest-flights', title: 'Cheapest Flights Within K Stops', category: 'Advanced Graphs', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/cheapest-flights-within-k-stops/', hasVisualization: false },

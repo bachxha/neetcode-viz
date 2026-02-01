@@ -49,6 +49,7 @@ import { MinimumWindowSubstringVisualizer } from './visualizers/MinimumWindowSub
 import { CloneGraphVisualizer } from './visualizers/CloneGraphVisualizer';
 import { CourseScheduleVisualizer } from './visualizers/CourseScheduleVisualizer';
 import { WordLadderVisualizer } from './visualizers/WordLadderVisualizer';
+import { NetworkDelayTimeVisualizer } from './visualizers/NetworkDelayTimeVisualizer';
 import { ImplementTrieVisualizer } from './visualizers/ImplementTrieVisualizer';
 import { DailyTemperaturesVisualizer } from './visualizers/DailyTemperaturesVisualizer';
 import { MinStackVisualizer } from './visualizers/MinStackVisualizer';
@@ -368,6 +369,9 @@ function Visualizer({ problemId }: { problemId: string }) {
       return <SurroundedRegionsVisualizer />;
     case 'word-ladder':
       return <WordLadderVisualizer />;
+    // Advanced Graphs
+    case 'network-delay-time':
+      return <NetworkDelayTimeVisualizer />;
     // Intervals
     case 'merge-intervals':
       return <MergeIntervalsVisualizer />;
