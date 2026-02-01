@@ -210,7 +210,7 @@ export const problems: Problem[] = [
   // Bit Manipulation
   { id: 'single-number', title: 'Single Number', category: 'Bit Manipulation', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/single-number/', hasVisualization: false },
   { id: 'number-of-1-bits', title: 'Number of 1 Bits', category: 'Bit Manipulation', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/number-of-1-bits/', hasVisualization: false },
-  { id: 'counting-bits', title: 'Counting Bits', category: 'Bit Manipulation', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/counting-bits/', hasVisualization: false },
+  { id: 'counting-bits', title: 'Counting Bits', category: 'Bit Manipulation', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/counting-bits/', hasVisualization: true },
   { id: 'reverse-bits', title: 'Reverse Bits', category: 'Bit Manipulation', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/reverse-bits/', hasVisualization: false },
   { id: 'missing-number', title: 'Missing Number', category: 'Bit Manipulation', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/missing-number/', hasVisualization: false },
   { id: 'sum-of-two-integers', title: 'Sum of Two Integers', category: 'Bit Manipulation', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/sum-of-two-integers/', hasVisualization: false },

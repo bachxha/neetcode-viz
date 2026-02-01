@@ -63,6 +63,7 @@ import { LinkedListCycleVisualizer } from './visualizers/LinkedListCycleVisualiz
 import { FindTheDuplicateNumberVisualizer } from './visualizers/FindTheDuplicateNumberVisualizer';
 import { JumpGameVisualizer } from './visualizers/JumpGameVisualizer';
 import { UniquePathsVisualizer } from './visualizers/UniquePathsVisualizer';
+import { CountingBitsVisualizer } from './visualizers/CountingBitsVisualizer';
 import { PatternsPage } from './patterns/PatternsPage';
 import { PatternDetailPage } from './pages/PatternDetailPage';
 import { patterns } from './data/patterns';
@@ -461,6 +462,9 @@ function Visualizer({ problemId }: { problemId: string }) {
     // Tries
     case 'implement-trie':
       return <ImplementTrieVisualizer />;
+    // Bit Manipulation
+    case 'counting-bits':
+      return <CountingBitsVisualizer />;
     default:
       return (
         <div className="p-8 text-center">
