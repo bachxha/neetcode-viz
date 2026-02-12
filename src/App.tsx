@@ -79,6 +79,7 @@ import { CompanyPathDetailPage } from './pages/CompanyPathDetailPage';
 import { ProgressTracker, ProgressBadge } from './components/ProgressTracker';
 import { PrepDashboard } from './components/PrepDashboard';
 import { PrepStreak } from './components/PrepStreak';
+import { PracticeStats } from './components/PracticeStats';
 import { problems, categories, type Problem, type Category } from './data/problems';
 import { ChevronRight, ChevronDown, ExternalLink, Play, Lock, Lightbulb, LayoutDashboard, Brain, Building2, Mic, Bug, TrendingUp } from 'lucide-react';
 
@@ -205,9 +206,10 @@ function HomePage({ onSelect }: { onSelect: (view: View) => void }) {
           </div>
         </div>
         
-        {/* PrepStreak Widget */}
-        <div className="mt-6 flex justify-center">
+        {/* Practice Stats Widgets */}
+        <div className="mt-6 flex justify-center gap-6 flex-wrap">
           <PrepStreak onSelectProblem={onSelect} />
+          <PracticeStats />
         </div>
         
         {/* Navigation to Patterns, Dashboard, and Trainer */}
