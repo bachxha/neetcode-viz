@@ -76,6 +76,7 @@ import { VerbalTrainerPage } from './pages/VerbalTrainerPage';
 import { BugHunterPage } from './pages/BugHunterPage';
 import { CompanyPathsPage } from './pages/CompanyPathsPage';
 import { CompanyPathDetailPage } from './pages/CompanyPathDetailPage';
+import { CompanyPrepPage } from './pages/CompanyPrepPage';
 import { ProgressTracker, ProgressBadge } from './components/ProgressTracker';
 import { PrepDashboard } from './components/PrepDashboard';
 import { PrepStreak } from './components/PrepStreak';
@@ -214,6 +215,14 @@ function HomePage({ onSelect }: { onSelect: (view: View) => void }) {
         
         {/* Navigation to Patterns, Dashboard, and Trainer */}
         <div className="mt-6 flex justify-center gap-4 flex-wrap">
+          <button
+            onClick={() => onSelect('company')}
+            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 border border-emerald-500/30 rounded-lg hover:border-emerald-400 transition-all font-medium text-emerald-400 hover:text-emerald-300"
+          >
+            <Building2 size={18} />
+            Company Prep
+            <ChevronRight size={16} />
+          </button>
           <button
             onClick={() => onSelect('company-paths')}
             className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 border border-blue-500/30 rounded-lg hover:border-blue-400 transition-all font-medium text-blue-400 hover:text-blue-300"
@@ -506,6 +515,7 @@ function Visualizer({ problemId }: { problemId: string }) {
 function App() {
   const [view, setView] = useState<View>('home');
   const [selectedCompany, setSelectedCompany] = useState<string | null>(null);
+  const [selectedCompanyPrep, setSelectedCompanyPrep] = useState<string | null>(null);
   const currentProblem = problems.find(p => p.id === view);
   
   return (
@@ -514,7 +524,9 @@ function App() {
         <nav className="border-b border-slate-700 px-6 py-3 flex items-center gap-4">
           <button
             onClick={() => {
-              if (selectedCompany) {
+              if (selectedCompanyPrep) {
+                setSelectedCompanyPrep(null);
+              } else if (selectedCompany) {
                 setSelectedCompany(null);
               } else if (patterns.find(p => p.id === view)) {
                 setView('patterns');
@@ -545,6 +557,16 @@ function App() {
             <span className="text-white font-medium">Verbal Trainer</span>
           ) : view === 'bug-hunter' ? (
             <span className="text-white font-medium">Bug Hunter</span>
+          ) : view === 'company' ? (
+            <>
+              <span className="text-white font-medium">Company Prep</span>
+              {selectedCompanyPrep && (
+                <>
+                  <span className="text-slate-600">/</span>
+                  <span className="text-emerald-400 font-medium">{selectedCompanyPrep}</span>
+                </>
+              )}
+            </>
           ) : view === 'company-paths' ? (
             <>
               <span className="text-white font-medium">Company Interview Paths</span>
@@ -595,6 +617,11 @@ function App() {
         <VerbalTrainerPage />
       ) : view === 'bug-hunter' ? (
         <BugHunterPage />
+      ) : view === 'company' ? (
+        <CompanyPrepPage
+          selectedCompany={selectedCompanyPrep || undefined}
+          onSelectCompany={setSelectedCompanyPrep}
+        />
       ) : view === 'company-paths' ? (
         selectedCompany ? (
           <CompanyPathDetailPage
