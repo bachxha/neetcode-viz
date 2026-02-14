@@ -81,10 +81,11 @@ import { ProgressTracker, ProgressBadge } from './components/ProgressTracker';
 import { PrepDashboard } from './components/PrepDashboard';
 import { PrepStreak } from './components/PrepStreak';
 import { PracticeStats } from './components/PracticeStats';
+import { ProgressDashboard } from './pages/ProgressDashboard';
 import { problems, categories, type Problem, type Category } from './data/problems';
 import { ChevronRight, ChevronDown, ExternalLink, Play, Lock, Lightbulb, LayoutDashboard, Brain, Building2, Mic, Bug, TrendingUp } from 'lucide-react';
 
-type View = 'home' | 'patterns' | 'dashboard' | 'trainer' | 'verbal-trainer' | 'bug-hunter' | 'company-paths' | string;
+type View = 'home' | 'patterns' | 'dashboard' | 'progress' | 'trainer' | 'verbal-trainer' | 'bug-hunter' | 'company-paths' | string;
 
 function DifficultyBadge({ difficulty }: { difficulty: Problem['difficulty'] }) {
   const colors = {
@@ -269,6 +270,14 @@ function HomePage({ onSelect }: { onSelect: (view: View) => void }) {
           >
             <LayoutDashboard size={18} />
             Progress Dashboard
+            <ChevronRight size={16} />
+          </button>
+          <button
+            onClick={() => onSelect('progress')}
+            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 border border-indigo-500/30 rounded-lg hover:border-indigo-400 transition-all font-medium text-indigo-400 hover:text-indigo-300"
+          >
+            <TrendingUp size={18} />
+            Analytics Dashboard
             <ChevronRight size={16} />
           </button>
           <button
@@ -551,6 +560,8 @@ function App() {
             <span className="text-white font-medium">Prep Dashboard</span>
           ) : view === 'dashboard' ? (
             <span className="text-white font-medium">Progress Dashboard</span>
+          ) : view === 'progress' ? (
+            <span className="text-white font-medium">Analytics Dashboard</span>
           ) : view === 'trainer' ? (
             <span className="text-white font-medium">Pattern Trainer</span>
           ) : view === 'verbal-trainer' ? (
@@ -611,6 +622,8 @@ function App() {
         <PrepDashboard />
       ) : view === 'dashboard' ? (
         <DashboardPage onSelectProblem={setView} />
+      ) : view === 'progress' ? (
+        <ProgressDashboard />
       ) : view === 'trainer' ? (
         <PatternTrainerPage />
       ) : view === 'verbal-trainer' ? (
