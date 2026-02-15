@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Controls } from '../components/Controls';
+import { Hints } from '../components/Hints';
 
 interface Step {
   type: 'start' | 'push' | 'pop' | 'match' | 'mismatch' | 'done' | 'empty';
@@ -381,6 +382,9 @@ export function ValidParenthesesVisualizer() {
         canStepBack={currentStep > 0}
         canStepForward={currentStep < steps.length - 1}
       />
+      
+      {/* AI Hints */}
+      <Hints problemId="valid-parentheses" className="mt-6" />
       
       {/* Code Reference */}
       <div className="mt-6 bg-slate-800 rounded-lg p-4">

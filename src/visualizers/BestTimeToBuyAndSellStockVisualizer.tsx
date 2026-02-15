@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Controls } from '../components/Controls';
+import { Hints } from '../components/Hints';
 
 interface Step {
   type: 'start' | 'buy' | 'sell' | 'update-profit' | 'done';
@@ -373,6 +374,9 @@ export function BestTimeToBuyAndSellStockVisualizer() {
         canStepBack={currentStep > 0}
         canStepForward={currentStep < steps.length - 1}
       />
+      
+      {/* AI Hints */}
+      <Hints problemId="best-time-buy-sell-stock" className="mt-6" />
       
       <div className="mt-6 bg-slate-800 rounded-lg p-4">
         <h3 className="text-sm font-semibold text-slate-400 mb-2">Java Code</h3>

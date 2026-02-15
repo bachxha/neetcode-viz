@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Controls } from '../components/Controls';
+import { Hints } from '../components/Hints';
 
 interface Step {
   type: 'start' | 'check' | 'add' | 'found' | 'done';
@@ -246,6 +247,9 @@ export function TwoSumVisualizer() {
           you know exactly what value would complete the pair.
         </p>
       </div>
+
+      {/* AI Hints */}
+      <Hints problemId="two-sum" className="mb-6" />
 
       {/* Status */}
       <div className="bg-slate-800 rounded-lg p-4 mb-6">

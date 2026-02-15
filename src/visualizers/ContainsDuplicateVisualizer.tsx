@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Controls } from '../components/Controls';
+import { Hints } from '../components/Hints';
 
 interface Step {
   type: 'start' | 'check' | 'add' | 'found' | 'done';
@@ -252,6 +253,9 @@ export function ContainsDuplicateVisualizer() {
         canStepBack={currentStep > 0}
         canStepForward={currentStep < steps.length - 1}
       />
+
+      {/* AI Hints */}
+      <Hints problemId="contains-duplicate" className="mt-6" />
 
       {/* Code Reference */}
       <div className="mt-6 bg-slate-800 rounded-lg p-4">
