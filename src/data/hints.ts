@@ -275,6 +275,246 @@ export const hintsData: ProblemHints[] = [
         icon: '🎯'
       }
     ]
+  },
+  {
+    problemId: 'invert-binary-tree',
+    problemName: 'Invert Binary Tree',
+    hints: [
+      {
+        level: 'nudge',
+        title: 'Swap left and right',
+        content: 'Think about what "invert" means - the left and right children need to be swapped. How would you do this for every node in the tree?',
+        icon: '🤔'
+      },
+      {
+        level: 'approach',
+        title: 'Recursive tree traversal',
+        content: 'Use recursion to visit every node. At each node, swap its left and right children, then recursively invert the left and right subtrees.',
+        icon: '💡'
+      },
+      {
+        level: 'near-solution',
+        title: 'Base case + swap + recurse',
+        content: 'Base case: if root is null, return null. For each node: (1) Swap root.left and root.right, (2) Recursively invert root.left, (3) Recursively invert root.right, (4) Return root.',
+        icon: '🎯'
+      }
+    ]
+  },
+  {
+    problemId: 'maximum-depth-binary-tree',
+    problemName: 'Maximum Depth of Binary Tree',
+    hints: [
+      {
+        level: 'nudge',
+        title: 'How deep can you go?',
+        content: 'The depth is the longest path from root to any leaf. Think recursively - what\'s the relationship between a node\'s depth and its children\'s depths?',
+        icon: '🤔'
+      },
+      {
+        level: 'approach',
+        title: 'Recursive max of left and right',
+        content: 'For each node, the maximum depth is 1 (for the current node) plus the maximum of the depths of its left and right subtrees.',
+        icon: '💡'
+      },
+      {
+        level: 'near-solution',
+        title: '1 + max(left_depth, right_depth)',
+        content: 'Base case: if root is null, return 0. For each node: (1) Recursively get leftDepth = maxDepth(root.left), (2) Recursively get rightDepth = maxDepth(root.right), (3) Return 1 + max(leftDepth, rightDepth).',
+        icon: '🎯'
+      }
+    ]
+  },
+  {
+    problemId: 'validate-binary-search-tree',
+    problemName: 'Validate Binary Search Tree',
+    hints: [
+      {
+        level: 'nudge',
+        title: 'Valid range for each node',
+        content: 'Each node must be within a certain range based on its ancestors. Left children have upper bounds, right children have lower bounds. How can you track these constraints?',
+        icon: '🤔'
+      },
+      {
+        level: 'approach',
+        title: 'Pass min and max bounds down',
+        content: 'Use recursion with min and max parameters. For left children, update the max bound. For right children, update the min bound. Check if current node violates its bounds.',
+        icon: '💡'
+      },
+      {
+        level: 'near-solution',
+        title: 'Recursive bounds checking',
+        content: 'Function validate(node, min, max): (1) If node is null, return true, (2) If node.val <= min or node.val >= max, return false, (3) Return validate(left, min, node.val) && validate(right, node.val, max). Start with validate(root, -∞, +∞).',
+        icon: '🎯'
+      }
+    ]
+  },
+  {
+    problemId: 'number-of-islands',
+    problemName: 'Number of Islands',
+    hints: [
+      {
+        level: 'nudge',
+        title: 'Mark visited land',
+        content: 'When you find a piece of land, you need to explore the entire island to avoid counting it multiple times. What algorithm helps you explore all connected areas?',
+        icon: '🤔'
+      },
+      {
+        level: 'approach',
+        title: 'DFS to explore each island',
+        content: 'Iterate through the grid. When you find a \'1\' (land), increment island count and use DFS to mark all connected land pieces as visited (change to \'0\' or use visited array).',
+        icon: '💡'
+      },
+      {
+        level: 'near-solution',
+        title: 'Grid iteration + DFS marking',
+        content: 'For each cell in grid: if it\'s \'1\', increment count and run DFS. DFS(i,j): (1) Check bounds and if current cell is \'1\', (2) Mark as \'0\' (visited), (3) Recursively call DFS on 4 adjacent cells (up, down, left, right).',
+        icon: '🎯'
+      }
+    ]
+  },
+  {
+    problemId: 'clone-graph',
+    problemName: 'Clone Graph',
+    hints: [
+      {
+        level: 'nudge',
+        title: 'Avoid infinite loops',
+        content: 'You need to create a deep copy of the graph, but graphs can have cycles. How can you keep track of nodes you\'ve already cloned to avoid creating duplicates or getting stuck in loops?',
+        icon: '🤔'
+      },
+      {
+        level: 'approach',
+        title: 'HashMap + DFS traversal',
+        content: 'Use a HashMap to map original nodes to their clones. Use DFS to traverse the graph. When you visit a node, clone it (if not already cloned) and recursively clone its neighbors.',
+        icon: '💡'
+      },
+      {
+        level: 'near-solution',
+        title: 'Map original to clone, DFS neighbors',
+        content: 'HashMap<Node, Node> map. DFS(node): (1) If node in map, return map[node], (2) Create clone = new Node(node.val), (3) map[node] = clone, (4) For each neighbor, clone.neighbors.add(DFS(neighbor)), (5) Return clone.',
+        icon: '🎯'
+      }
+    ]
+  },
+  {
+    problemId: 'coin-change',
+    problemName: 'Coin Change',
+    hints: [
+      {
+        level: 'nudge',
+        title: 'Build up from smaller amounts',
+        content: 'To make amount X, you need to use one coin and make amount (X - coin_value). This sounds like a problem where you can build solutions from smaller subproblems.',
+        icon: '🤔'
+      },
+      {
+        level: 'approach',
+        title: 'Bottom-up DP with coin combinations',
+        content: 'Use dynamic programming. For each amount from 1 to target, try each coin and take the minimum coins needed. dp[amount] = min(dp[amount - coin] + 1) for all valid coins.',
+        icon: '💡'
+      },
+      {
+        level: 'near-solution',
+        title: 'DP array with coin iteration',
+        content: 'dp[0] = 0, dp[i] = infinity for i > 0. For amount from 1 to target: for each coin: if coin <= amount: dp[amount] = min(dp[amount], dp[amount - coin] + 1). Return dp[target] if not infinity, else -1.',
+        icon: '🎯'
+      }
+    ]
+  },
+  {
+    problemId: 'longest-increasing-subsequence',
+    problemName: 'Longest Increasing Subsequence',
+    hints: [
+      {
+        level: 'nudge',
+        title: 'Each element extends previous subsequences',
+        content: 'For each number, consider all previous numbers that are smaller. The longest subsequence ending at this position depends on the best subsequences ending at previous positions.',
+        icon: '🤔'
+      },
+      {
+        level: 'approach',
+        title: 'DP with length at each position',
+        content: 'Use DP where dp[i] = length of longest increasing subsequence ending at index i. For each position, check all previous positions with smaller values and extend the best one.',
+        icon: '💡'
+      },
+      {
+        level: 'near-solution',
+        title: 'dp[i] = max(dp[j] + 1) where nums[j] < nums[i]',
+        content: 'Initialize dp[i] = 1 for all i. For i from 1 to n: for j from 0 to i-1: if nums[j] < nums[i]: dp[i] = max(dp[i], dp[j] + 1). Return max(dp).',
+        icon: '🎯'
+      }
+    ]
+  },
+  {
+    problemId: 'unique-paths',
+    problemName: 'Unique Paths',
+    hints: [
+      {
+        level: 'nudge',
+        title: 'Count paths to reach each cell',
+        content: 'To reach any cell, you can only come from the cell above or the cell to the left. How many ways are there to reach a cell if you know the ways to reach its neighbors?',
+        icon: '🤔'
+      },
+      {
+        level: 'approach',
+        title: 'DP grid with path accumulation',
+        content: 'Use a 2D DP array. The number of paths to reach cell (i,j) is the sum of paths to reach (i-1,j) and (i,j-1). Build up the solution row by row.',
+        icon: '💡'
+      },
+      {
+        level: 'near-solution',
+        title: 'dp[i][j] = dp[i-1][j] + dp[i][j-1]',
+        content: 'Initialize dp[0][0] = 1, first row and column to 1. For i from 1 to m: for j from 1 to n: dp[i][j] = dp[i-1][j] + dp[i][j-1]. Return dp[m-1][n-1].',
+        icon: '🎯'
+      }
+    ]
+  },
+  {
+    problemId: 'binary-tree-level-order',
+    problemName: 'Binary Tree Level Order Traversal',
+    hints: [
+      {
+        level: 'nudge',
+        title: 'Process nodes level by level',
+        content: 'You need to visit all nodes at depth 0, then all at depth 1, etc. What data structure helps you process items in the order they were added (FIFO)?',
+        icon: '🤔'
+      },
+      {
+        level: 'approach',
+        title: 'BFS with queue and level tracking',
+        content: 'Use a queue for BFS. Process all nodes at current level before moving to next level. Track the size of each level to group nodes correctly in the result.',
+        icon: '💡'
+      },
+      {
+        level: 'near-solution',
+        title: 'Queue BFS with level size tracking',
+        content: 'Initialize queue with root, result = []. While queue not empty: levelSize = queue.size, currentLevel = []. For i in levelSize: node = queue.poll(), add node.val to currentLevel, add children to queue. Add currentLevel to result.',
+        icon: '🎯'
+      }
+    ]
+  },
+  {
+    problemId: 'climbing-stairs',
+    problemName: 'Climbing Stairs',
+    hints: [
+      {
+        level: 'nudge',
+        title: 'Ways to reach each step',
+        content: 'To reach step n, you can come from step (n-1) with one step, or from step (n-2) with two steps. How many ways can you reach step n based on the ways to reach previous steps?',
+        icon: '🤔'
+      },
+      {
+        level: 'approach',
+        title: 'Fibonacci-like DP pattern',
+        content: 'This follows the Fibonacci pattern! The number of ways to reach step n equals the sum of ways to reach step (n-1) and step (n-2). Use dynamic programming to build up the solution.',
+        icon: '💡'
+      },
+      {
+        level: 'near-solution',
+        title: 'dp[i] = dp[i-1] + dp[i-2]',
+        content: 'Base cases: dp[1] = 1, dp[2] = 2. For i from 3 to n: dp[i] = dp[i-1] + dp[i-2]. Optimize space by keeping only two previous values: prev1, prev2.',
+        icon: '🎯'
+      }
+    ]
   }
 ];
 
