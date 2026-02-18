@@ -17,7 +17,7 @@ import { SudokuSolverVisualizer } from './visualizers/SudokuSolverVisualizer';
 import { GenerateParenthesesVisualizer } from './visualizers/GenerateParenthesesVisualizer';
 import { ClimbingStairsVisualizer } from './visualizers/ClimbingStairsVisualizer';
 import { CoinChangeVisualizer } from './visualizers/CoinChangeVisualizer';
-import { TwoPointersVisualizer } from './visualizers/TwoPointersVisualizer';
+import { ContainerWithMostWaterVisualizer } from './visualizers/ContainerWithMostWaterVisualizer';
 import { BinarySearchVisualizer } from './visualizers/BinarySearchVisualizer';
 import { SearchInRotatedSortedArrayVisualizer } from './visualizers/SearchInRotatedSortedArrayVisualizer';
 import { FindMinimumInRotatedSortedArrayVisualizer } from './visualizers/FindMinimumInRotatedSortedArrayVisualizer';
@@ -422,7 +422,7 @@ function Visualizer({ problemId }: { problemId: string }) {
     case '3sum':
       return <ThreeSumVisualizer />;
     case 'container-with-most-water':
-      return <TwoPointersVisualizer />;
+      return <ContainerWithMostWaterVisualizer />;
     case 'trapping-rain-water':
       return <TrappingRainWaterVisualizer />;
     // Stack
