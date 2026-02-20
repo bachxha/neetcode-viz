@@ -79,7 +79,7 @@ import { CompanyPathDetailPage } from './pages/CompanyPathDetailPage';
 import { CompanyPrepPage } from './pages/CompanyPrepPage';
 import { ProgressTracker, ProgressBadge } from './components/ProgressTracker';
 import { PrepDashboard } from './components/PrepDashboard';
-import { PrepStreak } from './components/PrepStreak';
+import { StreakWidget } from './components/StreakWidget';
 import { PracticeStats } from './components/PracticeStats';
 import { ProgressDashboard } from './pages/ProgressDashboard';
 import { problems, categories, type Problem, type Category } from './data/problems';
@@ -210,7 +210,7 @@ function HomePage({ onSelect }: { onSelect: (view: View) => void }) {
         
         {/* Practice Stats Widgets */}
         <div className="mt-6 flex justify-center gap-6 flex-wrap">
-          <PrepStreak onSelectProblem={onSelect} />
+          <StreakWidget onSelectProblem={onSelect} />
           <PracticeStats />
         </div>
         
