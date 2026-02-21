@@ -82,8 +82,9 @@ import { PrepDashboard } from './components/PrepDashboard';
 import { StreakWidget } from './components/StreakWidget';
 import { PracticeStats } from './components/PracticeStats';
 import { ProgressDashboard } from './pages/ProgressDashboard';
+import { PatternDrill } from './components/PatternDrill';
 import { problems, categories, type Problem, type Category } from './data/problems';
-import { ChevronRight, ChevronDown, ExternalLink, Play, Lock, Lightbulb, LayoutDashboard, Brain, Building2, Mic, Bug, TrendingUp } from 'lucide-react';
+import { ChevronRight, ChevronDown, ExternalLink, Play, Lock, Lightbulb, LayoutDashboard, Brain, Building2, Mic, Bug, TrendingUp, Target } from 'lucide-react';
 
 type View = 'home' | 'patterns' | 'dashboard' | 'progress' | 'trainer' | 'verbal-trainer' | 'bug-hunter' | 'company-paths' | string;
 
@@ -216,6 +217,14 @@ function HomePage({ onSelect }: { onSelect: (view: View) => void }) {
         
         {/* Navigation to Patterns, Dashboard, and Trainer */}
         <div className="mt-6 flex justify-center gap-4 flex-wrap">
+          <button
+            onClick={() => onSelect('drill')}
+            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 border border-cyan-500/30 rounded-lg hover:border-cyan-400 transition-all font-medium text-cyan-400 hover:text-cyan-300"
+          >
+            <Target size={18} />
+            Pattern Drill Mode
+            <ChevronRight size={16} />
+          </button>
           <button
             onClick={() => onSelect('company')}
             className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 border border-emerald-500/30 rounded-lg hover:border-emerald-400 transition-all font-medium text-emerald-400 hover:text-emerald-300"
@@ -564,6 +573,8 @@ function App() {
             <span className="text-white font-medium">Analytics Dashboard</span>
           ) : view === 'trainer' ? (
             <span className="text-white font-medium">Pattern Trainer</span>
+          ) : view === 'drill' ? (
+            <span className="text-white font-medium">Pattern Drill Mode</span>
           ) : view === 'verbal-trainer' ? (
             <span className="text-white font-medium">Verbal Trainer</span>
           ) : view === 'bug-hunter' ? (
@@ -626,6 +637,8 @@ function App() {
         <ProgressDashboard />
       ) : view === 'trainer' ? (
         <PatternTrainerPage />
+      ) : view === 'drill' ? (
+        <PatternDrill onNavigateToProblem={setView} />
       ) : view === 'verbal-trainer' ? (
         <VerbalTrainerPage />
       ) : view === 'bug-hunter' ? (
