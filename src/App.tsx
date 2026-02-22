@@ -83,6 +83,7 @@ import { StreakWidget } from './components/StreakWidget';
 import { PracticeStats } from './components/PracticeStats';
 import { ProgressDashboard } from './pages/ProgressDashboard';
 import { PatternDrill } from './components/PatternDrill';
+import { ImFeelingLucky } from './components/ImFeelingLucky';
 import { problems, categories, type Problem, type Category } from './data/problems';
 import { ChevronRight, ChevronDown, ExternalLink, Play, Lock, Lightbulb, LayoutDashboard, Brain, Building2, Mic, Bug, TrendingUp, Target } from 'lucide-react';
 
@@ -213,6 +214,11 @@ function HomePage({ onSelect }: { onSelect: (view: View) => void }) {
         <div className="mt-6 flex justify-center gap-6 flex-wrap">
           <StreakWidget onSelectProblem={onSelect} />
           <PracticeStats />
+        </div>
+        
+        {/* I'm Feeling Lucky Button */}
+        <div className="mt-6 flex justify-center">
+          <ImFeelingLucky onSelectProblem={onSelect} />
         </div>
         
         {/* Navigation to Patterns, Dashboard, and Trainer */}
