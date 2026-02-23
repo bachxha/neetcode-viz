@@ -84,8 +84,9 @@ import { PracticeStats } from './components/PracticeStats';
 import { ProgressDashboard } from './pages/ProgressDashboard';
 import { PatternDrill } from './components/PatternDrill';
 import { ImFeelingLucky } from './components/ImFeelingLucky';
+import { WhatsNew, useWhatsNew } from './components/WhatsNew';
 import { problems, categories, type Problem, type Category } from './data/problems';
-import { ChevronRight, ChevronDown, ExternalLink, Play, Lock, Lightbulb, LayoutDashboard, Brain, Building2, Mic, Bug, TrendingUp, Target } from 'lucide-react';
+import { ChevronRight, ChevronDown, ExternalLink, Play, Lock, Lightbulb, LayoutDashboard, Brain, Building2, Mic, Bug, TrendingUp, Target, Sparkles } from 'lucide-react';
 
 type View = 'home' | 'patterns' | 'dashboard' | 'progress' | 'trainer' | 'verbal-trainer' | 'bug-hunter' | 'company-paths' | string;
 
@@ -542,6 +543,9 @@ function App() {
   const [selectedCompanyPrep, setSelectedCompanyPrep] = useState<string | null>(null);
   const currentProblem = problems.find(p => p.id === view);
   
+  // What's New modal functionality
+  const { shouldShowModal, showModal, hideModal } = useWhatsNew();
+  
   return (
     <div className="min-h-screen bg-slate-900">
       {view !== 'home' && (
@@ -615,13 +619,23 @@ function App() {
                   href={currentProblem.leetcodeUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="ml-auto flex items-center gap-1 text-sm text-slate-400 hover:text-blue-400 transition-colors"
+                  className="flex items-center gap-1 text-sm text-slate-400 hover:text-blue-400 transition-colors"
                 >
                   LeetCode <ExternalLink size={14} />
                 </a>
               )}
             </>
           )}
+          
+          {/* What's New Button */}
+          <button
+            onClick={showModal}
+            className="ml-auto flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30 rounded-lg hover:border-blue-400 transition-all text-sm font-medium text-blue-400 hover:text-blue-300"
+            title="See what's new in AlgoForge"
+          >
+            <Sparkles size={16} />
+            What's New
+          </button>
         </nav>
       )}
       
@@ -671,6 +685,12 @@ function App() {
       ) : (
         <VisualizerWithProgress problemId={view} />
       )}
+      
+      {/* What's New Modal */}
+      <WhatsNew 
+        isOpen={shouldShowModal} 
+        onClose={hideModal} 
+      />
     </div>
   );
 }
