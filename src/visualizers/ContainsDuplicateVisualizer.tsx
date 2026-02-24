@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Controls } from '../components/Controls';
 import { Hints } from '../components/Hints';
+import { useSpeedControl } from '../hooks/useSpeedControl';
 
 interface Step {
   type: 'start' | 'check' | 'add' | 'found' | 'done';
@@ -90,7 +91,7 @@ export function ContainsDuplicateVisualizer() {
   const [steps, setSteps] = useState<Step[]>([]);
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [speed, setSpeed] = useState(1);
+  const { speed, updateSpeed } = useSpeedControl();
 
   const initializeSteps = useCallback(() => {
     const newSteps = generateSteps(nums);
@@ -249,7 +250,7 @@ export function ContainsDuplicateVisualizer() {
         currentStep={currentStep + 1}
         totalSteps={steps.length}
         speed={speed}
-        onSpeedChange={setSpeed}
+        onSpeedChange={updateSpeed}
         canStepBack={currentStep > 0}
         canStepForward={currentStep < steps.length - 1}
       />

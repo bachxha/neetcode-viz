@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Controls } from '../components/Controls';
 import { Hints } from '../components/Hints';
+import { useSpeedControl } from '../hooks/useSpeedControl';
 
 interface Step {
   type: 'start' | 'compare' | 'search-left' | 'search-right' | 'found' | 'not-found';
@@ -118,7 +119,7 @@ export function BinarySearchVisualizer() {
   const [steps, setSteps] = useState<Step[]>([]);
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [speed, setSpeed] = useState(1);
+  const { speed, updateSpeed } = useSpeedControl();
   
   const initializeSteps = useCallback(() => {
     const array = arrayInput.split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n));
@@ -360,7 +361,7 @@ export function BinarySearchVisualizer() {
         currentStep={currentStep + 1}
         totalSteps={steps.length}
         speed={speed}
-        onSpeedChange={setSpeed}
+        onSpeedChange={updateSpeed}
         canStepBack={currentStep > 0}
         canStepForward={currentStep < steps.length - 1}
       />

@@ -1,4 +1,5 @@
 import { Play, Pause, SkipBack, SkipForward, RotateCcw } from 'lucide-react';
+import { SpeedControl } from './SpeedControl';
 
 interface ControlsProps {
   isPlaying: boolean;
@@ -63,18 +64,8 @@ export function Controls({
         <SkipForward size={20} />
       </button>
       
-      <div className="flex items-center gap-2 ml-4">
-        <span className="text-sm text-slate-400">Speed:</span>
-        <input
-          type="range"
-          min="0.25"
-          max="2"
-          step="0.25"
-          value={speed}
-          onChange={(e) => onSpeedChange(parseFloat(e.target.value))}
-          className="w-24 accent-blue-500"
-        />
-        <span className="text-sm w-12">{speed}x</span>
+      <div className="ml-4">
+        <SpeedControl speed={speed} onSpeedChange={onSpeedChange} />
       </div>
       
       <div className="ml-auto text-sm text-slate-400">
