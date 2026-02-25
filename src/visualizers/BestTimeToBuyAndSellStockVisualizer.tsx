@@ -2,6 +2,10 @@ import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Controls } from '../components/Controls';
 import { Hints } from '../components/Hints';
+import { KeyboardShortcuts } from '../components/KeyboardShortcuts';
+import { ShortcutsHint } from '../components/ShortcutsHint';
+import { useSpeedControl } from '../hooks/useSpeedControl';
+import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
 
 interface Step {
   type: 'start' | 'buy' | 'sell' | 'update-profit' | 'done';
@@ -133,7 +137,24 @@ export function BestTimeToBuyAndSellStockVisualizer() {
   const [steps, setSteps] = useState<Step[]>([]);
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [speed, setSpeed] = useState(1);
+  const { speed, updateSpeed } = useSpeedControl();
+
+  // Keyboard shortcuts integration
+  const {
+    showShortcutsModal,
+    setShowShortcutsModal,
+    showHint,
+    dismissHint,
+  } = useKeyboardShortcuts({
+    onPlayPause: () => setIsPlaying(!isPlaying),
+    onStepBack: () => setCurrentStep(s => Math.max(0, s - 1)),
+    onStepForward: () => setCurrentStep(s => Math.min(steps.length - 1, s + 1)),
+    onReset: () => { setCurrentStep(0); setIsPlaying(false); },
+    onSpeedChange: updateSpeed,
+    currentSpeed: speed,
+    canStepBack: currentStep > 0,
+    canStepForward: currentStep < steps.length - 1,
+  });
   
   const initializeSteps = useCallback(() => {
     try {
@@ -370,7 +391,7 @@ export function BestTimeToBuyAndSellStockVisualizer() {
         currentStep={currentStep + 1}
         totalSteps={steps.length}
         speed={speed}
-        onSpeedChange={setSpeed}
+        onSpeedChange={updateSpeed}
         canStepBack={currentStep > 0}
         canStepForward={currentStep < steps.length - 1}
       />
@@ -414,6 +435,18 @@ export function BestTimeToBuyAndSellStockVisualizer() {
           We only need one pass through the array, making it O(n) time and O(1) space.
         </p>
       </div>
+
+      {/* Keyboard Shortcuts Modal */}
+      <KeyboardShortcuts
+        isOpen={showShortcutsModal}
+        onClose={() => setShowShortcutsModal(false)}
+      />
+
+      {/* Shortcuts Hint */}
+      <ShortcutsHint
+        show={showHint}
+        onDismiss={dismissHint}
+      />
     </div>
   );
 }
