@@ -81,6 +81,7 @@ import { ProgressTracker, ProgressBadge } from './components/ProgressTracker';
 import { PrepDashboard } from './components/PrepDashboard';
 import { StreakWidget } from './components/StreakWidget';
 import { PracticeStats } from './components/PracticeStats';
+import { StatsCard } from './components/StatsCard';
 import { ProgressDashboard } from './pages/ProgressDashboard';
 import { PatternDrill } from './components/PatternDrill';
 import { ImFeelingLucky } from './components/ImFeelingLucky';
@@ -213,6 +214,10 @@ function HomePage({ onSelect }: { onSelect: (view: View) => void }) {
         
         {/* Practice Stats Widgets */}
         <div className="mt-6 flex justify-center gap-6 flex-wrap">
+          <StatsCard 
+            onNavigateToProblems={() => onSelect('home')} 
+            onNavigateToDrill={() => onSelect('drill')} 
+          />
           <StreakWidget onSelectProblem={onSelect} />
           <PracticeStats />
         </div>
