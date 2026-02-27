@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { ThemeProvider } from './contexts/ThemeContext';
+import { ThemeToggle } from './components/ThemeToggle';
 import { SubsetsVisualizer } from './visualizers/SubsetsVisualizer';
 import { MergeIntervalsVisualizer } from './visualizers/MergeIntervalsVisualizer';
 import { NQueensVisualizer } from './visualizers/NQueensVisualizer';
@@ -195,6 +197,9 @@ function HomePage({ onSelect }: { onSelect: (view: View) => void }) {
   
   return (
     <div className="p-6 max-w-4xl mx-auto">
+      <div className="ml-auto mb-6 flex justify-end">
+        <ThemeToggle />
+      </div>
       <div className="mb-8 text-center">
         <h1 className="text-4xl font-bold mb-3 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
           AlgoForge
@@ -203,12 +208,26 @@ function HomePage({ onSelect }: { onSelect: (view: View) => void }) {
           Master algorithm patterns through interactive visualizations
         </p>
         <div className="flex justify-center gap-6 text-sm">
-          <div className="px-4 py-2 bg-slate-800 rounded-lg">
+          <div 
+            className="px-4 py-2 rounded-lg transition-colors"
+            style={{ 
+              backgroundColor: 'var(--bg-card)',
+              borderColor: 'var(--border-primary)',
+              border: '1px solid'
+            }}
+          >
             <span className="text-blue-400 font-bold">{totalWithViz}</span>
-            <span className="text-slate-400"> / {totalProblems} visualized</span>
+            <span style={{ color: 'var(--text-secondary)' }}> / {totalProblems} visualized</span>
           </div>
-          <div className="px-4 py-2 bg-slate-800 rounded-lg">
-            <span className="text-slate-400">{categories.length} categories</span>
+          <div 
+            className="px-4 py-2 rounded-lg transition-colors"
+            style={{ 
+              backgroundColor: 'var(--bg-card)',
+              borderColor: 'var(--border-primary)',
+              border: '1px solid'
+            }}
+          >
+            <span style={{ color: 'var(--text-secondary)' }}>{categories.length} categories</span>
           </div>
         </div>
         
@@ -552,9 +571,56 @@ function App() {
   const { shouldShowModal, showModal, hideModal } = useWhatsNew();
   
   return (
-    <div className="min-h-screen bg-slate-900">
+    <ThemeProvider>
+      <AppContent 
+        view={view}
+        setView={setView}
+        selectedCompany={selectedCompany}
+        setSelectedCompany={setSelectedCompany}
+        selectedCompanyPrep={selectedCompanyPrep}
+        setSelectedCompanyPrep={setSelectedCompanyPrep}
+        currentProblem={currentProblem}
+        shouldShowModal={shouldShowModal}
+        showModal={showModal}
+        hideModal={hideModal}
+      />
+    </ThemeProvider>
+  );
+}
+
+function AppContent({
+  view,
+  setView,
+  selectedCompany,
+  setSelectedCompany,
+  selectedCompanyPrep,
+  setSelectedCompanyPrep,
+  currentProblem,
+  shouldShowModal,
+  showModal,
+  hideModal
+}: {
+  view: View;
+  setView: (view: View) => void;
+  selectedCompany: string | null;
+  setSelectedCompany: (company: string | null) => void;
+  selectedCompanyPrep: string | null;
+  setSelectedCompanyPrep: (company: string | null) => void;
+  currentProblem: Problem | undefined;
+  shouldShowModal: boolean;
+  showModal: () => void;
+  hideModal: () => void;
+}) {
+  return (
+    <div className="min-h-screen" style={{ backgroundColor: 'var(--bg-primary)' }}>
       {view !== 'home' && (
-        <nav className="border-b border-slate-700 px-6 py-3 flex items-center gap-4">
+        <nav 
+          className="border-b px-6 py-3 flex items-center gap-4 transition-colors"
+          style={{ 
+            borderColor: 'var(--border-primary)',
+            backgroundColor: 'var(--bg-secondary)'
+          }}
+        >
           <button
             onClick={() => {
               if (selectedCompanyPrep) {
@@ -567,64 +633,66 @@ function App() {
                 setView('home');
               }
             }}
-            className="text-slate-400 hover:text-white transition-colors"
+            className="transition-colors hover:opacity-80"
+            style={{ color: 'var(--text-secondary)' }}
           >
             ← Back
           </button>
-          <span className="text-slate-600">|</span>
+          <span style={{ color: 'var(--text-muted)' }}>|</span>
           {view === 'patterns' ? (
-            <span className="text-white font-medium">Algorithm Patterns</span>
+            <span className="font-medium" style={{ color: 'var(--text-primary)' }}>Algorithm Patterns</span>
           ) : patterns.find(p => p.id === view) ? (
             <>
-              <span className="text-slate-400">Patterns</span>
-              <span className="text-slate-600">/</span>
-              <span className="text-white font-medium">{patterns.find(p => p.id === view)?.name}</span>
+              <span style={{ color: 'var(--text-secondary)' }}>Patterns</span>
+              <span style={{ color: 'var(--text-muted)' }}>/</span>
+              <span className="font-medium" style={{ color: 'var(--text-primary)' }}>{patterns.find(p => p.id === view)?.name}</span>
             </>
           ) : view === 'prep-stats' ? (
-            <span className="text-white font-medium">Prep Dashboard</span>
+            <span className="font-medium" style={{ color: 'var(--text-primary)' }}>Prep Dashboard</span>
           ) : view === 'dashboard' ? (
-            <span className="text-white font-medium">Progress Dashboard</span>
+            <span className="font-medium" style={{ color: 'var(--text-primary)' }}>Progress Dashboard</span>
           ) : view === 'progress' ? (
-            <span className="text-white font-medium">Analytics Dashboard</span>
+            <span className="font-medium" style={{ color: 'var(--text-primary)' }}>Analytics Dashboard</span>
           ) : view === 'trainer' ? (
-            <span className="text-white font-medium">Pattern Trainer</span>
+            <span className="font-medium" style={{ color: 'var(--text-primary)' }}>Pattern Trainer</span>
           ) : view === 'drill' ? (
-            <span className="text-white font-medium">Pattern Drill Mode</span>
+            <span className="font-medium" style={{ color: 'var(--text-primary)' }}>Pattern Drill Mode</span>
           ) : view === 'verbal-trainer' ? (
-            <span className="text-white font-medium">Verbal Trainer</span>
+            <span className="font-medium" style={{ color: 'var(--text-primary)' }}>Verbal Trainer</span>
           ) : view === 'bug-hunter' ? (
-            <span className="text-white font-medium">Bug Hunter</span>
+            <span className="font-medium" style={{ color: 'var(--text-primary)' }}>Bug Hunter</span>
           ) : view === 'company' ? (
             <>
-              <span className="text-white font-medium">Company Prep</span>
+              <span className="font-medium" style={{ color: 'var(--text-primary)' }}>Company Prep</span>
               {selectedCompanyPrep && (
                 <>
-                  <span className="text-slate-600">/</span>
-                  <span className="text-emerald-400 font-medium">{selectedCompanyPrep}</span>
+                  <span style={{ color: 'var(--text-muted)' }}>/</span>
+                  <span className="font-medium text-emerald-400">{selectedCompanyPrep}</span>
                 </>
               )}
             </>
           ) : view === 'company-paths' ? (
             <>
-              <span className="text-white font-medium">Company Interview Paths</span>
+              <span className="font-medium" style={{ color: 'var(--text-primary)' }}>Company Interview Paths</span>
               {selectedCompany && (
                 <>
-                  <span className="text-slate-600">/</span>
-                  <span className="text-blue-400 font-medium capitalize">{selectedCompany}</span>
+                  <span style={{ color: 'var(--text-muted)' }}>/</span>
+                  <span className="font-medium text-blue-400 capitalize">{selectedCompany}</span>
                 </>
               )}
             </>
           ) : (
             <>
-              <span className="text-slate-400">{currentProblem?.category}</span>
-              <span className="text-slate-600">/</span>
-              <span className="text-white font-medium">{currentProblem?.title}</span>
+              <span style={{ color: 'var(--text-secondary)' }}>{currentProblem?.category}</span>
+              <span style={{ color: 'var(--text-muted)' }}>/</span>
+              <span className="font-medium" style={{ color: 'var(--text-primary)' }}>{currentProblem?.title}</span>
               {currentProblem && (
                 <a
                   href={currentProblem.leetcodeUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-1 text-sm text-slate-400 hover:text-blue-400 transition-colors"
+                  className="flex items-center gap-1 text-sm hover:text-blue-400 transition-colors"
+                  style={{ color: 'var(--text-secondary)' }}
                 >
                   LeetCode <ExternalLink size={14} />
                 </a>
@@ -632,15 +700,18 @@ function App() {
             </>
           )}
           
-          {/* What's New Button */}
-          <button
-            onClick={showModal}
-            className="ml-auto flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30 rounded-lg hover:border-blue-400 transition-all text-sm font-medium text-blue-400 hover:text-blue-300"
-            title="See what's new in AlgoForge"
-          >
-            <Sparkles size={16} />
-            What's New
-          </button>
+          {/* Theme Toggle and What's New Button */}
+          <div className="ml-auto flex items-center gap-3">
+            <ThemeToggle />
+            <button
+              onClick={showModal}
+              className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30 rounded-lg hover:border-blue-400 transition-all text-sm font-medium text-blue-400 hover:text-blue-300"
+              title="See what's new in AlgoForge"
+            >
+              <Sparkles size={16} />
+              What's New
+            </button>
+          </div>
         </nav>
       )}
       
