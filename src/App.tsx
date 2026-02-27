@@ -110,19 +110,33 @@ function ProblemCard({ problem, onSelect }: { problem: Problem; onSelect: (id: s
   return (
     <div
       className={`flex items-center gap-3 p-3 rounded-lg border transition-all ${
-        problem.hasVisualization
-          ? 'bg-slate-800 border-slate-700 hover:border-blue-500 cursor-pointer'
-          : 'bg-slate-800/50 border-slate-700/50'
+        problem.hasVisualization ? 'cursor-pointer hover:border-blue-500' : ''
       }`}
+      style={{
+        backgroundColor: problem.hasVisualization ? 'var(--bg-card)' : 'var(--bg-secondary)',
+        borderColor: problem.hasVisualization ? 'var(--border-primary)' : 'var(--border-secondary)',
+        opacity: problem.hasVisualization ? 1 : 0.6
+      }}
       onClick={() => problem.hasVisualization && onSelect(problem.id)}
     >
-      <div className={`p-2 rounded-lg ${problem.hasVisualization ? 'bg-blue-500/20 text-blue-400' : 'bg-slate-700/50 text-slate-500'}`}>
+      <div 
+        className="p-2 rounded-lg"
+        style={{
+          backgroundColor: problem.hasVisualization ? 'var(--accent-blue)/20' : 'var(--bg-tertiary)',
+          color: problem.hasVisualization ? 'var(--accent-blue)' : 'var(--text-muted)'
+        }}
+      >
         {problem.hasVisualization ? <Play size={16} /> : <Lock size={16} />}
       </div>
       
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
-          <span className={`font-medium truncate ${problem.hasVisualization ? 'text-white' : 'text-slate-400'}`}>
+          <span 
+            className="font-medium truncate"
+            style={{ 
+              color: problem.hasVisualization ? 'var(--text-primary)' : 'var(--text-muted)'
+            }}
+          >
             {problem.title}
           </span>
           <DifficultyBadge difficulty={problem.difficulty} />
@@ -135,14 +149,17 @@ function ProblemCard({ problem, onSelect }: { problem: Problem; onSelect: (id: s
         target="_blank"
         rel="noopener noreferrer"
         onClick={(e) => e.stopPropagation()}
-        className="p-1.5 rounded hover:bg-slate-700 text-slate-400 hover:text-white transition-colors"
+        className="p-1.5 rounded transition-colors hover:opacity-80"
+        style={{ 
+          color: 'var(--text-secondary)'
+        }}
         title="Open on LeetCode"
       >
         <ExternalLink size={14} />
       </a>
       
       {problem.hasVisualization && (
-        <ChevronRight className="text-slate-500" size={16} />
+        <ChevronRight style={{ color: 'var(--text-muted)' }} size={16} />
       )}
     </div>
   );
@@ -160,24 +177,32 @@ function CategorySection({
   const withViz = categoryProblems.filter(p => p.hasVisualization).length;
   
   return (
-    <div className="border border-slate-700 rounded-lg overflow-hidden">
+    <div 
+      className="border rounded-lg overflow-hidden transition-colors"
+      style={{ borderColor: 'var(--border-primary)' }}
+    >
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center gap-3 p-4 bg-slate-800 hover:bg-slate-750 transition-colors"
+        className="w-full flex items-center gap-3 p-4 transition-colors hover:opacity-90"
+        style={{ backgroundColor: 'var(--bg-card)' }}
       >
         <ChevronDown
           size={20}
-          className={`text-slate-400 transition-transform ${isOpen ? '' : '-rotate-90'}`}
+          className={`transition-transform ${isOpen ? '' : '-rotate-90'}`}
+          style={{ color: 'var(--text-secondary)' }}
         />
-        <span className="font-semibold flex-1 text-left">{category}</span>
-        <span className="text-sm text-slate-400">
+        <span className="font-semibold flex-1 text-left" style={{ color: 'var(--text-primary)' }}>{category}</span>
+        <span className="text-sm" style={{ color: 'var(--text-secondary)' }}>
           {withViz > 0 && <span className="text-blue-400">{withViz} visualized · </span>}
           {categoryProblems.length} problems
         </span>
       </button>
       
       {isOpen && (
-        <div className="p-3 space-y-2 bg-slate-900/50">
+        <div 
+          className="p-3 space-y-2 transition-colors"
+          style={{ backgroundColor: 'var(--bg-secondary)' }}
+        >
           {categoryProblems.map((problem) => (
             <ProblemCard
               key={problem.id}

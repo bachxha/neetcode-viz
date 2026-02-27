@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theme Test</title>
+    <style>
+        /* Light theme (default) */
+        :root {
+          --bg-primary: #ffffff;
+          --bg-secondary: #f8fafc;
+          --bg-tertiary: #e2e8f0;
+          --bg-card: #ffffff;
+          --text-primary: #1e293b;
+          --text-secondary: #64748b;
+          --text-muted: #94a3b8;
+          --border-primary: #e2e8f0;
+          --border-secondary: #cbd5e1;
+          --accent-blue: #3b82f6;
+          --accent-green: #22c55e;
+        }
+
+        /* Dark theme */
+        .dark {
+          --bg-primary: #0f172a;
+          --bg-secondary: #1e293b;
+          --bg-tertiary: #334155;
+          --bg-card: #1e293b;
+          --text-primary: #f8fafc;
+          --text-secondary: #cbd5e1;
+          --text-muted: #94a3b8;
+          --border-primary: #334155;
+          --border-secondary: #475569;
+          --accent-blue: #3b82f6;
+          --accent-green: #22c55e;
+        }
+
+        * {
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .button {
+            background-color: var(--accent-blue);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .muted {
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+    <h1>Theme System Test</h1>
+    <button class="button" onclick="toggleTheme()">Toggle Theme</button>
+    
+    <div class="card">
+        <h2>Primary Text</h2>
+        <p>This is some regular text content.</p>
+        <p class="muted">This is muted text content.</p>
+    </div>
+
+    <div class="card">
+        <h3>Another Card</h3>
+        <p>Testing the theme system with multiple cards.</p>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.classList.contains('dark') ? 'dark' : 'light';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            html.classList.remove('light', 'dark');
+            html.classList.add(newTheme);
+            html.setAttribute('data-theme', newTheme);
+        }
+    </script>
+</body>
+</html>
