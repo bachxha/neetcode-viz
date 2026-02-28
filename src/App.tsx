@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ThemeProvider } from './contexts/ThemeContext';
+import { BookmarkProvider } from './contexts/BookmarkContext';
 import { ThemeToggle } from './components/ThemeToggle';
 import { SubsetsVisualizer } from './visualizers/SubsetsVisualizer';
 import { MergeIntervalsVisualizer } from './visualizers/MergeIntervalsVisualizer';
@@ -89,7 +90,9 @@ import { PatternDrill } from './components/PatternDrill';
 import { ImFeelingLucky } from './components/ImFeelingLucky';
 import { WhatsNew, useWhatsNew } from './components/WhatsNew';
 import { problems, categories, type Problem, type Category } from './data/problems';
-import { ChevronRight, ChevronDown, ExternalLink, Play, Lock, Lightbulb, LayoutDashboard, Brain, Building2, Mic, Bug, TrendingUp, Target, Sparkles } from 'lucide-react';
+import { BookmarkButton } from './components/BookmarkButton';
+import { useBookmarks } from './contexts/BookmarkContext';
+import { ChevronRight, ChevronDown, ExternalLink, Play, Lock, Lightbulb, LayoutDashboard, Brain, Building2, Mic, Bug, TrendingUp, Target, Sparkles, Star } from 'lucide-react';
 
 type View = 'home' | 'patterns' | 'dashboard' | 'progress' | 'trainer' | 'verbal-trainer' | 'bug-hunter' | 'company-paths' | string;
 
@@ -144,19 +147,22 @@ function ProblemCard({ problem, onSelect }: { problem: Problem; onSelect: (id: s
         </div>
       </div>
       
-      <a
-        href={problem.leetcodeUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        onClick={(e) => e.stopPropagation()}
-        className="p-1.5 rounded transition-colors hover:opacity-80"
-        style={{ 
-          color: 'var(--text-secondary)'
-        }}
-        title="Open on LeetCode"
-      >
-        <ExternalLink size={14} />
-      </a>
+      <div className="flex items-center gap-2">
+        <BookmarkButton problemId={problem.id} size="sm" />
+        <a
+          href={problem.leetcodeUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={(e) => e.stopPropagation()}
+          className="p-1.5 rounded transition-colors hover:opacity-80"
+          style={{ 
+            color: 'var(--text-secondary)'
+          }}
+          title="Open on LeetCode"
+        >
+          <ExternalLink size={14} />
+        </a>
+      </div>
       
       {problem.hasVisualization && (
         <ChevronRight style={{ color: 'var(--text-muted)' }} size={16} />
@@ -167,14 +173,27 @@ function ProblemCard({ problem, onSelect }: { problem: Problem; onSelect: (id: s
 
 function CategorySection({ 
   category, 
-  onSelectProblem 
+  onSelectProblem,
+  filterType = 'all'
 }: { 
   category: Category; 
   onSelectProblem: (id: string) => void;
+  filterType?: 'all' | 'saved';
 }) {
+  const { bookmarks } = useBookmarks();
   const [isOpen, setIsOpen] = useState(true);
-  const categoryProblems = problems.filter(p => p.category === category);
+  
+  let categoryProblems = problems.filter(p => p.category === category);
+  if (filterType === 'saved') {
+    categoryProblems = categoryProblems.filter(p => bookmarks.includes(p.id));
+  }
+  
   const withViz = categoryProblems.filter(p => p.hasVisualization).length;
+  
+  // Don't render category if no problems match the filter
+  if (categoryProblems.length === 0) {
+    return null;
+  }
   
   return (
     <div 
@@ -217,6 +236,8 @@ function CategorySection({
 }
 
 function HomePage({ onSelect }: { onSelect: (view: View) => void }) {
+  const { bookmarkCount } = useBookmarks();
+  const [selectedFilter, setSelectedFilter] = useState<'all' | 'saved'>('all');
   const totalProblems = problems.length;
   const totalWithViz = problems.filter(p => p.hasVisualization).length;
   
@@ -354,10 +375,41 @@ function HomePage({ onSelect }: { onSelect: (view: View) => void }) {
             <ChevronRight size={16} />
           </button>
         </div>
+        
+        {/* Filter buttons */}
+        <div className="mt-6 flex justify-center gap-3">
+          <button
+            onClick={() => setSelectedFilter('all')}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all font-medium ${
+              selectedFilter === 'all'
+                ? 'bg-blue-500/20 border border-blue-500/50 text-blue-400'
+                : 'bg-gray-500/10 border border-gray-500/30 text-gray-400 hover:text-gray-300 hover:border-gray-400'
+            }`}
+          >
+            All Problems
+            <span className="text-xs bg-white/10 px-2 py-0.5 rounded-full">
+              {totalProblems}
+            </span>
+          </button>
+          <button
+            onClick={() => setSelectedFilter('saved')}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all font-medium ${
+              selectedFilter === 'saved'
+                ? 'bg-yellow-500/20 border border-yellow-500/50 text-yellow-400'
+                : 'bg-gray-500/10 border border-gray-500/30 text-gray-400 hover:text-gray-300 hover:border-gray-400'
+            }`}
+          >
+            <Star size={16} className={selectedFilter === 'saved' ? 'fill-current' : ''} />
+            Saved
+            <span className="text-xs bg-white/10 px-2 py-0.5 rounded-full">
+              {bookmarkCount}
+            </span>
+          </button>
+        </div>
       </div>
       
       {/* Quick access to visualized problems */}
-      {totalWithViz > 0 && (
+      {selectedFilter === 'all' && totalWithViz > 0 && (
         <div className="mb-8">
           <h2 className="text-lg font-semibold mb-3 flex items-center gap-2">
             <Play size={18} className="text-blue-400" />
@@ -385,13 +437,33 @@ function HomePage({ onSelect }: { onSelect: (view: View) => void }) {
       )}
       
       {/* All problems by category */}
-      <h2 className="text-lg font-semibold mb-3">All Problems</h2>
+      <h2 className="text-lg font-semibold mb-3">
+        {selectedFilter === 'all' ? 'All Problems' : 'Saved Problems'}
+      </h2>
+      
+      {selectedFilter === 'saved' && bookmarkCount === 0 && (
+        <div className="text-center py-12 bg-gray-800/30 rounded-lg border border-gray-700/30">
+          <Star size={48} className="mx-auto text-gray-500 mb-4" />
+          <h3 className="text-lg font-medium text-gray-300 mb-2">No Saved Problems</h3>
+          <p className="text-gray-400 mb-4">
+            Click the star icon next to any problem to bookmark it for later practice.
+          </p>
+          <button
+            onClick={() => setSelectedFilter('all')}
+            className="px-4 py-2 bg-blue-500/20 border border-blue-500/30 rounded-lg text-blue-400 hover:border-blue-400 transition-all"
+          >
+            Browse All Problems
+          </button>
+        </div>
+      )}
+      
       <div className="space-y-3">
         {categories.map((category) => (
           <CategorySection
             key={category}
             category={category}
             onSelectProblem={onSelect}
+            filterType={selectedFilter}
           />
         ))}
       </div>
@@ -410,6 +482,20 @@ function VisualizerWithProgress({ problemId }: { problemId: string }) {
   
   return (
     <div>
+      {/* Add bookmark button to the top of the visualizer */}
+      {problem && (
+        <div className="max-w-6xl mx-auto px-6 pt-6">
+          <div className="flex justify-between items-center mb-4">
+            <div className="flex items-center gap-3">
+              <h1 className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>
+                {problem.title}
+              </h1>
+              <DifficultyBadge difficulty={problem.difficulty} />
+            </div>
+            <BookmarkButton problemId={problemId} />
+          </div>
+        </div>
+      )}
       <Visualizer problemId={problemId} />
       {problem && (
         <div className="max-w-6xl mx-auto px-6 pb-6">
@@ -597,18 +683,20 @@ function App() {
   
   return (
     <ThemeProvider>
-      <AppContent 
-        view={view}
-        setView={setView}
-        selectedCompany={selectedCompany}
-        setSelectedCompany={setSelectedCompany}
-        selectedCompanyPrep={selectedCompanyPrep}
-        setSelectedCompanyPrep={setSelectedCompanyPrep}
-        currentProblem={currentProblem}
-        shouldShowModal={shouldShowModal}
-        showModal={showModal}
-        hideModal={hideModal}
-      />
+      <BookmarkProvider>
+        <AppContent 
+          view={view}
+          setView={setView}
+          selectedCompany={selectedCompany}
+          setSelectedCompany={setSelectedCompany}
+          selectedCompanyPrep={selectedCompanyPrep}
+          setSelectedCompanyPrep={setSelectedCompanyPrep}
+          currentProblem={currentProblem}
+          shouldShowModal={shouldShowModal}
+          showModal={showModal}
+          hideModal={hideModal}
+        />
+      </BookmarkProvider>
     </ThemeProvider>
   );
 }
