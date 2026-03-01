@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { BookmarkProvider } from './contexts/BookmarkContext';
 import { ThemeToggle } from './components/ThemeToggle';
+import { SearchBar } from './components/SearchBar';
 import { SubsetsVisualizer } from './visualizers/SubsetsVisualizer';
 import { MergeIntervalsVisualizer } from './visualizers/MergeIntervalsVisualizer';
 import { NQueensVisualizer } from './visualizers/NQueensVisualizer';
@@ -174,11 +175,13 @@ function ProblemCard({ problem, onSelect }: { problem: Problem; onSelect: (id: s
 function CategorySection({ 
   category, 
   onSelectProblem,
-  filterType = 'all'
+  filterType = 'all',
+  searchQuery = ''
 }: { 
   category: Category; 
   onSelectProblem: (id: string) => void;
   filterType?: 'all' | 'saved';
+  searchQuery?: string;
 }) {
   const { bookmarks } = useBookmarks();
   const [isOpen, setIsOpen] = useState(true);
@@ -186,6 +189,11 @@ function CategorySection({
   let categoryProblems = problems.filter(p => p.category === category);
   if (filterType === 'saved') {
     categoryProblems = categoryProblems.filter(p => bookmarks.includes(p.id));
+  }
+  if (searchQuery.trim()) {
+    categoryProblems = categoryProblems.filter(p => 
+      p.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
   }
   
   const withViz = categoryProblems.filter(p => p.hasVisualization).length;
@@ -236,8 +244,9 @@ function CategorySection({
 }
 
 function HomePage({ onSelect }: { onSelect: (view: View) => void }) {
-  const { bookmarkCount } = useBookmarks();
+  const { bookmarkCount, bookmarks } = useBookmarks();
   const [selectedFilter, setSelectedFilter] = useState<'all' | 'saved'>('all');
+  const [searchQuery, setSearchQuery] = useState('');
   const totalProblems = problems.length;
   const totalWithViz = problems.filter(p => p.hasVisualization).length;
   
@@ -406,10 +415,20 @@ function HomePage({ onSelect }: { onSelect: (view: View) => void }) {
             </span>
           </button>
         </div>
+        
+        {/* Search Bar */}
+        <div className="mt-6">
+          <SearchBar
+            value={searchQuery}
+            onChange={setSearchQuery}
+            placeholder="Search problems by name..."
+            className="max-w-md mx-auto"
+          />
+        </div>
       </div>
       
       {/* Quick access to visualized problems */}
-      {selectedFilter === 'all' && totalWithViz > 0 && (
+      {selectedFilter === 'all' && totalWithViz > 0 && !searchQuery.trim() && (
         <div className="mb-8">
           <h2 className="text-lg font-semibold mb-3 flex items-center gap-2">
             <Play size={18} className="text-blue-400" />
@@ -464,9 +483,34 @@ function HomePage({ onSelect }: { onSelect: (view: View) => void }) {
             category={category}
             onSelectProblem={onSelect}
             filterType={selectedFilter}
+            searchQuery={searchQuery}
           />
         ))}
       </div>
+      
+      {/* No results message */}
+      {searchQuery.trim() && (() => {
+        const filteredProblems = problems.filter(p => {
+          const matchesSearch = p.title.toLowerCase().includes(searchQuery.toLowerCase());
+          const matchesFilter = selectedFilter === 'all' || bookmarks.includes(p.id);
+          return matchesSearch && matchesFilter;
+        });
+        return filteredProblems.length === 0;
+      })() && (
+        <div className="text-center py-12 bg-gray-800/30 rounded-lg border border-gray-700/30 mt-6">
+          <div className="text-4xl mb-4">🔍</div>
+          <h3 className="text-lg font-medium text-gray-300 mb-2">No problems found</h3>
+          <p className="text-gray-400 mb-4">
+            Try adjusting your search or removing filters.
+          </p>
+          <button
+            onClick={() => setSearchQuery('')}
+            className="px-4 py-2 bg-blue-500/20 border border-blue-500/30 rounded-lg text-blue-400 hover:border-blue-400 transition-all"
+          >
+            Clear Search
+          </button>
+        </div>
+      )}
       
       <div className="mt-8 text-center text-slate-500 text-sm">
         <p>More visualizations coming soon...</p>
