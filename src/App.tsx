@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { BookmarkProvider } from './contexts/BookmarkContext';
+import { CompletionProvider } from './contexts/CompletionContext';
 import { ThemeToggle } from './components/ThemeToggle';
 import { SearchBar } from './components/SearchBar';
 import { SubsetsVisualizer } from './visualizers/SubsetsVisualizer';
@@ -92,8 +93,10 @@ import { ImFeelingLucky } from './components/ImFeelingLucky';
 import { WhatsNew, useWhatsNew } from './components/WhatsNew';
 import { problems, categories, type Problem, type Category } from './data/problems';
 import { BookmarkButton } from './components/BookmarkButton';
+import { CompletionButton } from './components/CompletionButton';
 import { useBookmarks } from './contexts/BookmarkContext';
-import { ChevronRight, ChevronDown, ExternalLink, Play, Lock, Lightbulb, LayoutDashboard, Brain, Building2, Mic, Bug, TrendingUp, Target, Sparkles, Star } from 'lucide-react';
+import { useCompletions } from './contexts/CompletionContext';
+import { ChevronRight, ChevronDown, ExternalLink, Play, Lock, Lightbulb, LayoutDashboard, Brain, Building2, Mic, Bug, TrendingUp, Target, Sparkles, Star, Check } from 'lucide-react';
 
 type View = 'home' | 'patterns' | 'dashboard' | 'progress' | 'trainer' | 'verbal-trainer' | 'bug-hunter' | 'company-paths' | string;
 
@@ -149,6 +152,7 @@ function ProblemCard({ problem, onSelect }: { problem: Problem; onSelect: (id: s
       </div>
       
       <div className="flex items-center gap-2">
+        <CompletionButton problemId={problem.id} size="sm" />
         <BookmarkButton problemId={problem.id} size="sm" />
         <a
           href={problem.leetcodeUrl}
@@ -180,15 +184,18 @@ function CategorySection({
 }: { 
   category: Category; 
   onSelectProblem: (id: string) => void;
-  filterType?: 'all' | 'saved';
+  filterType?: 'all' | 'saved' | 'completed';
   searchQuery?: string;
 }) {
   const { bookmarks } = useBookmarks();
+  const { completions, getCompletionPercentage } = useCompletions();
   const [isOpen, setIsOpen] = useState(true);
   
   let categoryProblems = problems.filter(p => p.category === category);
   if (filterType === 'saved') {
     categoryProblems = categoryProblems.filter(p => bookmarks.includes(p.id));
+  } else if (filterType === 'completed') {
+    categoryProblems = categoryProblems.filter(p => completions.includes(p.id));
   }
   if (searchQuery.trim()) {
     categoryProblems = categoryProblems.filter(p => 
@@ -218,7 +225,14 @@ function CategorySection({
           className={`transition-transform ${isOpen ? '' : '-rotate-90'}`}
           style={{ color: 'var(--text-secondary)' }}
         />
-        <span className="font-semibold flex-1 text-left" style={{ color: 'var(--text-primary)' }}>{category}</span>
+        <div className="flex-1 text-left">
+          <span className="font-semibold" style={{ color: 'var(--text-primary)' }}>{category}</span>
+          {filterType === 'all' && (
+            <div className="text-xs mt-1">
+              <span className="text-green-400">{getCompletionPercentage(category)}% completed</span>
+            </div>
+          )}
+        </div>
         <span className="text-sm" style={{ color: 'var(--text-secondary)' }}>
           {withViz > 0 && <span className="text-blue-400">{withViz} visualized · </span>}
           {categoryProblems.length} problems
@@ -245,7 +259,8 @@ function CategorySection({
 
 function HomePage({ onSelect }: { onSelect: (view: View) => void }) {
   const { bookmarkCount, bookmarks } = useBookmarks();
-  const [selectedFilter, setSelectedFilter] = useState<'all' | 'saved'>('all');
+  const { completionCount, completions } = useCompletions();
+  const [selectedFilter, setSelectedFilter] = useState<'all' | 'saved' | 'completed'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const totalProblems = problems.length;
   const totalWithViz = problems.filter(p => p.hasVisualization).length;
@@ -414,6 +429,20 @@ function HomePage({ onSelect }: { onSelect: (view: View) => void }) {
               {bookmarkCount}
             </span>
           </button>
+          <button
+            onClick={() => setSelectedFilter('completed')}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all font-medium ${
+              selectedFilter === 'completed'
+                ? 'bg-green-500/20 border border-green-500/50 text-green-400'
+                : 'bg-gray-500/10 border border-gray-500/30 text-gray-400 hover:text-gray-300 hover:border-gray-400'
+            }`}
+          >
+            <Check size={16} className={selectedFilter === 'completed' ? 'fill-current' : ''} />
+            Completed
+            <span className="text-xs bg-white/10 px-2 py-0.5 rounded-full">
+              {completionCount}
+            </span>
+          </button>
         </div>
         
         {/* Search Bar */}
@@ -457,7 +486,7 @@ function HomePage({ onSelect }: { onSelect: (view: View) => void }) {
       
       {/* All problems by category */}
       <h2 className="text-lg font-semibold mb-3">
-        {selectedFilter === 'all' ? 'All Problems' : 'Saved Problems'}
+        {selectedFilter === 'all' ? 'All Problems' : selectedFilter === 'saved' ? 'Saved Problems' : 'Completed Problems'}
       </h2>
       
       {selectedFilter === 'saved' && bookmarkCount === 0 && (
@@ -466,6 +495,22 @@ function HomePage({ onSelect }: { onSelect: (view: View) => void }) {
           <h3 className="text-lg font-medium text-gray-300 mb-2">No Saved Problems</h3>
           <p className="text-gray-400 mb-4">
             Click the star icon next to any problem to bookmark it for later practice.
+          </p>
+          <button
+            onClick={() => setSelectedFilter('all')}
+            className="px-4 py-2 bg-blue-500/20 border border-blue-500/30 rounded-lg text-blue-400 hover:border-blue-400 transition-all"
+          >
+            Browse All Problems
+          </button>
+        </div>
+      )}
+      
+      {selectedFilter === 'completed' && completionCount === 0 && (
+        <div className="text-center py-12 bg-gray-800/30 rounded-lg border border-gray-700/30">
+          <Check size={48} className="mx-auto text-gray-500 mb-4" />
+          <h3 className="text-lg font-medium text-gray-300 mb-2">No Completed Problems</h3>
+          <p className="text-gray-400 mb-4">
+            Click the checkmark icon next to any problem to mark it as completed.
           </p>
           <button
             onClick={() => setSelectedFilter('all')}
@@ -492,7 +537,9 @@ function HomePage({ onSelect }: { onSelect: (view: View) => void }) {
       {searchQuery.trim() && (() => {
         const filteredProblems = problems.filter(p => {
           const matchesSearch = p.title.toLowerCase().includes(searchQuery.toLowerCase());
-          const matchesFilter = selectedFilter === 'all' || bookmarks.includes(p.id);
+          const matchesFilter = selectedFilter === 'all' || 
+            (selectedFilter === 'saved' && bookmarks.includes(p.id)) ||
+            (selectedFilter === 'completed' && completions.includes(p.id));
           return matchesSearch && matchesFilter;
         });
         return filteredProblems.length === 0;
@@ -536,7 +583,10 @@ function VisualizerWithProgress({ problemId }: { problemId: string }) {
               </h1>
               <DifficultyBadge difficulty={problem.difficulty} />
             </div>
-            <BookmarkButton problemId={problemId} />
+            <div className="flex items-center gap-2">
+              <CompletionButton problemId={problemId} />
+              <BookmarkButton problemId={problemId} />
+            </div>
           </div>
         </div>
       )}
@@ -728,6 +778,7 @@ function App() {
   return (
     <ThemeProvider>
       <BookmarkProvider>
+        <CompletionProvider>
         <AppContent 
           view={view}
           setView={setView}
@@ -740,6 +791,7 @@ function App() {
           showModal={showModal}
           hideModal={hideModal}
         />
+        </CompletionProvider>
       </BookmarkProvider>
     </ThemeProvider>
   );
