@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { BookmarkProvider } from './contexts/BookmarkContext';
 import { CompletionProvider } from './contexts/CompletionContext';
 import { ThemeToggle } from './components/ThemeToggle';
 import { SearchBar } from './components/SearchBar';
+import { DifficultyFilter } from './components/DifficultyFilter';
 import { SubsetsVisualizer } from './visualizers/SubsetsVisualizer';
 import { MergeIntervalsVisualizer } from './visualizers/MergeIntervalsVisualizer';
 import { NQueensVisualizer } from './visualizers/NQueensVisualizer';
@@ -91,7 +92,7 @@ import { ProgressDashboard } from './pages/ProgressDashboard';
 import { PatternDrill } from './components/PatternDrill';
 import { ImFeelingLucky } from './components/ImFeelingLucky';
 import { WhatsNew, useWhatsNew } from './components/WhatsNew';
-import { problems, categories, type Problem, type Category } from './data/problems';
+import { problems, categories, type Problem, type Category, type Difficulty } from './data/problems';
 import { BookmarkButton } from './components/BookmarkButton';
 import { CompletionButton } from './components/CompletionButton';
 import { useBookmarks } from './contexts/BookmarkContext';
@@ -180,12 +181,14 @@ function CategorySection({
   category, 
   onSelectProblem,
   filterType = 'all',
-  searchQuery = ''
+  searchQuery = '',
+  difficultyFilter = 'All'
 }: { 
   category: Category; 
   onSelectProblem: (id: string) => void;
   filterType?: 'all' | 'saved' | 'completed';
   searchQuery?: string;
+  difficultyFilter?: 'All' | Difficulty;
 }) {
   const { bookmarks } = useBookmarks();
   const { completions, getCompletionPercentage } = useCompletions();
@@ -201,6 +204,9 @@ function CategorySection({
     categoryProblems = categoryProblems.filter(p => 
       p.title.toLowerCase().includes(searchQuery.toLowerCase())
     );
+  }
+  if (difficultyFilter !== 'All') {
+    categoryProblems = categoryProblems.filter(p => p.difficulty === difficultyFilter);
   }
   
   const withViz = categoryProblems.filter(p => p.hasVisualization).length;
@@ -262,6 +268,21 @@ function HomePage({ onSelect }: { onSelect: (view: View) => void }) {
   const { completionCount, completions } = useCompletions();
   const [selectedFilter, setSelectedFilter] = useState<'all' | 'saved' | 'completed'>('all');
   const [searchQuery, setSearchQuery] = useState('');
+  
+  // Initialize difficulty filter from localStorage
+  const [difficultyFilter, setDifficultyFilter] = useState<'All' | Difficulty>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('neetcode-difficulty-filter') as ('All' | Difficulty);
+      return saved || 'All';
+    }
+    return 'All';
+  });
+
+  // Persist difficulty filter to localStorage
+  useEffect(() => {
+    localStorage.setItem('neetcode-difficulty-filter', difficultyFilter);
+  }, [difficultyFilter]);
+  
   const totalProblems = problems.length;
   const totalWithViz = problems.filter(p => p.hasVisualization).length;
   
@@ -454,10 +475,19 @@ function HomePage({ onSelect }: { onSelect: (view: View) => void }) {
             className="max-w-md mx-auto"
           />
         </div>
+        
+        {/* Difficulty Filter */}
+        <div className="mt-6">
+          <DifficultyFilter
+            selectedDifficulty={difficultyFilter}
+            onDifficultyChange={setDifficultyFilter}
+            className="justify-center"
+          />
+        </div>
       </div>
       
       {/* Quick access to visualized problems */}
-      {selectedFilter === 'all' && totalWithViz > 0 && !searchQuery.trim() && (
+      {selectedFilter === 'all' && totalWithViz > 0 && !searchQuery.trim() && difficultyFilter === 'All' && (
         <div className="mb-8">
           <h2 className="text-lg font-semibold mb-3 flex items-center gap-2">
             <Play size={18} className="text-blue-400" />
@@ -529,18 +559,20 @@ function HomePage({ onSelect }: { onSelect: (view: View) => void }) {
             onSelectProblem={onSelect}
             filterType={selectedFilter}
             searchQuery={searchQuery}
+            difficultyFilter={difficultyFilter}
           />
         ))}
       </div>
       
       {/* No results message */}
-      {searchQuery.trim() && (() => {
+      {(searchQuery.trim() || difficultyFilter !== 'All') && (() => {
         const filteredProblems = problems.filter(p => {
-          const matchesSearch = p.title.toLowerCase().includes(searchQuery.toLowerCase());
+          const matchesSearch = !searchQuery.trim() || p.title.toLowerCase().includes(searchQuery.toLowerCase());
           const matchesFilter = selectedFilter === 'all' || 
             (selectedFilter === 'saved' && bookmarks.includes(p.id)) ||
             (selectedFilter === 'completed' && completions.includes(p.id));
-          return matchesSearch && matchesFilter;
+          const matchesDifficulty = difficultyFilter === 'All' || p.difficulty === difficultyFilter;
+          return matchesSearch && matchesFilter && matchesDifficulty;
         });
         return filteredProblems.length === 0;
       })() && (
@@ -550,12 +582,20 @@ function HomePage({ onSelect }: { onSelect: (view: View) => void }) {
           <p className="text-gray-400 mb-4">
             Try adjusting your search or removing filters.
           </p>
-          <button
-            onClick={() => setSearchQuery('')}
-            className="px-4 py-2 bg-blue-500/20 border border-blue-500/30 rounded-lg text-blue-400 hover:border-blue-400 transition-all"
-          >
-            Clear Search
-          </button>
+          <div className="flex gap-2 justify-center">
+            <button
+              onClick={() => setSearchQuery('')}
+              className="px-4 py-2 bg-blue-500/20 border border-blue-500/30 rounded-lg text-blue-400 hover:border-blue-400 transition-all"
+            >
+              Clear Search
+            </button>
+            <button
+              onClick={() => setDifficultyFilter('All')}
+              className="px-4 py-2 bg-purple-500/20 border border-purple-500/30 rounded-lg text-purple-400 hover:border-purple-400 transition-all"
+            >
+              Reset Difficulty
+            </button>
+          </div>
         </div>
       )}
       
