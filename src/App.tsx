@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { BookmarkProvider } from './contexts/BookmarkContext';
 import { CompletionProvider } from './contexts/CompletionContext';
+import { NotesProvider } from './contexts/NotesContext';
 import { ThemeToggle } from './components/ThemeToggle';
 import { SearchBar } from './components/SearchBar';
 import { DifficultyFilter } from './components/DifficultyFilter';
@@ -95,8 +96,10 @@ import { WhatsNew, useWhatsNew } from './components/WhatsNew';
 import { problems, categories, type Problem, type Category, type Difficulty } from './data/problems';
 import { BookmarkButton } from './components/BookmarkButton';
 import { CompletionButton } from './components/CompletionButton';
+import { Notes } from './components/Notes';
 import { useBookmarks } from './contexts/BookmarkContext';
 import { useCompletions } from './contexts/CompletionContext';
+import { useNotes } from './contexts/NotesContext';
 import { ChevronRight, ChevronDown, ExternalLink, Play, Lock, Lightbulb, LayoutDashboard, Brain, Building2, Mic, Bug, TrendingUp, Target, Sparkles, Star, Check } from 'lucide-react';
 
 type View = 'home' | 'patterns' | 'dashboard' | 'progress' | 'trainer' | 'verbal-trainer' | 'bug-hunter' | 'company-paths' | string;
@@ -115,6 +118,8 @@ function DifficultyBadge({ difficulty }: { difficulty: Problem['difficulty'] }) 
 }
 
 function ProblemCard({ problem, onSelect }: { problem: Problem; onSelect: (id: string) => void }) {
+  const { hasNote } = useNotes();
+  
   return (
     <div
       className={`flex items-center gap-3 p-3 rounded-lg border transition-all ${
@@ -149,6 +154,9 @@ function ProblemCard({ problem, onSelect }: { problem: Problem; onSelect: (id: s
           </span>
           <DifficultyBadge difficulty={problem.difficulty} />
           <ProgressBadge problemId={problem.id} />
+          {hasNote(problem.id) && (
+            <span className="text-xs" title="Has notes">📝</span>
+          )}
         </div>
       </div>
       
@@ -628,6 +636,9 @@ function VisualizerWithProgress({ problemId }: { problemId: string }) {
               <BookmarkButton problemId={problemId} />
             </div>
           </div>
+          
+          {/* Notes section */}
+          <Notes problemId={problemId} className="mb-6" />
         </div>
       )}
       <Visualizer problemId={problemId} />
@@ -819,18 +830,20 @@ function App() {
     <ThemeProvider>
       <BookmarkProvider>
         <CompletionProvider>
-        <AppContent 
-          view={view}
-          setView={setView}
-          selectedCompany={selectedCompany}
-          setSelectedCompany={setSelectedCompany}
-          selectedCompanyPrep={selectedCompanyPrep}
-          setSelectedCompanyPrep={setSelectedCompanyPrep}
-          currentProblem={currentProblem}
-          shouldShowModal={shouldShowModal}
-          showModal={showModal}
-          hideModal={hideModal}
-        />
+          <NotesProvider>
+            <AppContent 
+              view={view}
+              setView={setView}
+              selectedCompany={selectedCompany}
+              setSelectedCompany={setSelectedCompany}
+              selectedCompanyPrep={selectedCompanyPrep}
+              setSelectedCompanyPrep={setSelectedCompanyPrep}
+              currentProblem={currentProblem}
+              shouldShowModal={shouldShowModal}
+              showModal={showModal}
+              hideModal={hideModal}
+            />
+          </NotesProvider>
         </CompletionProvider>
       </BookmarkProvider>
     </ThemeProvider>
