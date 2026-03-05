@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useCompletions } from '../contexts/CompletionContext';
+import { useTimeTracker } from '../contexts/TimeTrackerContext';
 import { problems, categories } from '../data/problems';
 import {
   Calendar,
@@ -15,6 +16,7 @@ import {
   TrendingUp,
   BookOpen,
   Award,
+  Trophy,
 } from 'lucide-react';
 
 interface AirtableRecord {
@@ -521,6 +523,13 @@ export function ProgressDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { completions, completionCount, getCompletionPercentage } = useCompletions();
+  const { 
+    getTotalTimeSpent, 
+    getAverageTime, 
+    getFastestSolves, 
+    formatTime, 
+    timeStats 
+  } = useTimeTracker();
 
   useEffect(() => {
     async function loadData() {
@@ -665,6 +674,107 @@ export function ProgressDashboard() {
           color="bg-purple-500/20 text-purple-400"
           trend="neutral"
         />
+      </div>
+
+      {/* Time Stats */}
+      <div className="mb-8">
+        <h2 className="text-xl font-semibold mb-6 flex items-center gap-2">
+          <Clock size={24} className="text-blue-400" />
+          Session Time Statistics
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-slate-800 rounded-xl p-6 border border-slate-700"
+          >
+            <div className="text-center">
+              <p className="text-2xl font-bold text-blue-400 mb-1">
+                {formatTime(getTotalTimeSpent())}
+              </p>
+              <p className="text-sm text-slate-400 mb-2">Total Practice Time</p>
+              <p className="text-xs text-slate-500">
+                Across {Object.keys(timeStats).length} problems
+              </p>
+            </div>
+          </motion.div>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="bg-slate-800 rounded-xl p-6 border border-slate-700"
+          >
+            <div className="text-center">
+              <p className="text-2xl font-bold text-green-400 mb-1">
+                {formatTime(getAverageTime())}
+              </p>
+              <p className="text-sm text-slate-400 mb-2">Average Time</p>
+              <p className="text-xs text-slate-500">Per problem</p>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="bg-slate-800 rounded-xl p-6 border border-slate-700"
+          >
+            <div className="text-center">
+              <p className="text-2xl font-bold text-yellow-400 mb-1">
+                {Object.values(timeStats).reduce((sum, stat) => sum + stat.attempts, 0)}
+              </p>
+              <p className="text-sm text-slate-400 mb-2">Total Attempts</p>
+              <p className="text-xs text-slate-500">
+                Average {(Object.values(timeStats).reduce((sum, stat) => sum + stat.attempts, 0) / Math.max(Object.keys(timeStats).length, 1)).toFixed(1)} per problem
+              </p>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Fastest Solves */}
+        {getFastestSolves(5).length > 0 && (
+          <div className="mt-6 bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              <Award size={20} className="text-yellow-400" />
+              Fastest Solves
+            </h3>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+              {getFastestSolves(5).map((solve, index) => {
+                const problem = problems.find(p => p.id === solve.slug);
+                return (
+                  <motion.div
+                    key={solve.slug}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                    className="p-3 bg-slate-800/50 rounded-lg border border-slate-700/50"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex-1">
+                        <p className="text-sm font-medium text-slate-200 truncate">
+                          {problem?.title || solve.slug}
+                        </p>
+                        <p className="text-xs text-slate-400">
+                          {problem?.category || 'Unknown'}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-sm font-mono text-yellow-400 font-semibold">
+                          {formatTime(solve.time)}
+                        </p>
+                        <div className="flex items-center gap-1">
+                          <Trophy size={12} className="text-yellow-400" />
+                          <span className="text-xs text-slate-500">#{index + 1}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Visualization Completion Stats */}

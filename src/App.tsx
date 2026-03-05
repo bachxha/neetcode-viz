@@ -3,6 +3,7 @@ import { ThemeProvider } from './contexts/ThemeContext';
 import { BookmarkProvider } from './contexts/BookmarkContext';
 import { CompletionProvider } from './contexts/CompletionContext';
 import { NotesProvider } from './contexts/NotesContext';
+import { TimeTrackerProvider } from './contexts/TimeTrackerContext';
 import { ThemeToggle } from './components/ThemeToggle';
 import { SearchBar } from './components/SearchBar';
 import { DifficultyFilter } from './components/DifficultyFilter';
@@ -100,6 +101,8 @@ import { Notes } from './components/Notes';
 import { useBookmarks } from './contexts/BookmarkContext';
 import { useCompletions } from './contexts/CompletionContext';
 import { useNotes } from './contexts/NotesContext';
+import { useTimeTracker } from './contexts/TimeTrackerContext';
+import { Timer } from './components/Timer';
 import { ChevronRight, ChevronDown, ExternalLink, Play, Lock, Lightbulb, LayoutDashboard, Brain, Building2, Mic, Bug, TrendingUp, Target, Sparkles, Star, Check } from 'lucide-react';
 
 type View = 'home' | 'patterns' | 'dashboard' | 'progress' | 'trainer' | 'verbal-trainer' | 'bug-hunter' | 'company-paths' | string;
@@ -119,6 +122,9 @@ function DifficultyBadge({ difficulty }: { difficulty: Problem['difficulty'] }) 
 
 function ProblemCard({ problem, onSelect }: { problem: Problem; onSelect: (id: string) => void }) {
   const { hasNote } = useNotes();
+  const { getStats, formatTime } = useTimeTracker();
+  
+  const timeStats = getStats(problem.id);
   
   return (
     <div
@@ -157,7 +163,27 @@ function ProblemCard({ problem, onSelect }: { problem: Problem; onSelect: (id: s
           {hasNote(problem.id) && (
             <span className="text-xs" title="Has notes">📝</span>
           )}
+          {timeStats && (
+            <>
+              <span className="text-xs px-2 py-0.5 bg-blue-500/20 text-blue-400 rounded-full" title={`⏱️ Last: ${formatTime(timeStats.lastTime)}`}>
+                ⏱️
+              </span>
+              {timeStats.attempts > 1 && (
+                <span className="text-xs px-2 py-0.5 bg-orange-500/20 text-orange-400 rounded-full" title={`${timeStats.attempts} attempts`}>
+                  ×{timeStats.attempts}
+                </span>
+              )}
+            </>
+          )}
         </div>
+        {timeStats && (
+          <div className="text-xs text-slate-400 mt-1">
+            Last: {formatTime(timeStats.lastTime)}
+            {timeStats.bestTime !== Infinity && timeStats.bestTime !== timeStats.lastTime && (
+              <span className="ml-2">• Best: {formatTime(timeStats.bestTime)}</span>
+            )}
+          </div>
+        )}
       </div>
       
       <div className="flex items-center gap-2">
@@ -621,6 +647,9 @@ function VisualizerWithProgress({ problemId }: { problemId: string }) {
   
   return (
     <div>
+      {/* Timer Component */}
+      <Timer problemSlug={problemId} />
+      
       {/* Add bookmark button to the top of the visualizer */}
       {problem && (
         <div className="max-w-6xl mx-auto px-6 pt-6">
@@ -831,18 +860,20 @@ function App() {
       <BookmarkProvider>
         <CompletionProvider>
           <NotesProvider>
-            <AppContent 
-              view={view}
-              setView={setView}
-              selectedCompany={selectedCompany}
-              setSelectedCompany={setSelectedCompany}
-              selectedCompanyPrep={selectedCompanyPrep}
-              setSelectedCompanyPrep={setSelectedCompanyPrep}
-              currentProblem={currentProblem}
-              shouldShowModal={shouldShowModal}
-              showModal={showModal}
-              hideModal={hideModal}
-            />
+            <TimeTrackerProvider>
+              <AppContent 
+                view={view}
+                setView={setView}
+                selectedCompany={selectedCompany}
+                setSelectedCompany={setSelectedCompany}
+                selectedCompanyPrep={selectedCompanyPrep}
+                setSelectedCompanyPrep={setSelectedCompanyPrep}
+                currentProblem={currentProblem}
+                shouldShowModal={shouldShowModal}
+                showModal={showModal}
+                hideModal={hideModal}
+              />
+            </TimeTrackerProvider>
           </NotesProvider>
         </CompletionProvider>
       </BookmarkProvider>
