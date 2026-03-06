@@ -103,6 +103,7 @@ import { useCompletions } from './contexts/CompletionContext';
 import { useNotes } from './contexts/NotesContext';
 import { useTimeTracker } from './contexts/TimeTrackerContext';
 import { Timer } from './components/Timer';
+import { RelatedProblems } from './components/RelatedProblems';
 import { ChevronRight, ChevronDown, ExternalLink, Play, Lock, Lightbulb, LayoutDashboard, Brain, Building2, Mic, Bug, TrendingUp, Target, Sparkles, Star, Check } from 'lucide-react';
 
 type View = 'home' | 'patterns' | 'dashboard' | 'progress' | 'trainer' | 'verbal-trainer' | 'bug-hunter' | 'company-paths' | string;
@@ -642,7 +643,7 @@ function HomePage({ onSelect }: { onSelect: (view: View) => void }) {
 }
 
 // Wrapper that adds ProgressTracker to visualizers
-function VisualizerWithProgress({ problemId }: { problemId: string }) {
+function VisualizerWithProgress({ problemId, onSelectProblem }: { problemId: string; onSelectProblem: (id: string) => void }) {
   const problem = problems.find(p => p.id === problemId);
   
   return (
@@ -674,6 +675,7 @@ function VisualizerWithProgress({ problemId }: { problemId: string }) {
       {problem && (
         <div className="max-w-6xl mx-auto px-6 pb-6">
           <ProgressTracker problemId={problemId} difficulty={problem.difficulty} />
+          <RelatedProblems currentProblemId={problemId} onSelectProblem={onSelectProblem} />
         </div>
       )}
     </div>
@@ -1052,7 +1054,7 @@ function AppContent({
           />
         )
       ) : (
-        <VisualizerWithProgress problemId={view} />
+        <VisualizerWithProgress problemId={view} onSelectProblem={setView} />
       )}
       
       {/* What's New Modal */}
