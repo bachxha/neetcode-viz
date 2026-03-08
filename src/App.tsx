@@ -94,6 +94,7 @@ import { ProgressDashboard } from './pages/ProgressDashboard';
 import { PatternDrill } from './components/PatternDrill';
 import { ImFeelingLucky } from './components/ImFeelingLucky';
 import { WhatsNew, useWhatsNew } from './components/WhatsNew';
+import { ExportImportModal } from './components/ExportImportModal';
 import { problems, categories, type Problem, type Category, type Difficulty } from './data/problems';
 import { BookmarkButton } from './components/BookmarkButton';
 import { CompletionButton } from './components/CompletionButton';
@@ -104,7 +105,7 @@ import { useNotes } from './contexts/NotesContext';
 import { useTimeTracker } from './contexts/TimeTrackerContext';
 import { Timer } from './components/Timer';
 import { RelatedProblems } from './components/RelatedProblems';
-import { ChevronRight, ChevronDown, ExternalLink, Play, Lock, Lightbulb, LayoutDashboard, Brain, Building2, Mic, Bug, TrendingUp, Target, Sparkles, Star, Check } from 'lucide-react';
+import { ChevronRight, ChevronDown, ExternalLink, Play, Lock, Lightbulb, LayoutDashboard, Brain, Building2, Mic, Bug, TrendingUp, Target, Sparkles, Star, Check, Download, Upload } from 'lucide-react';
 
 type View = 'home' | 'patterns' | 'dashboard' | 'progress' | 'trainer' | 'verbal-trainer' | 'bug-hunter' | 'company-paths' | string;
 
@@ -298,7 +299,7 @@ function CategorySection({
   );
 }
 
-function HomePage({ onSelect }: { onSelect: (view: View) => void }) {
+function HomePage({ onSelect, onShowExportImport }: { onSelect: (view: View) => void; onShowExportImport: () => void }) {
   const { bookmarkCount, bookmarks } = useBookmarks();
   const { completionCount, completions } = useCompletions();
   const [selectedFilter, setSelectedFilter] = useState<'all' | 'saved' | 'completed'>('all');
@@ -323,7 +324,16 @@ function HomePage({ onSelect }: { onSelect: (view: View) => void }) {
   
   return (
     <div className="p-6 max-w-4xl mx-auto">
-      <div className="ml-auto mb-6 flex justify-end">
+      <div className="ml-auto mb-6 flex justify-end gap-3">
+        <button
+          onClick={onShowExportImport}
+          className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-500/30 rounded-lg hover:border-green-400 transition-all text-sm font-medium text-green-400 hover:text-green-300"
+          title="Export or import your progress data"
+        >
+          <Download size={16} />
+          <Upload size={14} className="-ml-1" />
+          Backup
+        </button>
         <ThemeToggle />
       </div>
       <div className="mb-8 text-center">
@@ -857,6 +867,9 @@ function App() {
   // What's New modal functionality
   const { shouldShowModal, showModal, hideModal } = useWhatsNew();
   
+  // Export/Import modal functionality
+  const [showExportImportModal, setShowExportImportModal] = useState(false);
+  
   return (
     <ThemeProvider>
       <BookmarkProvider>
@@ -874,6 +887,8 @@ function App() {
                 shouldShowModal={shouldShowModal}
                 showModal={showModal}
                 hideModal={hideModal}
+                showExportImportModal={showExportImportModal}
+                setShowExportImportModal={setShowExportImportModal}
               />
             </TimeTrackerProvider>
           </NotesProvider>
@@ -893,7 +908,9 @@ function AppContent({
   currentProblem,
   shouldShowModal,
   showModal,
-  hideModal
+  hideModal,
+  showExportImportModal,
+  setShowExportImportModal
 }: {
   view: View;
   setView: (view: View) => void;
@@ -905,6 +922,8 @@ function AppContent({
   shouldShowModal: boolean;
   showModal: () => void;
   hideModal: () => void;
+  showExportImportModal: boolean;
+  setShowExportImportModal: (show: boolean) => void;
 }) {
   return (
     <div className="min-h-screen" style={{ backgroundColor: 'var(--bg-primary)' }}>
@@ -995,9 +1014,18 @@ function AppContent({
             </>
           )}
           
-          {/* Theme Toggle and What's New Button */}
+          {/* Theme Toggle, Export/Import, and What's New Button */}
           <div className="ml-auto flex items-center gap-3">
             <ThemeToggle />
+            <button
+              onClick={() => setShowExportImportModal(true)}
+              className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-500/30 rounded-lg hover:border-green-400 transition-all text-sm font-medium text-green-400 hover:text-green-300"
+              title="Export or import your progress data"
+            >
+              <Download size={16} />
+              <Upload size={14} className="-ml-1" />
+              Backup
+            </button>
             <button
               onClick={showModal}
               className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30 rounded-lg hover:border-blue-400 transition-all text-sm font-medium text-blue-400 hover:text-blue-300"
@@ -1011,7 +1039,7 @@ function AppContent({
       )}
       
       {view === 'home' ? (
-        <HomePage onSelect={setView} />
+        <HomePage onSelect={setView} onShowExportImport={() => setShowExportImportModal(true)} />
       ) : view === 'patterns' ? (
         <PatternsPage onSelectPattern={(patternId) => setView(patternId)} />
       ) : patterns.find(p => p.id === view) ? (
@@ -1061,6 +1089,12 @@ function AppContent({
       <WhatsNew 
         isOpen={shouldShowModal} 
         onClose={hideModal} 
+      />
+      
+      {/* Export/Import Modal */}
+      <ExportImportModal
+        isOpen={showExportImportModal}
+        onClose={() => setShowExportImportModal(false)}
       />
     </div>
   );
