@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useCompletions } from '../contexts/CompletionContext';
 import { useTimeTracker } from '../contexts/TimeTrackerContext';
+import { useSpacedRepetition } from '../hooks/useSpacedRepetition';
 import { problems, categories } from '../data/problems';
 import {
   Calendar,
@@ -17,6 +18,7 @@ import {
   BookOpen,
   Award,
   Trophy,
+  RefreshCw,
 } from 'lucide-react';
 
 interface AirtableRecord {
@@ -530,6 +532,7 @@ export function ProgressDashboard() {
     formatTime, 
     timeStats 
   } = useTimeTracker();
+  const { getProblemsForReview, getReviewStats } = useSpacedRepetition();
 
   useEffect(() => {
     async function loadData() {
@@ -675,6 +678,146 @@ export function ProgressDashboard() {
           trend="neutral"
         />
       </div>
+
+      {/* Spaced Repetition Stats */}
+      {(() => {
+        const reviewStats = getReviewStats();
+        const dueProblems = getProblemsForReview();
+        
+        if (reviewStats.totalProblems === 0) return null;
+        
+        return (
+          <div className="mb-8">
+            <h2 className="text-xl font-semibold mb-6 flex items-center gap-2">
+              <RefreshCw size={24} className="text-cyan-400" />
+              Spaced Repetition Review
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-slate-800 rounded-xl p-6 border border-slate-700"
+              >
+                <div className="text-center">
+                  <p className="text-2xl font-bold text-cyan-400 mb-1">
+                    {reviewStats.totalProblems}
+                  </p>
+                  <p className="text-sm text-slate-400 mb-2">Problems in Review</p>
+                  <p className="text-xs text-slate-500">
+                    Being tracked for spaced repetition
+                  </p>
+                </div>
+              </motion.div>
+              
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="bg-slate-800 rounded-xl p-6 border border-slate-700"
+              >
+                <div className="text-center">
+                  <p className={`text-2xl font-bold mb-1 ${
+                    reviewStats.dueProblems > 0 ? 'text-orange-400' : 'text-green-400'
+                  }`}>
+                    {reviewStats.dueProblems}
+                  </p>
+                  <p className="text-sm text-slate-400 mb-2">Due for Review</p>
+                  <p className="text-xs text-slate-500">
+                    {reviewStats.dueProblems === 0 ? 'All caught up!' : 'Ready to review now'}
+                  </p>
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="bg-slate-800 rounded-xl p-6 border border-slate-700"
+              >
+                <div className="text-center">
+                  <p className="text-2xl font-bold text-blue-400 mb-1">
+                    {reviewStats.reviewSchedule.tomorrow}
+                  </p>
+                  <p className="text-sm text-slate-400 mb-2">Due Tomorrow</p>
+                  <p className="text-xs text-slate-500">Plan ahead for tomorrow</p>
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="bg-slate-800 rounded-xl p-6 border border-slate-700"
+              >
+                <div className="text-center">
+                  <p className="text-2xl font-bold text-purple-400 mb-1">
+                    {reviewStats.reviewSchedule.thisWeek}
+                  </p>
+                  <p className="text-sm text-slate-400 mb-2">This Week</p>
+                  <p className="text-xs text-slate-500">Coming up soon</p>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Review urgency breakdown */}
+            {dueProblems.length > 0 && (
+              <div className="mt-6 bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                  <AlertCircle size={20} className="text-orange-400" />
+                  Review Urgency Breakdown
+                </h3>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {dueProblems.slice(0, 6).map((dueProblem, index) => {
+                    const problem = problems.find(p => p.id === dueProblem.problemId);
+                    if (!problem) return null;
+                    
+                    return (
+                      <motion.div
+                        key={dueProblem.problemId}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.05 }}
+                        className="p-3 bg-slate-800/50 rounded-lg border border-slate-700/50"
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-2">
+                            <div className={`w-2 h-2 rounded-full ${
+                              dueProblem.daysOverdue > 7 ? 'bg-red-400' :
+                              dueProblem.daysOverdue > 3 ? 'bg-orange-400' :
+                              dueProblem.daysOverdue > 0 ? 'bg-yellow-400' : 'bg-green-400'
+                            }`} />
+                            <span className="text-sm font-medium text-slate-200 truncate">
+                              {problem.title}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="text-xs text-slate-400 space-y-1">
+                          <div className="flex justify-between">
+                            <span>{problem.category}</span>
+                            <span className={`font-medium ${
+                              dueProblem.daysOverdue > 0 ? 'text-orange-400' : 'text-blue-400'
+                            }`}>
+                              {dueProblem.daysOverdue > 0 ? 
+                                `${dueProblem.daysOverdue}d overdue` : 
+                                'Due today'
+                              }
+                            </span>
+                          </div>
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+                {dueProblems.length > 6 && (
+                  <p className="text-sm text-slate-400 text-center mt-3">
+                    +{dueProblems.length - 6} more problems due for review
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
+        );
+      })()}
 
       {/* Time Stats */}
       <div className="mb-8">

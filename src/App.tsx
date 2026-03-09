@@ -95,6 +95,7 @@ import { PatternDrill } from './components/PatternDrill';
 import { ImFeelingLucky } from './components/ImFeelingLucky';
 import { WhatsNew, useWhatsNew } from './components/WhatsNew';
 import { ExportImportModal } from './components/ExportImportModal';
+import { ReviewDue } from './components/ReviewDue';
 import { problems, categories, type Problem, type Category, type Difficulty } from './data/problems';
 import { BookmarkButton } from './components/BookmarkButton';
 import { CompletionButton } from './components/CompletionButton';
@@ -367,6 +368,11 @@ function HomePage({ onSelect, onShowExportImport }: { onSelect: (view: View) => 
           </div>
         </div>
         
+        {/* Review Due Component */}
+        <div className="mt-6 max-w-2xl mx-auto">
+          <ReviewDue onSelectProblem={onSelect} />
+        </div>
+
         {/* Practice Stats Widgets */}
         <div className="mt-6 flex justify-center gap-6 flex-wrap">
           <StatsCard 
