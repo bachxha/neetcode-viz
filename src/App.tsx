@@ -96,6 +96,7 @@ import { ImFeelingLucky } from './components/ImFeelingLucky';
 import { WhatsNew, useWhatsNew } from './components/WhatsNew';
 import { ExportImportModal } from './components/ExportImportModal';
 import { ReviewDue } from './components/ReviewDue';
+import { DailyChallenge } from './components/DailyChallenge';
 import { problems, categories, type Problem, type Category, type Difficulty } from './data/problems';
 import { BookmarkButton } from './components/BookmarkButton';
 import { CompletionButton } from './components/CompletionButton';
@@ -371,6 +372,11 @@ function HomePage({ onSelect, onShowExportImport }: { onSelect: (view: View) => 
         {/* Review Due Component */}
         <div className="mt-6 max-w-2xl mx-auto">
           <ReviewDue onSelectProblem={onSelect} />
+        </div>
+
+        {/* Daily Challenge */}
+        <div className="mt-6 max-w-4xl mx-auto">
+          <DailyChallenge onSelectProblem={onSelect} />
         </div>
 
         {/* Practice Stats Widgets */}

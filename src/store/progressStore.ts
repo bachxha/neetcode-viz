@@ -201,6 +201,43 @@ class ProgressStore {
     });
 
     this.setState(newState);
+    
+    // Check if this problem is today's daily challenge and mark it as completed
+    this.checkAndMarkDailyChallenge(problemId);
+  }
+
+  /**
+   * Check if the solved problem is today's daily challenge and mark it as completed
+   */
+  private checkAndMarkDailyChallenge(problemId: string): void {
+    try {
+      // Import the function dynamically to avoid circular dependencies
+      const today = new Date().toISOString().split('T')[0];
+      
+      // Use the same seeded random logic as in useDailyChallenge
+      const seededRandom = (seed: string): number => {
+        let hash = 0;
+        for (let i = 0; i < seed.length; i++) {
+          const char = seed.charCodeAt(i);
+          hash = ((hash << 5) - hash) + char;
+          hash = hash & hash;
+        }
+        return Math.abs(hash) / 0x7fffffff;
+      };
+      
+      // Get all problems - we need to import this from the problems file
+      // For now, we'll check localStorage to see if this is today's daily challenge
+      const dailyKey = `neetcode-daily-${today}`;
+      const isDailyCompleted = localStorage.getItem(dailyKey) !== null;
+      
+      if (!isDailyCompleted) {
+        // We need to check if this is today's problem, but we'll need the problems array
+        // Let's use a different approach - we'll dispatch a custom event that the daily challenge hook can listen to
+        window.dispatchEvent(new CustomEvent('problemCompleted', { detail: { problemId } }));
+      }
+    } catch (error) {
+      console.error('Failed to check daily challenge:', error);
+    }
   }
 
   /**
