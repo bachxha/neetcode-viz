@@ -4,6 +4,8 @@ import { BookmarkProvider } from './contexts/BookmarkContext';
 import { CompletionProvider } from './contexts/CompletionContext';
 import { NotesProvider } from './contexts/NotesContext';
 import { TimeTrackerProvider } from './contexts/TimeTrackerContext';
+import { AchievementsProvider } from './contexts/AchievementsContext';
+import { useAchievementIntegration } from './hooks/useAchievementIntegration';
 import { ThemeToggle } from './components/ThemeToggle';
 import { SearchBar } from './components/SearchBar';
 import { DifficultyFilter } from './components/DifficultyFilter';
@@ -107,7 +109,9 @@ import { useNotes } from './contexts/NotesContext';
 import { useTimeTracker } from './contexts/TimeTrackerContext';
 import { Timer } from './components/Timer';
 import { RelatedProblems } from './components/RelatedProblems';
-import { ChevronRight, ChevronDown, ExternalLink, Play, Lock, Lightbulb, LayoutDashboard, Brain, Building2, Mic, Bug, TrendingUp, Target, Sparkles, Star, Check, Download, Upload } from 'lucide-react';
+import { AchievementsModal } from './components/AchievementsModal';
+import { AchievementToast } from './components/AchievementToast';
+import { ChevronRight, ChevronDown, ExternalLink, Play, Lock, Lightbulb, LayoutDashboard, Brain, Building2, Mic, Bug, TrendingUp, Target, Sparkles, Star, Check, Download, Upload, Trophy } from 'lucide-react';
 
 type View = 'home' | 'patterns' | 'dashboard' | 'progress' | 'trainer' | 'verbal-trainer' | 'bug-hunter' | 'company-paths' | string;
 
@@ -301,7 +305,7 @@ function CategorySection({
   );
 }
 
-function HomePage({ onSelect, onShowExportImport }: { onSelect: (view: View) => void; onShowExportImport: () => void }) {
+function HomePage({ onSelect, onShowExportImport, onShowAchievements }: { onSelect: (view: View) => void; onShowExportImport: () => void; onShowAchievements: () => void }) {
   const { bookmarkCount, bookmarks } = useBookmarks();
   const { completionCount, completions } = useCompletions();
   const [selectedFilter, setSelectedFilter] = useState<'all' | 'saved' | 'completed'>('all');
@@ -335,6 +339,14 @@ function HomePage({ onSelect, onShowExportImport }: { onSelect: (view: View) => 
           <Download size={16} />
           <Upload size={14} className="-ml-1" />
           Backup
+        </button>
+        <button
+          onClick={onShowAchievements}
+          className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-500/30 rounded-lg hover:border-yellow-400 transition-all text-sm font-medium text-yellow-400 hover:text-yellow-300"
+          title="View your achievement badges"
+        >
+          <Trophy size={16} />
+          Achievements
         </button>
         <ThemeToggle />
       </div>
@@ -882,28 +894,36 @@ function App() {
   // Export/Import modal functionality
   const [showExportImportModal, setShowExportImportModal] = useState(false);
   
+  // Achievements modal functionality
+  const [showAchievementsModal, setShowAchievementsModal] = useState(false);
+  
   return (
     <ThemeProvider>
       <BookmarkProvider>
         <CompletionProvider>
-          <NotesProvider>
-            <TimeTrackerProvider>
-              <AppContent 
-                view={view}
-                setView={setView}
-                selectedCompany={selectedCompany}
-                setSelectedCompany={setSelectedCompany}
-                selectedCompanyPrep={selectedCompanyPrep}
-                setSelectedCompanyPrep={setSelectedCompanyPrep}
-                currentProblem={currentProblem}
-                shouldShowModal={shouldShowModal}
-                showModal={showModal}
-                hideModal={hideModal}
-                showExportImportModal={showExportImportModal}
-                setShowExportImportModal={setShowExportImportModal}
-              />
-            </TimeTrackerProvider>
-          </NotesProvider>
+          <AchievementsProvider>
+            <NotesProvider>
+              <TimeTrackerProvider>
+                <AppContent 
+                  view={view}
+                  setView={setView}
+                  selectedCompany={selectedCompany}
+                  setSelectedCompany={setSelectedCompany}
+                  selectedCompanyPrep={selectedCompanyPrep}
+                  setSelectedCompanyPrep={setSelectedCompanyPrep}
+                  currentProblem={currentProblem}
+                  shouldShowModal={shouldShowModal}
+                  showModal={showModal}
+                  hideModal={hideModal}
+                  showExportImportModal={showExportImportModal}
+                  setShowExportImportModal={setShowExportImportModal}
+                  showAchievementsModal={showAchievementsModal}
+                  setShowAchievementsModal={setShowAchievementsModal}
+                />
+                <AchievementToast />
+              </TimeTrackerProvider>
+            </NotesProvider>
+          </AchievementsProvider>
         </CompletionProvider>
       </BookmarkProvider>
     </ThemeProvider>
@@ -922,7 +942,9 @@ function AppContent({
   showModal,
   hideModal,
   showExportImportModal,
-  setShowExportImportModal
+  setShowExportImportModal,
+  showAchievementsModal,
+  setShowAchievementsModal
 }: {
   view: View;
   setView: (view: View) => void;
@@ -936,7 +958,12 @@ function AppContent({
   hideModal: () => void;
   showExportImportModal: boolean;
   setShowExportImportModal: (show: boolean) => void;
+  showAchievementsModal: boolean;
+  setShowAchievementsModal: (show: boolean) => void;
 }) {
+  // Initialize achievement integration
+  useAchievementIntegration();
+
   return (
     <div className="min-h-screen" style={{ backgroundColor: 'var(--bg-primary)' }}>
       {view !== 'home' && (
@@ -1026,7 +1053,7 @@ function AppContent({
             </>
           )}
           
-          {/* Theme Toggle, Export/Import, and What's New Button */}
+          {/* Theme Toggle, Export/Import, Achievements, and What's New Button */}
           <div className="ml-auto flex items-center gap-3">
             <ThemeToggle />
             <button
@@ -1037,6 +1064,14 @@ function AppContent({
               <Download size={16} />
               <Upload size={14} className="-ml-1" />
               Backup
+            </button>
+            <button
+              onClick={() => setShowAchievementsModal(true)}
+              className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-500/30 rounded-lg hover:border-yellow-400 transition-all text-sm font-medium text-yellow-400 hover:text-yellow-300"
+              title="View your achievement badges"
+            >
+              <Trophy size={16} />
+              Achievements
             </button>
             <button
               onClick={showModal}
@@ -1051,7 +1086,7 @@ function AppContent({
       )}
       
       {view === 'home' ? (
-        <HomePage onSelect={setView} onShowExportImport={() => setShowExportImportModal(true)} />
+        <HomePage onSelect={setView} onShowExportImport={() => setShowExportImportModal(true)} onShowAchievements={() => setShowAchievementsModal(true)} />
       ) : view === 'patterns' ? (
         <PatternsPage onSelectPattern={(patternId) => setView(patternId)} />
       ) : patterns.find(p => p.id === view) ? (
@@ -1107,6 +1142,12 @@ function AppContent({
       <ExportImportModal
         isOpen={showExportImportModal}
         onClose={() => setShowExportImportModal(false)}
+      />
+      
+      {/* Achievements Modal */}
+      <AchievementsModal
+        isOpen={showAchievementsModal}
+        onClose={() => setShowAchievementsModal(false)}
       />
     </div>
   );

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Dice1, Dice2, Dice3, Dice4, Dice5, Dice6, Zap, AlertCircle, TrendingDown } from 'lucide-react';
+import { trackLuckyUsage } from '../hooks/useAchievementIntegration';
 
 interface AirtableRecord {
   id: string;
@@ -250,6 +251,9 @@ export function ImFeelingLucky({ onSelectProblem }: ImFeelingLuckyProps) {
     setIsLoading(true);
     setIsRolling(true);
     setError(null);
+    
+    // Track usage for achievements
+    trackLuckyUsage();
     
     animateDice();
 

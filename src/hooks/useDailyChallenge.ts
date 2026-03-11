@@ -157,6 +157,12 @@ export function completeDailyChallenge(): void {
   const today = getTodayDateString();
   const problem = getDailyProblem(today);
   markDailyCompleted(today, problem.id);
+  
+  // Track daily challenge completion for achievements
+  if (typeof window !== 'undefined') {
+    const currentCount = parseInt(localStorage.getItem('neetcode-daily-challenge-count') || '0');
+    localStorage.setItem('neetcode-daily-challenge-count', (currentCount + 1).toString());
+  }
 }
 
 // Function to check if a specific problem is today's challenge
