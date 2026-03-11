@@ -24,12 +24,6 @@ function getTodayDateString(): string {
   return new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
 }
 
-function getYesterdayDateString(): string {
-  const yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
-  return yesterday.toISOString().split('T')[0];
-}
-
 function getTomorrowMidnight(): Date {
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);

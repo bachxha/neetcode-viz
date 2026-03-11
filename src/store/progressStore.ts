@@ -214,17 +214,6 @@ class ProgressStore {
       // Import the function dynamically to avoid circular dependencies
       const today = new Date().toISOString().split('T')[0];
       
-      // Use the same seeded random logic as in useDailyChallenge
-      const seededRandom = (seed: string): number => {
-        let hash = 0;
-        for (let i = 0; i < seed.length; i++) {
-          const char = seed.charCodeAt(i);
-          hash = ((hash << 5) - hash) + char;
-          hash = hash & hash;
-        }
-        return Math.abs(hash) / 0x7fffffff;
-      };
-      
       // Get all problems - we need to import this from the problems file
       // For now, we'll check localStorage to see if this is today's daily challenge
       const dailyKey = `neetcode-daily-${today}`;
