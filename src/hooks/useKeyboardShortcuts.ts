@@ -9,6 +9,7 @@ interface KeyboardShortcutsProps {
   onStepForward?: () => void;
   onReset?: () => void;
   onSpeedChange?: (speed: number) => void;
+  onToggleFocus?: () => void;
   currentSpeed?: number;
   canStepBack?: boolean;
   canStepForward?: boolean;
@@ -27,6 +28,7 @@ export function useKeyboardShortcuts({
   onStepForward,
   onReset,
   onSpeedChange,
+  onToggleFocus,
   currentSpeed = 1,
   canStepBack = true,
   canStepForward = true,
@@ -123,6 +125,13 @@ export function useKeyboardShortcuts({
           if (showHint) dismissHint();
           break;
 
+        case 'f':
+        case 'F': // F - Toggle focus mode
+          e.preventDefault();
+          onToggleFocus?.();
+          if (showHint) dismissHint();
+          break;
+
         case '?': // ? - Show/hide shortcuts modal
           e.preventDefault();
           setShowShortcutsModal(prev => !prev);
@@ -144,6 +153,7 @@ export function useKeyboardShortcuts({
     onStepBack,
     onStepForward,
     onReset,
+    onToggleFocus,
     toggleSpeed,
     canStepBack,
     canStepForward,

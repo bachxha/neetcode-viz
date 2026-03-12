@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ThemeProvider } from './contexts/ThemeContext';
+import { FocusProvider } from './contexts/FocusContext';
 import { BookmarkProvider } from './contexts/BookmarkContext';
 import { CompletionProvider } from './contexts/CompletionContext';
 import { NotesProvider } from './contexts/NotesContext';
@@ -7,6 +8,7 @@ import { TimeTrackerProvider } from './contexts/TimeTrackerContext';
 import { AchievementsProvider } from './contexts/AchievementsContext';
 import { useAchievementIntegration } from './hooks/useAchievementIntegration';
 import { ThemeToggle } from './components/ThemeToggle';
+import { FocusModeToggle, FocusExitButton } from './components/FocusModeToggle';
 import { SearchBar } from './components/SearchBar';
 import { DifficultyFilter } from './components/DifficultyFilter';
 import { SubsetsVisualizer } from './visualizers/SubsetsVisualizer';
@@ -107,6 +109,7 @@ import { useBookmarks } from './contexts/BookmarkContext';
 import { useCompletions } from './contexts/CompletionContext';
 import { useNotes } from './contexts/NotesContext';
 import { useTimeTracker } from './contexts/TimeTrackerContext';
+import { useFocus } from './contexts/FocusContext';
 import { Timer } from './components/Timer';
 import { RelatedProblems } from './components/RelatedProblems';
 import { AchievementsModal } from './components/AchievementsModal';
@@ -899,11 +902,12 @@ function App() {
   
   return (
     <ThemeProvider>
-      <BookmarkProvider>
-        <CompletionProvider>
-          <AchievementsProvider>
-            <NotesProvider>
-              <TimeTrackerProvider>
+      <FocusProvider>
+        <BookmarkProvider>
+          <CompletionProvider>
+            <AchievementsProvider>
+              <NotesProvider>
+                <TimeTrackerProvider>
                 <AppContent 
                   view={view}
                   setView={setView}
@@ -921,11 +925,12 @@ function App() {
                   setShowAchievementsModal={setShowAchievementsModal}
                 />
                 <AchievementToast />
-              </TimeTrackerProvider>
-            </NotesProvider>
-          </AchievementsProvider>
-        </CompletionProvider>
-      </BookmarkProvider>
+                </TimeTrackerProvider>
+              </NotesProvider>
+            </AchievementsProvider>
+          </CompletionProvider>
+        </BookmarkProvider>
+      </FocusProvider>
     </ThemeProvider>
   );
 }
@@ -963,10 +968,16 @@ function AppContent({
 }) {
   // Initialize achievement integration
   useAchievementIntegration();
+  
+  // Get focus mode state
+  const { isFocusMode } = useFocus();
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: 'var(--bg-primary)' }}>
-      {view !== 'home' && (
+      {/* Focus Exit Button */}
+      <FocusExitButton />
+      
+      {view !== 'home' && !isFocusMode && (
         <nav 
           className="border-b px-6 py-3 flex items-center gap-4 transition-colors"
           style={{ 
@@ -1053,8 +1064,9 @@ function AppContent({
             </>
           )}
           
-          {/* Theme Toggle, Export/Import, Achievements, and What's New Button */}
+          {/* Focus Mode, Theme Toggle, Export/Import, Achievements, and What's New Button */}
           <div className="ml-auto flex items-center gap-3">
+            <FocusModeToggle size="sm" showText={false} />
             <ThemeToggle />
             <button
               onClick={() => setShowExportImportModal(true)}

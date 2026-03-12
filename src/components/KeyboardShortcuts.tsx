@@ -12,8 +12,9 @@ const shortcuts = [
   { key: '→', description: 'Step forward' },
   { key: 'R', description: 'Reset animation' },
   { key: 'S', description: 'Toggle speed (0.5x → 1x → 2x)' },
+  { key: 'F', description: 'Toggle Focus Mode' },
   { key: '?', description: 'Show / Hide this help' },
-  { key: 'Esc', description: 'Close any open modal' },
+  { key: 'Esc', description: 'Close any open modal / Exit Focus Mode' },
 ];
 
 export function KeyboardShortcuts({ isOpen, onClose }: KeyboardShortcutsProps) {

@@ -6,6 +6,7 @@ import { KeyboardShortcuts } from '../components/KeyboardShortcuts';
 import { ShortcutsHint } from '../components/ShortcutsHint';
 import { useSpeedControl } from '../hooks/useSpeedControl';
 import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
+import { useFocus } from '../contexts/FocusContext';
 
 interface Step {
   type: 'start' | 'buy' | 'sell' | 'update-profit' | 'done';
@@ -138,6 +139,7 @@ export function BestTimeToBuyAndSellStockVisualizer() {
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const { speed, updateSpeed } = useSpeedControl();
+  const { toggleFocusMode } = useFocus();
 
   // Keyboard shortcuts integration
   const {
@@ -151,6 +153,7 @@ export function BestTimeToBuyAndSellStockVisualizer() {
     onStepForward: () => setCurrentStep(s => Math.min(steps.length - 1, s + 1)),
     onReset: () => { setCurrentStep(0); setIsPlaying(false); },
     onSpeedChange: updateSpeed,
+    onToggleFocus: toggleFocusMode,
     currentSpeed: speed,
     canStepBack: currentStep > 0,
     canStepForward: currentStep < steps.length - 1,

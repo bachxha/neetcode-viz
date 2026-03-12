@@ -56,3 +56,39 @@ body {
   color: var(--text-primary);
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
+
+/* Focus Mode Styles */
+.focus-mode {
+  /* Hide any scrollbars in focus mode for cleaner look */
+  overflow: hidden;
+}
+
+/* Navigation transitions for focus mode */
+nav {
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.focus-mode nav {
+  opacity: 0;
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+
+/* Smooth animation for focus mode entry/exit */
+.focus-transition {
+  transition: all 0.3s ease-in-out;
+}
+
+/* Focus mode visualizer container takes full viewport */
+.focus-mode .visualizer-container {
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+}
+
+/* Focus mode content adjustments */
+.focus-mode .visualizer-content {
+  padding: 1rem;
+  height: 100vh;
+  overflow-y: auto;
+}
