@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Lock, Calendar } from 'lucide-react';
-import { Badge, useAchievements } from '../contexts/AchievementsContext';
+import { useAchievements, type Badge } from '../contexts/AchievementsContext';
 
 interface AchievementBadgeProps {
   badge: Badge;
