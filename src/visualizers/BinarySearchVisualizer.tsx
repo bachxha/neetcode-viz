@@ -1,8 +1,9 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Controls } from '../components/Controls';
 import { Hints } from '../components/Hints';
 import { useSpeedControl } from '../hooks/useSpeedControl';
+import { CodeWalkthrough } from '../components/CodeWalkthrough';
 
 interface Step {
   type: 'start' | 'compare' | 'search-left' | 'search-right' | 'found' | 'not-found';
@@ -149,6 +150,25 @@ export function BinarySearchVisualizer() {
   }, [isPlaying, currentStep, steps.length, speed]);
   
   const currentStepData = steps[currentStep];
+  
+  // Map step types to code line numbers
+  const { currentCodeLine, highlightedCodeLines } = useMemo(() => {
+    if (!currentStepData) return { currentCodeLine: undefined, highlightedCodeLines: [] };
+    
+    const lineMap: Record<string, { current: number; highlighted: number[] }> = {
+      'start': { current: 2, highlighted: [2, 3] },
+      'compare': { current: 7, highlighted: [5, 6, 7, 9] },
+      'found': { current: 10, highlighted: [9, 10] },
+      'search-right': { current: 12, highlighted: [11, 12] },
+      'search-left': { current: 14, highlighted: [13, 14] },
+      'not-found': { current: 18, highlighted: [18] },
+    };
+    
+    const mapping = lineMap[currentStepData.type];
+    return mapping 
+      ? { currentCodeLine: mapping.current, highlightedCodeLines: mapping.highlighted }
+      : { currentCodeLine: undefined, highlightedCodeLines: [] };
+  }, [currentStepData]);
   
   return (
     <div className="p-6 max-w-5xl mx-auto">
@@ -369,30 +389,14 @@ export function BinarySearchVisualizer() {
       {/* AI Hints */}
       <Hints problemId="binary-search" className="mt-6" />
       
-      <div className="mt-6 bg-slate-800 rounded-lg p-4">
-        <h3 className="text-sm font-semibold text-slate-400 mb-2">Java Code</h3>
-        <pre className="text-sm font-mono text-slate-300 overflow-x-auto">
-{`public int search(int[] nums, int target) {
-    int left = 0;
-    int right = nums.length - 1;
-    
-    while (left <= right) {
-        // Calculate mid point to avoid overflow
-        int mid = left + (right - left) / 2;
-        
-        if (nums[mid] == target) {
-            return mid; // Found target
-        } else if (nums[mid] < target) {
-            left = mid + 1; // Search right half
-        } else {
-            right = mid - 1; // Search left half
-        }
-    }
-    
-    return -1; // Target not found
-}`}
-        </pre>
-      </div>
+      <CodeWalkthrough
+        code={BINARY_SEARCH_CODE}
+        language="java"
+        currentLine={currentCodeLine}
+        highlightedLines={highlightedCodeLines}
+        title="Code Walkthrough"
+        className="mt-6"
+      />
       
       <div className="mt-4 bg-slate-800 rounded-lg p-4">
         <h3 className="text-sm font-semibold text-slate-400 mb-2">How Binary Search Works</h3>
@@ -443,3 +447,25 @@ export function BinarySearchVisualizer() {
     </div>
   );
 }
+
+// Code with line numbers for mapping
+const BINARY_SEARCH_CODE = `public int search(int[] nums, int target) {
+    int left = 0;
+    int right = nums.length - 1;
+    
+    while (left <= right) {
+        // Calculate mid point to avoid overflow
+        int mid = left + (right - left) / 2;
+        
+        if (nums[mid] == target) {
+            return mid; // Found target
+        } else if (nums[mid] < target) {
+            left = mid + 1; // Search right half
+        } else {
+            right = mid - 1; // Search left half
+        }
+    }
+    
+    return -1; // Target not found
+}
+// Time: O(log n)  |  Space: O(1)`;
