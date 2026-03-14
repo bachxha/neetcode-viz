@@ -3,7 +3,8 @@ import { motion } from 'framer-motion';
 import { Controls } from '../components/Controls';
 import { Hints } from '../components/Hints';
 import { useSpeedControl } from '../hooks/useSpeedControl';
-import { CodeWalkthrough } from '../components/CodeWalkthrough';
+import { CodeWalkthrough, type Language } from '../components/CodeWalkthrough';
+import { BINARY_SEARCH_CODE, BINARY_SEARCH_LINE_MAP } from '../solutions/binarySearch';
 
 interface Step {
   type: 'start' | 'compare' | 'search-left' | 'search-right' | 'found' | 'not-found';
@@ -151,24 +152,25 @@ export function BinarySearchVisualizer() {
   
   const currentStepData = steps[currentStep];
   
-  // Map step types to code line numbers
+  // Get current language from localStorage for line mapping
+  const currentLanguage = useMemo(() => {
+    try {
+      const saved = localStorage.getItem('codeWalkthrough-language');
+      return (saved as Language) || 'java';
+    } catch {
+      return 'java';
+    }
+  }, []);
+
+  // Map step types to code line numbers based on current language
   const { currentCodeLine, highlightedCodeLines } = useMemo(() => {
     if (!currentStepData) return { currentCodeLine: undefined, highlightedCodeLines: [] };
     
-    const lineMap: Record<string, { current: number; highlighted: number[] }> = {
-      'start': { current: 2, highlighted: [2, 3] },
-      'compare': { current: 7, highlighted: [5, 6, 7, 9] },
-      'found': { current: 10, highlighted: [9, 10] },
-      'search-right': { current: 12, highlighted: [11, 12] },
-      'search-left': { current: 14, highlighted: [13, 14] },
-      'not-found': { current: 18, highlighted: [18] },
-    };
-    
-    const mapping = lineMap[currentStepData.type];
+    const mapping = BINARY_SEARCH_LINE_MAP[currentLanguage][currentStepData.type];
     return mapping 
       ? { currentCodeLine: mapping.current, highlightedCodeLines: mapping.highlighted }
       : { currentCodeLine: undefined, highlightedCodeLines: [] };
-  }, [currentStepData]);
+  }, [currentStepData, currentLanguage]);
   
   return (
     <div className="p-6 max-w-5xl mx-auto">
@@ -390,8 +392,7 @@ export function BinarySearchVisualizer() {
       <Hints problemId="binary-search" className="mt-6" />
       
       <CodeWalkthrough
-        code={BINARY_SEARCH_CODE}
-        language="java"
+        multiLanguageCode={BINARY_SEARCH_CODE}
         currentLine={currentCodeLine}
         highlightedLines={highlightedCodeLines}
         title="Code Walkthrough"
@@ -448,24 +449,4 @@ export function BinarySearchVisualizer() {
   );
 }
 
-// Code with line numbers for mapping
-const BINARY_SEARCH_CODE = `public int search(int[] nums, int target) {
-    int left = 0;
-    int right = nums.length - 1;
-    
-    while (left <= right) {
-        // Calculate mid point to avoid overflow
-        int mid = left + (right - left) / 2;
-        
-        if (nums[mid] == target) {
-            return mid; // Found target
-        } else if (nums[mid] < target) {
-            left = mid + 1; // Search right half
-        } else {
-            right = mid - 1; // Search left half
-        }
-    }
-    
-    return -1; // Target not found
-}
-// Time: O(log n)  |  Space: O(1)`;
+// Code solutions moved to src/solutions/binarySearch.ts

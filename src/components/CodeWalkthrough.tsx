@@ -2,15 +2,26 @@
  * CodeWalkthrough Component
  * Displays algorithm code with step-by-step line highlighting
  * Syncs with visualizer animation state
+ * Supports multiple programming languages with persistent preference
  */
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, ChevronUp, Code2 } from 'lucide-react';
 
+export type Language = 'java' | 'python' | 'javascript';
+
+export interface MultiLanguageCode {
+  java: string;
+  python: string;
+  javascript: string;
+}
+
 interface CodeWalkthroughProps {
-  code: string;
-  language?: 'java' | 'python' | 'javascript';
+  // Support both single language (legacy) and multi-language
+  code?: string;
+  multiLanguageCode?: MultiLanguageCode;
+  language?: Language;
   highlightedLines?: number[];  // 1-indexed line numbers to highlight
   currentLine?: number;         // Current executing line (1-indexed)
   title?: string;
@@ -18,42 +29,88 @@ interface CodeWalkthroughProps {
   className?: string;
 }
 
-// Simple syntax highlighting (Java-focused for now)
-function highlightCode(line: string, _language: string): React.ReactElement[] {
+// Enhanced syntax highlighting for multiple languages
+function highlightCode(line: string, language: Language): React.ReactElement[] {
   const elements: React.ReactElement[] = [];
   let remaining = line;
   let key = 0;
 
-  const javaKeywords = [
-    'public', 'private', 'protected', 'static', 'final', 'void', 'class', 'interface',
-    'extends', 'implements', 'new', 'return', 'if', 'else', 'for', 'while', 'do',
-    'switch', 'case', 'break', 'continue', 'try', 'catch', 'finally', 'throw', 'throws',
-    'int', 'long', 'double', 'float', 'boolean', 'char', 'byte', 'short', 'String',
-    'null', 'true', 'false', 'this', 'super', 'import', 'package',
-  ];
-  
-  const typeKeywords = [
-    'List', 'ArrayList', 'LinkedList', 'Map', 'HashMap', 'TreeMap', 'Set', 'HashSet',
-    'TreeSet', 'Queue', 'Deque', 'Stack', 'PriorityQueue', 'Arrays', 'Collections',
-    'Integer', 'Long', 'Double', 'Float', 'Boolean', 'Character', 'Object',
-    'TreeNode', 'ListNode', 'StringBuilder', 'Math', 'System',
-  ];
+  // Language-specific keywords
+  const languageKeywords = {
+    java: [
+      'public', 'private', 'protected', 'static', 'final', 'void', 'class', 'interface',
+      'extends', 'implements', 'new', 'return', 'if', 'else', 'for', 'while', 'do',
+      'switch', 'case', 'break', 'continue', 'try', 'catch', 'finally', 'throw', 'throws',
+      'int', 'long', 'double', 'float', 'boolean', 'char', 'byte', 'short', 'String',
+      'null', 'true', 'false', 'this', 'super', 'import', 'package', 'instanceof',
+    ],
+    python: [
+      'def', 'class', 'if', 'elif', 'else', 'for', 'while', 'try', 'except', 'finally',
+      'import', 'from', 'as', 'return', 'yield', 'break', 'continue', 'pass', 'with',
+      'lambda', 'in', 'not', 'and', 'or', 'is', 'True', 'False', 'None', 'self',
+      'global', 'nonlocal', 'assert', 'del', 'raise',
+    ],
+    javascript: [
+      'function', 'const', 'let', 'var', 'if', 'else', 'for', 'while', 'do', 'switch',
+      'case', 'break', 'continue', 'return', 'try', 'catch', 'finally', 'throw',
+      'new', 'this', 'typeof', 'instanceof', 'in', 'of', 'class', 'extends', 'super',
+      'static', 'async', 'await', 'true', 'false', 'null', 'undefined', 'export',
+      'import', 'from', 'default',
+    ],
+  };
+
+  const typeKeywords = {
+    java: [
+      'List', 'ArrayList', 'LinkedList', 'Map', 'HashMap', 'TreeMap', 'Set', 'HashSet',
+      'TreeSet', 'Queue', 'Deque', 'Stack', 'PriorityQueue', 'Arrays', 'Collections',
+      'Integer', 'Long', 'Double', 'Float', 'Boolean', 'Character', 'Object',
+      'TreeNode', 'ListNode', 'StringBuilder', 'Math', 'System',
+    ],
+    python: [
+      'list', 'dict', 'set', 'tuple', 'str', 'int', 'float', 'bool', 'len', 'range',
+      'enumerate', 'zip', 'map', 'filter', 'sorted', 'min', 'max', 'sum', 'abs',
+      'all', 'any', 'type', 'isinstance', 'hasattr', 'getattr', 'setattr',
+    ],
+    javascript: [
+      'Array', 'Object', 'Map', 'Set', 'String', 'Number', 'Boolean', 'Math',
+      'JSON', 'Date', 'Promise', 'console', 'parseInt', 'parseFloat', 'isNaN',
+      'setTimeout', 'setInterval', 'clearTimeout', 'clearInterval',
+    ],
+  };
+
+  // Comment patterns by language
+  const commentPatterns = {
+    java: [/^(\/\/.*$)/, /^(\/\*[\s\S]*?\*\/)/],
+    python: [/^(#.*$)/, /^('''[\s\S]*?''')/, /^("""[\s\S]*?""")/],
+    javascript: [/^(\/\/.*$)/, /^(\/\*[\s\S]*?\*\/)/],
+  };
 
   const patterns = [
-    { type: 'comment', regex: /^(\/\/.*$)/ },
-    { type: 'comment', regex: /^(#.*$)/ }, // Python
+    // Comments (language-specific)
+    ...commentPatterns[language].map(regex => ({ type: 'comment', regex })),
+    // Strings
     { type: 'string', regex: /^("(?:[^"\\]|\\.)*")/ },
     { type: 'string', regex: /^('(?:[^'\\]|\\.)*')/ },
+    { type: 'string', regex: /^(`(?:[^`\\]|\\.)*`)/ }, // Template strings (JS)
+    // Numbers
     { type: 'number', regex: /^(\b\d+\.?\d*[fFdDlL]?\b)/ },
-    { type: 'keyword', regex: new RegExp(`^\\b(${javaKeywords.join('|')})\\b`) },
-    { type: 'type', regex: new RegExp(`^\\b(${typeKeywords.join('|')})\\b`) },
-    { type: 'annotation', regex: /^(@\w+)/ },
+    // Keywords
+    { type: 'keyword', regex: new RegExp(`^\\b(${languageKeywords[language].join('|')})\\b`) },
+    { type: 'type', regex: new RegExp(`^\\b(${typeKeywords[language].join('|')})\\b`) },
+    // Language-specific patterns
+    { type: 'annotation', regex: /^(@\w+)/ }, // Java annotations
+    { type: 'decorator', regex: /^(@\w+)/ },  // Python decorators
     { type: 'method', regex: /^(\w+)(?=\s*\()/ },
+    // Operators
     { type: 'operator', regex: /^([+\-*/%=<>!&|^~?:]+)/ },
+    // Brackets and punctuation
     { type: 'bracket', regex: /^([()[\]{}])/ },
     { type: 'punctuation', regex: /^([;,.])/ },
+    // Whitespace
     { type: 'whitespace', regex: /^(\s+)/ },
+    // Identifiers
     { type: 'identifier', regex: /^(\w+)/ },
+    // Everything else
     { type: 'other', regex: /^(.)/ },
   ];
 
@@ -64,6 +121,7 @@ function highlightCode(line: string, _language: string): React.ReactElement[] {
     keyword: 'text-purple-400 font-medium',
     type: 'text-cyan-400',
     annotation: 'text-yellow-400',
+    decorator: 'text-yellow-400',
     method: 'text-blue-400',
     operator: 'text-pink-400',
     bracket: 'text-slate-300',
@@ -98,9 +156,17 @@ function highlightCode(line: string, _language: string): React.ReactElement[] {
   return elements;
 }
 
+// Language display names and file extensions for UI
+const languageInfo: Record<Language, { name: string; ext: string }> = {
+  java: { name: 'Java', ext: '.java' },
+  python: { name: 'Python', ext: '.py' },
+  javascript: { name: 'JS', ext: '.js' },
+};
+
 export function CodeWalkthrough({
   code,
-  language = 'java',
+  multiLanguageCode,
+  language: propLanguage,
   highlightedLines = [],
   currentLine,
   title = 'Code Walkthrough',
@@ -109,25 +175,66 @@ export function CodeWalkthrough({
 }: CodeWalkthroughProps) {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
   
-  const lines = useMemo(() => code.split('\n'), [code]);
+  // Language selection state with localStorage persistence
+  const [selectedLanguage, setSelectedLanguage] = useState<Language>(() => {
+    if (propLanguage) return propLanguage;
+    try {
+      const saved = localStorage.getItem('codeWalkthrough-language');
+      return (saved as Language) || 'java';
+    } catch {
+      return 'java';
+    }
+  });
+
+  // Persist language choice
+  useEffect(() => {
+    if (!propLanguage) { // Only persist if not controlled by props
+      try {
+        localStorage.setItem('codeWalkthrough-language', selectedLanguage);
+      } catch {
+        // Ignore localStorage errors
+      }
+    }
+  }, [selectedLanguage, propLanguage]);
+
+  // Determine current language and code
+  const currentLanguage = propLanguage || selectedLanguage;
+  const currentCode = multiLanguageCode 
+    ? multiLanguageCode[currentLanguage] 
+    : code || '';
+
+  const lines = useMemo(() => currentCode.split('\n'), [currentCode]);
   
   const highlightedSet = useMemo(
     () => new Set(highlightedLines),
     [highlightedLines]
   );
 
+  const handleLanguageChange = (lang: Language) => {
+    if (!propLanguage) { // Only allow changes if not controlled by props
+      setSelectedLanguage(lang);
+    }
+  };
+
+  const isMultiLanguage = !!multiLanguageCode;
+
   return (
     <div className={`bg-slate-800 dark:bg-slate-900 rounded-lg border border-slate-700 overflow-hidden ${className}`}>
       {/* Header */}
-      <button
-        onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full flex items-center justify-between px-4 py-3 hover:bg-slate-700/50 transition-colors"
-      >
-        <div className="flex items-center gap-2">
+      <div className="flex items-center justify-between px-4 py-3 border-b border-slate-700">
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="flex items-center gap-2 hover:bg-slate-700/50 rounded px-2 py-1 transition-colors"
+        >
           <Code2 size={18} className="text-blue-400" />
           <span className="font-semibold text-slate-200">{title}</span>
-          <span className="text-xs text-slate-500 capitalize">({language})</span>
-        </div>
+          {!isMultiLanguage && (
+            <span className="text-xs text-slate-500 capitalize">
+              ({languageInfo[currentLanguage].name})
+            </span>
+          )}
+        </button>
+        
         <div className="flex items-center gap-2">
           {currentLine && (
             <span className="text-xs bg-yellow-500/20 text-yellow-400 px-2 py-0.5 rounded">
@@ -136,7 +243,29 @@ export function CodeWalkthrough({
           )}
           {isExpanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
         </div>
-      </button>
+      </div>
+
+      {/* Language Tabs (only shown for multi-language) */}
+      {isMultiLanguage && isExpanded && (
+        <div className="flex bg-slate-700/30 border-b border-slate-700">
+          {(Object.keys(languageInfo) as Language[]).map((lang) => {
+            const isActive = currentLanguage === lang;
+            return (
+              <button
+                key={lang}
+                onClick={() => handleLanguageChange(lang)}
+                className={`px-4 py-2 text-sm font-medium transition-colors border-b-2 ${
+                  isActive
+                    ? 'text-blue-400 border-blue-400 bg-slate-600/30'
+                    : 'text-slate-400 border-transparent hover:text-slate-200 hover:bg-slate-600/20'
+                }`}
+              >
+                {languageInfo[lang].name}
+              </button>
+            );
+          })}
+        </div>
+      )}
 
       {/* Code content */}
       <AnimatePresence>
@@ -147,7 +276,7 @@ export function CodeWalkthrough({
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.2 }}
           >
-            <div className="border-t border-slate-700 overflow-x-auto">
+            <div className="overflow-x-auto">
               <div className="font-mono text-sm min-w-max">
                 {lines.map((line, index) => {
                   const lineNumber = index + 1;
@@ -174,7 +303,7 @@ export function CodeWalkthrough({
 
                       {/* Code content */}
                       <div className="flex-1 px-4 py-1 whitespace-pre">
-                        {highlightCode(line, language)}
+                        {highlightCode(line, currentLanguage)}
                       </div>
 
                       {/* Execution indicator */}
@@ -209,6 +338,14 @@ export function CodeWalkthrough({
               <span className="text-slate-600">|</span>
               <span className="text-yellow-400">● Current</span>
               <span className="text-blue-400">● Active region</span>
+              {isMultiLanguage && (
+                <>
+                  <span className="text-slate-600">|</span>
+                  <span className="text-slate-500">
+                    Language: {languageInfo[currentLanguage].name}
+                  </span>
+                </>
+              )}
             </div>
           </motion.div>
         )}

@@ -2,7 +2,8 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Controls } from '../components/Controls';
 import { Hints } from '../components/Hints';
-import { CodeWalkthrough } from '../components/CodeWalkthrough';
+import { CodeWalkthrough, type Language } from '../components/CodeWalkthrough';
+import { TWO_SUM_CODE, TWO_SUM_LINE_MAP } from '../solutions/twoSum';
 
 interface Step {
   type: 'start' | 'check' | 'add' | 'found' | 'done';
@@ -116,23 +117,25 @@ export function TwoSumVisualizer() {
 
   const step = steps[currentStep];
 
-  // Map step types to code line numbers
+  // Get current language from localStorage for line mapping
+  const currentLanguage = useMemo(() => {
+    try {
+      const saved = localStorage.getItem('codeWalkthrough-language');
+      return (saved as Language) || 'java';
+    } catch {
+      return 'java';
+    }
+  }, []);
+
+  // Map step types to code line numbers based on current language
   const { currentCodeLine, highlightedCodeLines } = useMemo(() => {
     if (!step) return { currentCodeLine: undefined, highlightedCodeLines: [] };
     
-    const lineMap: Record<string, { current: number; highlighted: number[] }> = {
-      'start': { current: 1, highlighted: [1, 2] },
-      'check': { current: 5, highlighted: [4, 5, 6] },
-      'found': { current: 7, highlighted: [6, 7] },
-      'add': { current: 9, highlighted: [9] },
-      'done': { current: 12, highlighted: [12] },
-    };
-    
-    const mapping = lineMap[step.type];
+    const mapping = TWO_SUM_LINE_MAP[currentLanguage][step.type];
     return mapping 
       ? { currentCodeLine: mapping.current, highlightedCodeLines: mapping.highlighted }
       : { currentCodeLine: undefined, highlightedCodeLines: [] };
-  }, [step]);
+  }, [step, currentLanguage]);
 
   const handlePreset = (p: typeof PRESETS[0]) => {
     setNums(p.nums);
@@ -297,8 +300,7 @@ export function TwoSumVisualizer() {
       />
 
       <CodeWalkthrough
-        code={TWO_SUM_CODE}
-        language="java"
+        multiLanguageCode={TWO_SUM_CODE}
         currentLine={currentCodeLine}
         highlightedLines={highlightedCodeLines}
         title="Code Walkthrough"
@@ -308,18 +310,4 @@ export function TwoSumVisualizer() {
   );
 }
 
-// Code with line numbers for mapping
-const TWO_SUM_CODE = `public int[] twoSum(int[] nums, int target) {
-    Map<Integer, Integer> map = new HashMap<>();
-    
-    for (int i = 0; i < nums.length; i++) {
-        int complement = target - nums[i];
-        if (map.containsKey(complement)) {
-            return new int[] { map.get(complement), i };
-        }
-        map.put(nums[i], i);
-    }
-    
-    return new int[] {}; // No solution
-}
-// Time: O(n)  |  Space: O(n)`;
+// Code solutions moved to src/solutions/twoSum.ts
