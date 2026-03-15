@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { ComplexityBadges } from './components/ComplexityBadge';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { FocusProvider } from './contexts/FocusContext';
 import { BookmarkProvider } from './contexts/BookmarkContext';
@@ -171,6 +172,13 @@ function ProblemCard({ problem, onSelect }: { problem: Problem; onSelect: (id: s
           </span>
           <DifficultyBadge difficulty={problem.difficulty} />
           <ProgressBadge problemId={problem.id} />
+          {problem.complexity && (
+            <ComplexityBadges 
+              timeComplexity={problem.complexity.time}
+              spaceComplexity={problem.complexity.space}
+              size="sm"
+            />
+          )}
           {hasNote(problem.id) && (
             <span className="text-xs" title="Has notes">📝</span>
           )}
@@ -575,9 +583,18 @@ function HomePage({ onSelect, onShowExportImport, onShowAchievements }: { onSele
                 <div className="p-2 bg-blue-500/20 rounded-lg text-blue-400">
                   <Play size={18} />
                 </div>
-                <div>
+                <div className="flex-1">
                   <div className="font-medium">{problem.title}</div>
                   <div className="text-sm text-slate-400">{problem.category}</div>
+                  {problem.complexity && (
+                    <div className="mt-2">
+                      <ComplexityBadges 
+                        timeComplexity={problem.complexity.time}
+                        spaceComplexity={problem.complexity.space}
+                        size="sm"
+                      />
+                    </div>
+                  )}
                 </div>
                 <DifficultyBadge difficulty={problem.difficulty} />
               </button>
@@ -697,12 +714,29 @@ function VisualizerWithProgress({ problemId, onSelectProblem }: { problemId: str
                 {problem.title}
               </h1>
               <DifficultyBadge difficulty={problem.difficulty} />
+              {problem.complexity && (
+                <ComplexityBadges 
+                  timeComplexity={problem.complexity.time}
+                  spaceComplexity={problem.complexity.space}
+                  size="md"
+                />
+              )}
             </div>
             <div className="flex items-center gap-2">
               <CompletionButton problemId={problemId} />
               <BookmarkButton problemId={problemId} />
             </div>
           </div>
+          
+          {/* Complexity Analysis section */}
+          {problem.complexity && (
+            <div className="mb-6 p-4 bg-gray-800/30 border border-gray-700/30 rounded-lg">
+              <h3 className="text-sm font-semibold mb-2 text-gray-300">Complexity Analysis</h3>
+              <p className="text-sm text-gray-400 leading-relaxed">
+                {problem.complexity.explanation}
+              </p>
+            </div>
+          )}
           
           {/* Notes section */}
           <Notes problemId={problemId} className="mb-6" />

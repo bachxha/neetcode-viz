@@ -19,6 +19,14 @@ export type Category =
   | 'Math & Geometry'
   | 'Bit Manipulation';
 
+export type Complexity = 'O(1)' | 'O(log n)' | 'O(n)' | 'O(n log n)' | 'O(n²)' | 'O(2^n)' | 'O(n!)' | 'O(√n)' | 'O(n³)';
+
+export interface ComplexityInfo {
+  time: Complexity;
+  space: Complexity;
+  explanation: string;
+}
+
 export interface Problem {
   id: string;
   title: string;
@@ -26,50 +34,363 @@ export interface Problem {
   difficulty: Difficulty;
   leetcodeUrl: string;
   hasVisualization: boolean;
+  complexity?: ComplexityInfo;
 }
 
 export const problems: Problem[] = [
   // Arrays & Hashing
-  { id: 'contains-duplicate', title: 'Contains Duplicate', category: 'Arrays & Hashing', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/contains-duplicate/', hasVisualization: true },
-  { id: 'valid-anagram', title: 'Valid Anagram', category: 'Arrays & Hashing', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/valid-anagram/', hasVisualization: true },
-  { id: 'two-sum', title: 'Two Sum', category: 'Arrays & Hashing', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/two-sum/', hasVisualization: true },
-  { id: 'group-anagrams', title: 'Group Anagrams', category: 'Arrays & Hashing', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/group-anagrams/', hasVisualization: true },
-  { id: 'top-k-frequent-elements', title: 'Top K Frequent Elements', category: 'Arrays & Hashing', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/top-k-frequent-elements/', hasVisualization: true },
-  { id: 'encode-and-decode-strings', title: 'Encode and Decode Strings', category: 'Arrays & Hashing', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/encode-and-decode-strings/', hasVisualization: true },
-  { id: 'product-of-array-except-self', title: 'Product of Array Except Self', category: 'Arrays & Hashing', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/product-of-array-except-self/', hasVisualization: true },
-  { id: 'valid-sudoku', title: 'Valid Sudoku', category: 'Arrays & Hashing', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/valid-sudoku/', hasVisualization: true },
-  { id: 'longest-consecutive-sequence', title: 'Longest Consecutive Sequence', category: 'Arrays & Hashing', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/longest-consecutive-sequence/', hasVisualization: true },
+  { 
+    id: 'contains-duplicate', 
+    title: 'Contains Duplicate', 
+    category: 'Arrays & Hashing', 
+    difficulty: 'Easy', 
+    leetcodeUrl: 'https://leetcode.com/problems/contains-duplicate/', 
+    hasVisualization: true,
+    complexity: {
+      time: 'O(n)',
+      space: 'O(n)',
+      explanation: 'O(n) time to iterate through array once, O(n) space for hash set to store seen elements.'
+    }
+  },
+  { 
+    id: 'valid-anagram', 
+    title: 'Valid Anagram', 
+    category: 'Arrays & Hashing', 
+    difficulty: 'Easy', 
+    leetcodeUrl: 'https://leetcode.com/problems/valid-anagram/', 
+    hasVisualization: true,
+    complexity: {
+      time: 'O(n)',
+      space: 'O(1)',
+      explanation: 'O(n) time to count characters in both strings, O(1) space using fixed-size array for 26 letters.'
+    }
+  },
+  { 
+    id: 'two-sum', 
+    title: 'Two Sum', 
+    category: 'Arrays & Hashing', 
+    difficulty: 'Easy', 
+    leetcodeUrl: 'https://leetcode.com/problems/two-sum/', 
+    hasVisualization: true,
+    complexity: {
+      time: 'O(n)',
+      space: 'O(n)',
+      explanation: 'O(n) time with single pass using hash map, O(n) space to store complement mappings.'
+    }
+  },
+  { 
+    id: 'group-anagrams', 
+    title: 'Group Anagrams', 
+    category: 'Arrays & Hashing', 
+    difficulty: 'Medium', 
+    leetcodeUrl: 'https://leetcode.com/problems/group-anagrams/', 
+    hasVisualization: true,
+    complexity: {
+      time: 'O(n)',
+      space: 'O(n)',
+      explanation: 'O(n) time using character count as key (avoiding sort), O(n) space for hash map groupings.'
+    }
+  },
+  { 
+    id: 'top-k-frequent-elements', 
+    title: 'Top K Frequent Elements', 
+    category: 'Arrays & Hashing', 
+    difficulty: 'Medium', 
+    leetcodeUrl: 'https://leetcode.com/problems/top-k-frequent-elements/', 
+    hasVisualization: true,
+    complexity: {
+      time: 'O(n)',
+      space: 'O(n)',
+      explanation: 'O(n) time using bucket sort by frequency, O(n) space for frequency map and buckets.'
+    }
+  },
+  { 
+    id: 'encode-and-decode-strings', 
+    title: 'Encode and Decode Strings', 
+    category: 'Arrays & Hashing', 
+    difficulty: 'Medium', 
+    leetcodeUrl: 'https://leetcode.com/problems/encode-and-decode-strings/', 
+    hasVisualization: true,
+    complexity: {
+      time: 'O(n)',
+      space: 'O(1)',
+      explanation: 'O(n) time to process all characters once, O(1) extra space using length prefix encoding.'
+    }
+  },
+  { 
+    id: 'product-of-array-except-self', 
+    title: 'Product of Array Except Self', 
+    category: 'Arrays & Hashing', 
+    difficulty: 'Medium', 
+    leetcodeUrl: 'https://leetcode.com/problems/product-of-array-except-self/', 
+    hasVisualization: true,
+    complexity: {
+      time: 'O(n)',
+      space: 'O(1)',
+      explanation: 'O(n) time with two passes (prefix and suffix), O(1) space by using output array for calculations.'
+    }
+  },
+  { 
+    id: 'valid-sudoku', 
+    title: 'Valid Sudoku', 
+    category: 'Arrays & Hashing', 
+    difficulty: 'Medium', 
+    leetcodeUrl: 'https://leetcode.com/problems/valid-sudoku/', 
+    hasVisualization: true,
+    complexity: {
+      time: 'O(1)',
+      space: 'O(1)',
+      explanation: 'O(1) time for fixed 9×9 grid (81 cells max), O(1) space with fixed sets for validation.'
+    }
+  },
+  { 
+    id: 'longest-consecutive-sequence', 
+    title: 'Longest Consecutive Sequence', 
+    category: 'Arrays & Hashing', 
+    difficulty: 'Medium', 
+    leetcodeUrl: 'https://leetcode.com/problems/longest-consecutive-sequence/', 
+    hasVisualization: true,
+    complexity: {
+      time: 'O(n)',
+      space: 'O(n)',
+      explanation: 'O(n) time by checking sequence starts only, O(n) space for hash set of all numbers.'
+    }
+  },
 
   // Two Pointers
   { id: 'valid-palindrome', title: 'Valid Palindrome', category: 'Two Pointers', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/valid-palindrome/', hasVisualization: false },
   { id: 'two-sum-ii', title: 'Two Sum II', category: 'Two Pointers', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/', hasVisualization: false },
-  { id: '3sum', title: '3Sum', category: 'Two Pointers', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/3sum/', hasVisualization: true },
-  { id: 'container-with-most-water', title: 'Container With Most Water', category: 'Two Pointers', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/container-with-most-water/', hasVisualization: true },
-  { id: 'trapping-rain-water', title: 'Trapping Rain Water', category: 'Two Pointers', difficulty: 'Hard', leetcodeUrl: 'https://leetcode.com/problems/trapping-rain-water/', hasVisualization: true },
+  { 
+    id: '3sum', 
+    title: '3Sum', 
+    category: 'Two Pointers', 
+    difficulty: 'Medium', 
+    leetcodeUrl: 'https://leetcode.com/problems/3sum/', 
+    hasVisualization: true,
+    complexity: {
+      time: 'O(n²)',
+      space: 'O(1)',
+      explanation: 'O(n²) time with nested loops and two pointers, O(1) space excluding output array.'
+    }
+  },
+  { 
+    id: 'container-with-most-water', 
+    title: 'Container With Most Water', 
+    category: 'Two Pointers', 
+    difficulty: 'Medium', 
+    leetcodeUrl: 'https://leetcode.com/problems/container-with-most-water/', 
+    hasVisualization: true,
+    complexity: {
+      time: 'O(n)',
+      space: 'O(1)',
+      explanation: 'O(n) time with two pointers moving inward, O(1) space using only variables for calculation.'
+    }
+  },
+  { 
+    id: 'trapping-rain-water', 
+    title: 'Trapping Rain Water', 
+    category: 'Two Pointers', 
+    difficulty: 'Hard', 
+    leetcodeUrl: 'https://leetcode.com/problems/trapping-rain-water/', 
+    hasVisualization: true,
+    complexity: {
+      time: 'O(n)',
+      space: 'O(1)',
+      explanation: 'O(n) time with two pointers tracking max heights, O(1) space without precomputing arrays.'
+    }
+  },
 
   // Sliding Window
-  { id: 'best-time-to-buy-and-sell-stock', title: 'Best Time to Buy and Sell Stock', category: 'Sliding Window', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/best-time-to-buy-and-sell-stock/', hasVisualization: true },
-  { id: 'longest-substring-without-repeating', title: 'Longest Substring Without Repeating Characters', category: 'Sliding Window', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/longest-substring-without-repeating-characters/', hasVisualization: true },
+  { 
+    id: 'best-time-to-buy-and-sell-stock', 
+    title: 'Best Time to Buy and Sell Stock', 
+    category: 'Sliding Window', 
+    difficulty: 'Easy', 
+    leetcodeUrl: 'https://leetcode.com/problems/best-time-to-buy-and-sell-stock/', 
+    hasVisualization: true,
+    complexity: {
+      time: 'O(n)',
+      space: 'O(1)',
+      explanation: 'O(n) time with single pass tracking minimum price, O(1) space using only two variables.'
+    }
+  },
+  { 
+    id: 'longest-substring-without-repeating', 
+    title: 'Longest Substring Without Repeating Characters', 
+    category: 'Sliding Window', 
+    difficulty: 'Medium', 
+    leetcodeUrl: 'https://leetcode.com/problems/longest-substring-without-repeating-characters/', 
+    hasVisualization: true,
+    complexity: {
+      time: 'O(n)',
+      space: 'O(n)',
+      explanation: 'O(n) time with sliding window technique, O(n) space for hash set tracking characters.'
+    }
+  },
   { id: 'longest-repeating-character-replacement', title: 'Longest Repeating Character Replacement', category: 'Sliding Window', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/longest-repeating-character-replacement/', hasVisualization: false },
   { id: 'permutation-in-string', title: 'Permutation in String', category: 'Sliding Window', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/permutation-in-string/', hasVisualization: false },
-  { id: 'minimum-window-substring', title: 'Minimum Window Substring', category: 'Sliding Window', difficulty: 'Hard', leetcodeUrl: 'https://leetcode.com/problems/minimum-window-substring/', hasVisualization: true },
+  { 
+    id: 'minimum-window-substring', 
+    title: 'Minimum Window Substring', 
+    category: 'Sliding Window', 
+    difficulty: 'Hard', 
+    leetcodeUrl: 'https://leetcode.com/problems/minimum-window-substring/', 
+    hasVisualization: true,
+    complexity: {
+      time: 'O(n)',
+      space: 'O(n)',
+      explanation: 'O(n) time with expanding and contracting window, O(n) space for character frequency maps.'
+    }
+  },
   { id: 'sliding-window-maximum', title: 'Sliding Window Maximum', category: 'Sliding Window', difficulty: 'Hard', leetcodeUrl: 'https://leetcode.com/problems/sliding-window-maximum/', hasVisualization: false },
 
   // Stack
-  { id: 'valid-parentheses', title: 'Valid Parentheses', category: 'Stack', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/valid-parentheses/', hasVisualization: true },
-  { id: 'min-stack', title: 'Min Stack', category: 'Stack', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/min-stack/', hasVisualization: true },
-  { id: 'evaluate-reverse-polish-notation', title: 'Evaluate Reverse Polish Notation', category: 'Stack', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/evaluate-reverse-polish-notation/', hasVisualization: true },
-  { id: 'generate-parentheses', title: 'Generate Parentheses', category: 'Stack', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/generate-parentheses/', hasVisualization: true },
-  { id: 'daily-temperatures', title: 'Daily Temperatures', category: 'Stack', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/daily-temperatures/', hasVisualization: true },
+  { 
+    id: 'valid-parentheses', 
+    title: 'Valid Parentheses', 
+    category: 'Stack', 
+    difficulty: 'Easy', 
+    leetcodeUrl: 'https://leetcode.com/problems/valid-parentheses/', 
+    hasVisualization: true,
+    complexity: {
+      time: 'O(n)',
+      space: 'O(n)',
+      explanation: 'O(n) time to process each character once, O(n) space for stack in worst case (all opening brackets).'
+    }
+  },
+  { 
+    id: 'min-stack', 
+    title: 'Min Stack', 
+    category: 'Stack', 
+    difficulty: 'Medium', 
+    leetcodeUrl: 'https://leetcode.com/problems/min-stack/', 
+    hasVisualization: true,
+    complexity: {
+      time: 'O(1)',
+      space: 'O(n)',
+      explanation: 'O(1) time for all operations with min tracking, O(n) space for main stack and min values.'
+    }
+  },
+  { 
+    id: 'evaluate-reverse-polish-notation', 
+    title: 'Evaluate Reverse Polish Notation', 
+    category: 'Stack', 
+    difficulty: 'Medium', 
+    leetcodeUrl: 'https://leetcode.com/problems/evaluate-reverse-polish-notation/', 
+    hasVisualization: true,
+    complexity: {
+      time: 'O(n)',
+      space: 'O(n)',
+      explanation: 'O(n) time to process each token once, O(n) space for operand stack.'
+    }
+  },
+  { 
+    id: 'generate-parentheses', 
+    title: 'Generate Parentheses', 
+    category: 'Stack', 
+    difficulty: 'Medium', 
+    leetcodeUrl: 'https://leetcode.com/problems/generate-parentheses/', 
+    hasVisualization: true,
+    complexity: {
+      time: 'O(2^n)',
+      space: 'O(n)',
+      explanation: 'O(2^n) time exploring all valid combinations, O(n) space for recursion stack depth.'
+    }
+  },
+  { 
+    id: 'daily-temperatures', 
+    title: 'Daily Temperatures', 
+    category: 'Stack', 
+    difficulty: 'Medium', 
+    leetcodeUrl: 'https://leetcode.com/problems/daily-temperatures/', 
+    hasVisualization: true,
+    complexity: {
+      time: 'O(n)',
+      space: 'O(n)',
+      explanation: 'O(n) time with monotonic stack (each element pushed/popped once), O(n) space for stack.'
+    }
+  },
   { id: 'car-fleet', title: 'Car Fleet', category: 'Stack', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/car-fleet/', hasVisualization: false },
-  { id: 'largest-rectangle-in-histogram', title: 'Largest Rectangle in Histogram', category: 'Stack', difficulty: 'Hard', leetcodeUrl: 'https://leetcode.com/problems/largest-rectangle-in-histogram/', hasVisualization: true },
+  { 
+    id: 'largest-rectangle-in-histogram', 
+    title: 'Largest Rectangle in Histogram', 
+    category: 'Stack', 
+    difficulty: 'Hard', 
+    leetcodeUrl: 'https://leetcode.com/problems/largest-rectangle-in-histogram/', 
+    hasVisualization: true,
+    complexity: {
+      time: 'O(n)',
+      space: 'O(n)',
+      explanation: 'O(n) time with monotonic stack technique, O(n) space for stack storing indices.'
+    }
+  },
 
   // Binary Search
-  { id: 'binary-search', title: 'Binary Search', category: 'Binary Search', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/binary-search/', hasVisualization: true },
-  { id: 'search-2d-matrix', title: 'Search a 2D Matrix', category: 'Binary Search', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/search-a-2d-matrix/', hasVisualization: true },
-  { id: 'koko-eating-bananas', title: 'Koko Eating Bananas', category: 'Binary Search', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/koko-eating-bananas/', hasVisualization: true },
-  { id: 'find-minimum-in-rotated-sorted-array', title: 'Find Minimum in Rotated Sorted Array', category: 'Binary Search', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/', hasVisualization: true },
-  { id: 'search-in-rotated-sorted-array', title: 'Search in Rotated Sorted Array', category: 'Binary Search', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/search-in-rotated-sorted-array/', hasVisualization: true },
+  { 
+    id: 'binary-search', 
+    title: 'Binary Search', 
+    category: 'Binary Search', 
+    difficulty: 'Easy', 
+    leetcodeUrl: 'https://leetcode.com/problems/binary-search/', 
+    hasVisualization: true,
+    complexity: {
+      time: 'O(log n)',
+      space: 'O(1)',
+      explanation: 'O(log n) time by halving search space each iteration, O(1) space with iterative approach.'
+    }
+  },
+  { 
+    id: 'search-2d-matrix', 
+    title: 'Search a 2D Matrix', 
+    category: 'Binary Search', 
+    difficulty: 'Medium', 
+    leetcodeUrl: 'https://leetcode.com/problems/search-a-2d-matrix/', 
+    hasVisualization: true,
+    complexity: {
+      time: 'O(log n)',
+      space: 'O(1)',
+      explanation: 'O(log n) time treating 2D matrix as 1D sorted array, O(1) space with coordinate mapping.'
+    }
+  },
+  { 
+    id: 'koko-eating-bananas', 
+    title: 'Koko Eating Bananas', 
+    category: 'Binary Search', 
+    difficulty: 'Medium', 
+    leetcodeUrl: 'https://leetcode.com/problems/koko-eating-bananas/', 
+    hasVisualization: true,
+    complexity: {
+      time: 'O(n log n)',
+      space: 'O(1)',
+      explanation: 'O(n log n) time: O(log n) binary search × O(n) validation per speed, O(1) space.'
+    }
+  },
+  { 
+    id: 'find-minimum-in-rotated-sorted-array', 
+    title: 'Find Minimum in Rotated Sorted Array', 
+    category: 'Binary Search', 
+    difficulty: 'Medium', 
+    leetcodeUrl: 'https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/', 
+    hasVisualization: true,
+    complexity: {
+      time: 'O(log n)',
+      space: 'O(1)',
+      explanation: 'O(log n) time by comparing middle with right boundary, O(1) space with binary search.'
+    }
+  },
+  { 
+    id: 'search-in-rotated-sorted-array', 
+    title: 'Search in Rotated Sorted Array', 
+    category: 'Binary Search', 
+    difficulty: 'Medium', 
+    leetcodeUrl: 'https://leetcode.com/problems/search-in-rotated-sorted-array/', 
+    hasVisualization: true,
+    complexity: {
+      time: 'O(log n)',
+      space: 'O(1)',
+      explanation: 'O(log n) time by determining sorted half first, O(1) space with modified binary search.'
+    }
+  },
   { id: 'time-based-key-value-store', title: 'Time Based Key-Value Store', category: 'Binary Search', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/time-based-key-value-store/', hasVisualization: false },
   { id: 'median-of-two-sorted-arrays', title: 'Median of Two Sorted Arrays', category: 'Binary Search', difficulty: 'Hard', leetcodeUrl: 'https://leetcode.com/problems/median-of-two-sorted-arrays/', hasVisualization: false },
 
