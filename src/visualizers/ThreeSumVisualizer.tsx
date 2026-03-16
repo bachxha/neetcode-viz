@@ -1,6 +1,8 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Controls } from '../components/Controls';
+import { CodeWalkthrough, type Language } from '../components/CodeWalkthrough';
+import { THREE_SUM_CODE, THREE_SUM_LINE_MAP } from '../solutions/threeSum';
 
 interface Step {
   type: 'start' | 'sort' | 'fix-i' | 'set-pointers' | 'calculate' | 'found-triplet' | 'move-left' | 'move-right' | 'skip-duplicate-i' | 'skip-duplicate-left' | 'skip-duplicate-right' | 'done';
@@ -267,6 +269,26 @@ export function ThreeSumVisualizer() {
   
   const currentStepData = steps[currentStep];
   
+  // Get current language from localStorage for line mapping
+  const currentLanguage = useMemo(() => {
+    try {
+      const saved = localStorage.getItem('codeWalkthrough-language');
+      return (saved as Language) || 'java';
+    } catch {
+      return 'java';
+    }
+  }, []);
+
+  // Map step types to code line numbers based on current language
+  const { currentCodeLine, highlightedCodeLines } = useMemo(() => {
+    if (!currentStepData) return { currentCodeLine: undefined, highlightedCodeLines: [] };
+    
+    const mapping = THREE_SUM_LINE_MAP[currentLanguage][currentStepData.type];
+    return mapping 
+      ? { currentCodeLine: mapping.current, highlightedCodeLines: mapping.highlighted }
+      : { currentCodeLine: undefined, highlightedCodeLines: [] };
+  }, [currentStepData, currentLanguage]);
+  
   return (
     <div className="p-6 max-w-6xl mx-auto">
       <div className="mb-6">
@@ -450,56 +472,13 @@ export function ThreeSumVisualizer() {
         canStepForward={currentStep < steps.length - 1}
       />
       
-      <div className="mt-6 bg-slate-800 rounded-lg p-4">
-        <h3 className="text-sm font-semibold text-slate-400 mb-2">Java Code</h3>
-        <pre className="text-sm font-mono text-slate-300 overflow-x-auto">
-{`public List<List<Integer>> threeSum(int[] nums) {
-    List<List<Integer>> result = new ArrayList<>();
-    Arrays.sort(nums); // Sort the array first
-    
-    for (int i = 0; i < nums.length - 2; i++) {
-        // Skip duplicates for the first element
-        if (i > 0 && nums[i] == nums[i - 1]) continue;
-        
-        int left = i + 1;
-        int right = nums.length - 1;
-        
-        while (left < right) {
-            int sum = nums[i] + nums[left] + nums[right];
-            
-            if (sum == 0) {
-                result.add(Arrays.asList(nums[i], nums[left], nums[right]));
-                
-                // Skip duplicates for left and right pointers
-                while (left < right && nums[left] == nums[left + 1]) left++;
-                while (left < right && nums[right] == nums[right - 1]) right--;
-                
-                left++;
-                right--;
-            } else if (sum < 0) {
-                left++;  // Need larger sum
-            } else {
-                right--; // Need smaller sum  
-            }
-        }
-    }
-    
-    return result;
-}`}
-        </pre>
-      </div>
-      
-      <div className="mt-4 bg-slate-800 rounded-lg p-4">
-        <h3 className="text-sm font-semibold text-slate-400 mb-2">Algorithm Explanation</h3>
-        <div className="space-y-2 text-slate-300">
-          <p><strong>1. Sort the array:</strong> Enables two-pointer technique and easy duplicate handling.</p>
-          <p><strong>2. Fix first element (i):</strong> For each i, find pairs that sum to -nums[i].</p>
-          <p><strong>3. Two pointers (left, right):</strong> Search remaining array for target sum.</p>
-          <p><strong>4. Skip duplicates:</strong> Avoid duplicate triplets by skipping repeated values.</p>
-          <p><strong>Time complexity:</strong> O(n²) - O(n log n) for sorting + O(n²) for two pointers.</p>
-          <p><strong>Space complexity:</strong> O(1) excluding output array.</p>
-        </div>
-      </div>
+      <CodeWalkthrough
+        multiLanguageCode={THREE_SUM_CODE}
+        currentLine={currentCodeLine}
+        highlightedLines={highlightedCodeLines}
+        title="Code Walkthrough"
+        className="mt-6"
+      />
     </div>
   );
 }

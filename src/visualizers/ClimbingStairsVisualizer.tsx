@@ -1,6 +1,8 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Controls } from '../components/Controls';
+import { CodeWalkthrough, type Language } from '../components/CodeWalkthrough';
+import { CLIMBING_STAIRS_CODE, CLIMBING_STAIRS_LINE_MAP } from '../solutions/climbingStairs';
 
 interface Step {
   type: 'start' | 'base' | 'compute' | 'done';
@@ -98,6 +100,26 @@ export function ClimbingStairsVisualizer() {
   }, [isPlaying, currentStep, steps.length, speed]);
   
   const currentStepData = steps[currentStep];
+  
+  // Get current language from localStorage for line mapping
+  const currentLanguage = useMemo(() => {
+    try {
+      const saved = localStorage.getItem('codeWalkthrough-language');
+      return (saved as Language) || 'java';
+    } catch {
+      return 'java';
+    }
+  }, []);
+
+  // Map step types to code line numbers based on current language
+  const { currentCodeLine, highlightedCodeLines } = useMemo(() => {
+    if (!currentStepData) return { currentCodeLine: undefined, highlightedCodeLines: [] };
+    
+    const mapping = CLIMBING_STAIRS_LINE_MAP[currentLanguage][currentStepData.type];
+    return mapping 
+      ? { currentCodeLine: mapping.current, highlightedCodeLines: mapping.highlighted }
+      : { currentCodeLine: undefined, highlightedCodeLines: [] };
+  }, [currentStepData, currentLanguage]);
   
   return (
     <div className="p-6 max-w-5xl mx-auto">
@@ -242,37 +264,13 @@ export function ClimbingStairsVisualizer() {
         canStepForward={currentStep < steps.length - 1}
       />
       
-      {/* Code Reference */}
-      <div className="mt-6 bg-slate-800 rounded-lg p-4">
-        <h3 className="text-sm font-semibold text-slate-400 mb-2">Java Code</h3>
-        <pre className="text-sm font-mono text-slate-300 overflow-x-auto">
-{`public int climbStairs(int n) {
-    if (n <= 2) return n;
-    
-    int[] dp = new int[n + 1];
-    dp[0] = 1;  // Base case: 1 way to stay at ground
-    dp[1] = 1;  // Base case: 1 way to reach step 1
-    
-    for (int i = 2; i <= n; i++) {
-        dp[i] = dp[i - 1] + dp[i - 2];  // Fibonacci!
-    }
-    
-    return dp[n];
-}
-
-// Space-optimized version (O(1) space):
-public int climbStairsOptimized(int n) {
-    if (n <= 2) return n;
-    int prev2 = 1, prev1 = 1;
-    for (int i = 2; i <= n; i++) {
-        int curr = prev1 + prev2;
-        prev2 = prev1;
-        prev1 = curr;
-    }
-    return prev1;
-}`}
-        </pre>
-      </div>
+      <CodeWalkthrough
+        multiLanguageCode={CLIMBING_STAIRS_CODE}
+        currentLine={currentCodeLine}
+        highlightedLines={highlightedCodeLines}
+        title="Code Walkthrough"
+        className="mt-6"
+      />
     </div>
   );
 }

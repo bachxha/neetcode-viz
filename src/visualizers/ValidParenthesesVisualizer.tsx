@@ -1,7 +1,9 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Controls } from '../components/Controls';
 import { Hints } from '../components/Hints';
+import { CodeWalkthrough, type Language } from '../components/CodeWalkthrough';
+import { VALID_PARENTHESES_CODE, VALID_PARENTHESES_LINE_MAP } from '../solutions/validParentheses';
 
 interface Step {
   type: 'start' | 'push' | 'pop' | 'match' | 'mismatch' | 'done' | 'empty';
@@ -189,6 +191,26 @@ export function ValidParenthesesVisualizer() {
   }, [isPlaying, currentStep, steps.length, speed]);
   
   const currentStepData = steps[currentStep];
+  
+  // Get current language from localStorage for line mapping
+  const currentLanguage = useMemo(() => {
+    try {
+      const saved = localStorage.getItem('codeWalkthrough-language');
+      return (saved as Language) || 'java';
+    } catch {
+      return 'java';
+    }
+  }, []);
+
+  // Map step types to code line numbers based on current language
+  const { currentCodeLine, highlightedCodeLines } = useMemo(() => {
+    if (!currentStepData) return { currentCodeLine: undefined, highlightedCodeLines: [] };
+    
+    const mapping = VALID_PARENTHESES_LINE_MAP[currentLanguage][currentStepData.type];
+    return mapping 
+      ? { currentCodeLine: mapping.current, highlightedCodeLines: mapping.highlighted }
+      : { currentCodeLine: undefined, highlightedCodeLines: [] };
+  }, [currentStepData, currentLanguage]);
   
   const loadTestCase = (testCase: typeof testCases[0]) => {
     setInputString(testCase.input);
@@ -386,48 +408,13 @@ export function ValidParenthesesVisualizer() {
       {/* AI Hints */}
       <Hints problemId="valid-parentheses" className="mt-6" />
       
-      {/* Code Reference */}
-      <div className="mt-6 bg-slate-800 rounded-lg p-4">
-        <h3 className="text-sm font-semibold text-slate-400 mb-3">Implementation</h3>
-        <pre className="text-sm font-mono text-slate-300 overflow-x-auto">
-{`public boolean isValid(String s) {
-    Stack<Character> stack = new Stack<>();
-    
-    for (char c : s.toCharArray()) {
-        // Opening brackets - push to stack
-        if (c == '(' || c == '[' || c == '{') {
-            stack.push(c);
-        }
-        // Closing brackets - check match
-        else {
-            if (stack.isEmpty()) return false;
-            
-            char top = stack.pop();
-            if ((c == ')' && top != '(') ||
-                (c == ']' && top != '[') ||
-                (c == '}' && top != '{')) {
-                return false;
-            }
-        }
-    }
-    
-    return stack.isEmpty();  // Valid if all matched
-}
-
-// Time: O(n), Space: O(n) for stack`}
-        </pre>
-        
-        <div className="mt-4 p-3 bg-slate-900 rounded-lg">
-          <h4 className="text-xs font-semibold text-slate-400 mb-2">🎯 Interview Tips</h4>
-          <ul className="text-xs text-slate-300 space-y-1">
-            <li>• Stack is perfect for matching/pairing problems</li>
-            <li>• Think "Last In, First Out" - most recent opening bracket should match first</li>
-            <li>• Handle edge cases: empty string (valid), unmatched brackets</li>
-            <li>• This pattern applies to expression parsing, compiler design, etc.</li>
-            <li>• Can be optimized to O(1) space for simple parentheses only</li>
-          </ul>
-        </div>
-      </div>
+      <CodeWalkthrough
+        multiLanguageCode={VALID_PARENTHESES_CODE}
+        currentLine={currentCodeLine}
+        highlightedLines={highlightedCodeLines}
+        title="Code Walkthrough"
+        className="mt-6"
+      />
     </div>
   );
 }

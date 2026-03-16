@@ -1,6 +1,8 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Controls } from '../components/Controls';
+import { CodeWalkthrough, type Language } from '../components/CodeWalkthrough';
+import { REVERSE_LINKED_LIST_CODE, REVERSE_LINKED_LIST_LINE_MAP } from '../solutions/reverseLinkedList';
 
 interface ListNode {
   val: number;
@@ -194,6 +196,26 @@ export function ReverseLinkedListVisualizer() {
   }, [isPlaying, currentStep, steps.length, speed]);
 
   const step = steps[currentStep];
+  
+  // Get current language from localStorage for line mapping
+  const currentLanguage = useMemo(() => {
+    try {
+      const saved = localStorage.getItem('codeWalkthrough-language');
+      return (saved as Language) || 'java';
+    } catch {
+      return 'java';
+    }
+  }, []);
+
+  // Map step types to code line numbers based on current language
+  const { currentCodeLine, highlightedCodeLines } = useMemo(() => {
+    if (!step) return { currentCodeLine: undefined, highlightedCodeLines: [] };
+    
+    const mapping = REVERSE_LINKED_LIST_LINE_MAP[currentLanguage][step.type];
+    return mapping 
+      ? { currentCodeLine: mapping.current, highlightedCodeLines: mapping.highlighted }
+      : { currentCodeLine: undefined, highlightedCodeLines: [] };
+  }, [step, currentLanguage]);
 
   const handlePreset = (preset: typeof PRESETS[0]) => {
     setValues(preset.values);
@@ -567,37 +589,13 @@ export function ReverseLinkedListVisualizer() {
         canStepForward={currentStep < steps.length - 1}
       />
 
-      <div className="mt-6 bg-slate-800 rounded-lg p-4">
-        <h3 className="text-sm font-semibold text-slate-400 mb-2">Java Code</h3>
-        <pre className="text-sm font-mono text-slate-300 overflow-x-auto">
-{`public ListNode reverseList(ListNode head) {
-    ListNode prev = null;
-    ListNode current = head;
-    
-    while (current != null) {
-        ListNode next = current.next;  // Store next before we lose it
-        current.next = prev;           // Reverse the pointer
-        
-        // Advance pointers
-        prev = current;
-        current = next;
-    }
-    
-    return prev;  // prev is the new head
-}
-// Time: O(n) - visit each node once  |  Space: O(1) - only 3 pointers`}
-        </pre>
-      </div>
-      
-      <div className="mt-4 bg-slate-800 rounded-lg p-4">
-        <h3 className="text-sm font-semibold text-slate-400 mb-2">🎯 Interview Tips</h3>
-        <ul className="text-slate-300 text-sm space-y-1">
-          <li>• <strong>Draw it out:</strong> Always sketch the 3 pointers on the whiteboard</li>
-          <li>• <strong>Edge cases:</strong> Empty list, single node - both return as-is</li>
-          <li>• <strong>Pattern recognition:</strong> Any "reverse" linked list problem uses this technique</li>
-          <li>• <strong>Common follow-up:</strong> "Reverse first K nodes" or "Reverse in groups of K"</li>
-        </ul>
-      </div>
+      <CodeWalkthrough
+        multiLanguageCode={REVERSE_LINKED_LIST_CODE}
+        currentLine={currentCodeLine}
+        highlightedLines={highlightedCodeLines}
+        title="Code Walkthrough"
+        className="mt-6"
+      />
     </div>
   );
 }
