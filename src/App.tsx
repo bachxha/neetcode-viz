@@ -7,6 +7,7 @@ import { CompletionProvider } from './contexts/CompletionContext';
 import { NotesProvider } from './contexts/NotesContext';
 import { TimeTrackerProvider } from './contexts/TimeTrackerContext';
 import { AchievementsProvider } from './contexts/AchievementsContext';
+import { RecentProblemsProvider } from './contexts/RecentProblemsContext';
 import { useAchievementIntegration } from './hooks/useAchievementIntegration';
 import { ThemeToggle } from './components/ThemeToggle';
 import { FocusModeToggle, FocusExitButton } from './components/FocusModeToggle';
@@ -111,10 +112,12 @@ import { useCompletions } from './contexts/CompletionContext';
 import { useNotes } from './contexts/NotesContext';
 import { useTimeTracker } from './contexts/TimeTrackerContext';
 import { useFocus } from './contexts/FocusContext';
+import { useRecentProblems } from './contexts/RecentProblemsContext';
 import { Timer } from './components/Timer';
 import { RelatedProblems } from './components/RelatedProblems';
 import { AchievementsModal } from './components/AchievementsModal';
 import { AchievementToast } from './components/AchievementToast';
+import { RecentProblems } from './components/RecentProblems';
 import { ChevronRight, ChevronDown, ExternalLink, Play, Lock, Lightbulb, LayoutDashboard, Brain, Building2, Mic, Bug, TrendingUp, Target, Sparkles, Star, Check, Download, Upload, Trophy } from 'lucide-react';
 
 type View = 'home' | 'patterns' | 'dashboard' | 'progress' | 'trainer' | 'verbal-trainer' | 'bug-hunter' | 'company-paths' | string;
@@ -699,6 +702,19 @@ function HomePage({ onSelect, onShowExportImport, onShowAchievements }: { onSele
 // Wrapper that adds ProgressTracker to visualizers
 function VisualizerWithProgress({ problemId, onSelectProblem }: { problemId: string; onSelectProblem: (id: string) => void }) {
   const problem = problems.find(p => p.id === problemId);
+  const { addRecentProblem } = useRecentProblems();
+
+  // Track this problem as recently visited
+  useEffect(() => {
+    if (problem) {
+      addRecentProblem({
+        id: problem.id,
+        title: problem.title,
+        category: problem.category,
+        difficulty: problem.difficulty
+      });
+    }
+  }, [problem, addRecentProblem]);
   
   return (
     <div>
@@ -938,7 +954,8 @@ function App() {
     <ThemeProvider>
       <FocusProvider>
         <BookmarkProvider>
-          <CompletionProvider>
+          <RecentProblemsProvider>
+            <CompletionProvider>
             <AchievementsProvider>
               <NotesProvider>
                 <TimeTrackerProvider>
@@ -962,7 +979,8 @@ function App() {
                 </TimeTrackerProvider>
               </NotesProvider>
             </AchievementsProvider>
-          </CompletionProvider>
+            </CompletionProvider>
+          </RecentProblemsProvider>
         </BookmarkProvider>
       </FocusProvider>
     </ThemeProvider>
@@ -1102,6 +1120,7 @@ function AppContent({
           <div className="ml-auto flex items-center gap-3">
             <FocusModeToggle size="sm" showText={false} />
             <ThemeToggle />
+            <RecentProblems onSelectProblem={setView} />
             <button
               onClick={() => setShowExportImportModal(true)}
               className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-500/30 rounded-lg hover:border-green-400 transition-all text-sm font-medium text-green-400 hover:text-green-300"
