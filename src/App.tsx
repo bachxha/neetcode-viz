@@ -103,6 +103,7 @@ import { WhatsNew, useWhatsNew } from './components/WhatsNew';
 import { ExportImportModal } from './components/ExportImportModal';
 import { ReviewDue } from './components/ReviewDue';
 import { DailyChallenge } from './components/DailyChallenge';
+import QuickReview from './components/QuickReview';
 import { problems, categories, type Problem, type Category, type Difficulty } from './data/problems';
 import { BookmarkButton } from './components/BookmarkButton';
 import { CompletionButton } from './components/CompletionButton';
@@ -120,7 +121,7 @@ import { AchievementToast } from './components/AchievementToast';
 import { RecentProblems } from './components/RecentProblems';
 import { ChevronRight, ChevronDown, ExternalLink, Play, Lock, Lightbulb, LayoutDashboard, Brain, Building2, Mic, Bug, TrendingUp, Target, Sparkles, Star, Check, Download, Upload, Trophy } from 'lucide-react';
 
-type View = 'home' | 'patterns' | 'dashboard' | 'progress' | 'trainer' | 'verbal-trainer' | 'bug-hunter' | 'company-paths' | string;
+type View = 'home' | 'patterns' | 'dashboard' | 'progress' | 'trainer' | 'verbal-trainer' | 'bug-hunter' | 'company-paths' | 'review' | string;
 
 function DifficultyBadge({ difficulty }: { difficulty: Problem['difficulty'] }) {
   const colors = {
@@ -418,6 +419,15 @@ function HomePage({ onSelect, onShowExportImport, onShowAchievements }: { onSele
         {/* I'm Feeling Lucky Button */}
         <div className="mt-6 flex justify-center">
           <ImFeelingLucky onSelectProblem={onSelect} />
+          
+          {/* Quick Review Button */}
+          <button
+            onClick={() => onSelect('review')}
+            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-lg hover:from-purple-600 hover:to-indigo-700 transition-all shadow-md hover:shadow-lg"
+          >
+            <span>📝</span>
+            <span className="font-medium">Quick Review</span>
+          </button>
         </div>
         
         {/* Navigation to Patterns, Dashboard, and Trainer */}
@@ -1097,6 +1107,8 @@ function AppContent({
                 </>
               )}
             </>
+          ) : view === 'review' ? (
+            <span className="font-medium" style={{ color: 'var(--text-primary)' }}>📝 Quick Review</span>
           ) : (
             <>
               <span style={{ color: 'var(--text-secondary)' }}>{currentProblem?.category}</span>
@@ -1193,6 +1205,10 @@ function AppContent({
             onSelectCompany={(companyId) => setSelectedCompany(companyId)}
           />
         )
+      ) : view === 'review' ? (
+        <div className="max-w-2xl mx-auto">
+          <QuickReview />
+        </div>
       ) : (
         <VisualizerWithProgress problemId={view} onSelectProblem={setView} />
       )}
