@@ -1,6 +1,8 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Controls } from '../components/Controls';
+import { CodeWalkthrough, type Language } from '../components/CodeWalkthrough';
+import { MERGE_TWO_SORTED_LISTS_CODE, MERGE_TWO_SORTED_LISTS_LINE_MAP } from '../solutions/mergeTwoSortedLists';
 
 interface ListNode {
   val: number;
@@ -190,6 +192,26 @@ export function MergeTwoSortedListsVisualizer() {
   }, [isPlaying, currentStep, steps.length, speed]);
 
   const step = steps[currentStep];
+
+  // Get current language from localStorage for line mapping
+  const currentLanguage = useMemo(() => {
+    try {
+      const saved = localStorage.getItem('codeWalkthrough-language');
+      return (saved as Language) || 'java';
+    } catch {
+      return 'java';
+    }
+  }, []);
+
+  // Map step types to code line numbers based on current language
+  const { currentCodeLine, highlightedCodeLines } = useMemo(() => {
+    if (!step) return { currentCodeLine: undefined, highlightedCodeLines: [] };
+    
+    const mapping = MERGE_TWO_SORTED_LISTS_LINE_MAP[currentLanguage][step.type];
+    return mapping 
+      ? { currentCodeLine: mapping.current, highlightedCodeLines: mapping.highlighted }
+      : { currentCodeLine: undefined, highlightedCodeLines: [] };
+  }, [step, currentLanguage]);
 
   const handlePreset = (preset: typeof PRESETS[0]) => {
     setValues1(preset.list1);
@@ -556,6 +578,14 @@ export function MergeTwoSortedListsVisualizer() {
         onSpeedChange={setSpeed}
         canStepBack={currentStep > 0}
         canStepForward={currentStep < steps.length - 1}
+      />
+
+      <CodeWalkthrough
+        multiLanguageCode={MERGE_TWO_SORTED_LISTS_CODE}
+        currentLine={currentCodeLine}
+        highlightedLines={highlightedCodeLines}
+        title="Code Walkthrough"
+        className="mt-6"
       />
 
       <div className="mt-6 bg-slate-800 rounded-lg p-4">
