@@ -1,6 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Controls } from '../components/Controls';
+import { CodeWalkthrough, type Language } from '../components/CodeWalkthrough';
+import { MAXIMUM_DEPTH_BINARY_TREE_CODE, MAXIMUM_DEPTH_BINARY_TREE_LINE_MAP } from '../solutions/maximumDepthOfBinaryTree';
 
 interface TreeNode {
   val: number;
@@ -317,6 +319,26 @@ export function MaximumDepthOfBinaryTreeVisualizer() {
   }, [isPlaying, currentStep, steps.length, speed]);
   
   const currentStepData = steps[currentStep];
+
+  // Get current language from localStorage for line mapping
+  const currentLanguage = useMemo(() => {
+    try {
+      const saved = localStorage.getItem('codeWalkthrough-language');
+      return (saved as Language) || 'java';
+    } catch {
+      return 'java';
+    }
+  }, []);
+
+  // Map step types to code line numbers based on current language
+  const { currentCodeLine, highlightedCodeLines } = useMemo(() => {
+    if (!currentStepData) return { currentCodeLine: undefined, highlightedCodeLines: [] };
+    
+    const mapping = MAXIMUM_DEPTH_BINARY_TREE_LINE_MAP[currentLanguage][currentStepData.type];
+    return mapping 
+      ? { currentCodeLine: mapping.current, highlightedCodeLines: mapping.highlighted }
+      : { currentCodeLine: undefined, highlightedCodeLines: [] };
+  }, [currentStepData, currentLanguage]);
   
   return (
     <div className="p-6 max-w-6xl mx-auto">
@@ -403,6 +425,14 @@ export function MaximumDepthOfBinaryTreeVisualizer() {
         onSpeedChange={setSpeed}
         canStepBack={currentStep > 0}
         canStepForward={currentStep < steps.length - 1}
+      />
+
+      <CodeWalkthrough
+        multiLanguageCode={MAXIMUM_DEPTH_BINARY_TREE_CODE}
+        currentLine={currentCodeLine}
+        highlightedLines={highlightedCodeLines}
+        title="Code Walkthrough"
+        className="mt-6"
       />
       
       {/* Code Reference */}
