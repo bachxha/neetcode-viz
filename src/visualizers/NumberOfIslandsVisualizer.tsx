@@ -1,6 +1,8 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Controls } from '../components/Controls';
+import { CodeWalkthrough, type Language } from '../components/CodeWalkthrough';
+import { NUMBER_OF_ISLANDS_CODE, NUMBER_OF_ISLANDS_LINE_MAP } from '../solutions/numberOfIslands';
 
 interface Cell {
   row: number;
@@ -312,6 +314,26 @@ export function NumberOfIslandsVisualizer() {
     
     return 'bg-blue-900';
   };
+
+  // Get current language from localStorage for line mapping
+  const currentLanguage = useMemo(() => {
+    try {
+      const saved = localStorage.getItem('codeWalkthrough-language');
+      return (saved as Language) || 'java';
+    } catch {
+      return 'java';
+    }
+  }, []);
+
+  // Map step types to code line numbers based on current language
+  const { currentCodeLine, highlightedCodeLines } = useMemo(() => {
+    if (!currentStepData) return { currentCodeLine: undefined, highlightedCodeLines: [] };
+    
+    const mapping = NUMBER_OF_ISLANDS_LINE_MAP[currentLanguage][currentStepData.type];
+    return mapping 
+      ? { currentCodeLine: mapping.current, highlightedCodeLines: mapping.highlighted }
+      : { currentCodeLine: undefined, highlightedCodeLines: [] };
+  }, [currentStepData, currentLanguage]);
   
   return (
     <div className="p-6 max-w-5xl mx-auto">
@@ -479,6 +501,14 @@ export function NumberOfIslandsVisualizer() {
         onSpeedChange={setSpeed}
         canStepBack={currentStep > 0}
         canStepForward={currentStep < steps.length - 1}
+      />
+
+      <CodeWalkthrough
+        multiLanguageCode={NUMBER_OF_ISLANDS_CODE}
+        currentLine={currentCodeLine}
+        highlightedLines={highlightedCodeLines}
+        title="Code Walkthrough"
+        className="mt-6"
       />
       
       {/* Code Reference */}
