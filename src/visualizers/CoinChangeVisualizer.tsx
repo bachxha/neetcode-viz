@@ -1,6 +1,8 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Controls } from '../components/Controls';
+import { CodeWalkthrough, type Language } from '../components/CodeWalkthrough';
+import { COIN_CHANGE_CODE, COIN_CHANGE_LINE_MAP } from '../solutions/coinChange';
 
 interface Step {
   type: 'init' | 'computing' | 'check_coin' | 'update_dp' | 'complete' | 'backtrack_start' | 'backtrack_step';
@@ -165,6 +167,26 @@ export function CoinChangeVisualizer() {
   
   const currentStepData = steps[currentStep];
   const coins = coinsInput.split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n) && n > 0);
+
+  // Get current language from localStorage for line mapping
+  const currentLanguage = useMemo(() => {
+    try {
+      const saved = localStorage.getItem('codeWalkthrough-language');
+      return (saved as Language) || 'java';
+    } catch {
+      return 'java';
+    }
+  }, []);
+
+  // Map step types to code line numbers based on current language
+  const { currentCodeLine, highlightedCodeLines } = useMemo(() => {
+    if (!currentStepData) return { currentCodeLine: undefined, highlightedCodeLines: [] };
+    
+    const mapping = COIN_CHANGE_LINE_MAP[currentLanguage][currentStepData.type];
+    return mapping 
+      ? { currentCodeLine: mapping.current, highlightedCodeLines: mapping.highlighted }
+      : { currentCodeLine: undefined, highlightedCodeLines: [] };
+  }, [currentStepData, currentLanguage]);
   
   return (
     <div className="p-6 max-w-6xl mx-auto">
@@ -341,6 +363,14 @@ export function CoinChangeVisualizer() {
         onSpeedChange={setSpeed}
         canStepBack={currentStep > 0}
         canStepForward={currentStep < steps.length - 1}
+      />
+
+      <CodeWalkthrough
+        multiLanguageCode={COIN_CHANGE_CODE}
+        currentLine={currentCodeLine}
+        highlightedLines={highlightedCodeLines}
+        title="Code Walkthrough"
+        className="mt-6"
       />
       
       {/* Code Reference */}
