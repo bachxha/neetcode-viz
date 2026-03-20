@@ -104,6 +104,7 @@ import { ExportImportModal } from './components/ExportImportModal';
 import { ReviewDue } from './components/ReviewDue';
 import { DailyChallenge } from './components/DailyChallenge';
 import QuickReview from './components/QuickReview';
+import { PatternQuiz } from './components/PatternQuiz';
 import { problems, categories, type Problem, type Category, type Difficulty } from './data/problems';
 import { BookmarkButton } from './components/BookmarkButton';
 import { CompletionButton } from './components/CompletionButton';
@@ -462,6 +463,14 @@ function HomePage({ onSelect, onShowExportImport, onShowAchievements }: { onSele
           >
             <Brain size={18} />
             Pattern Trainer
+            <ChevronRight size={16} />
+          </button>
+          <button
+            onClick={() => onSelect('quiz')}
+            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-violet-500/20 to-purple-500/20 border border-violet-500/30 rounded-lg hover:border-violet-400 transition-all font-medium text-violet-400 hover:text-violet-300"
+          >
+            <Brain size={18} />
+            Pattern Quiz
             <ChevronRight size={16} />
           </button>
           <button
@@ -1109,6 +1118,8 @@ function AppContent({
             </>
           ) : view === 'review' ? (
             <span className="font-medium" style={{ color: 'var(--text-primary)' }}>📝 Quick Review</span>
+          ) : view === 'quiz' ? (
+            <span className="font-medium" style={{ color: 'var(--text-primary)' }}>🧩 Pattern Quiz</span>
           ) : (
             <>
               <span style={{ color: 'var(--text-secondary)' }}>{currentProblem?.category}</span>
@@ -1209,6 +1220,8 @@ function AppContent({
         <div className="max-w-2xl mx-auto">
           <QuickReview />
         </div>
+      ) : view === 'quiz' ? (
+        <PatternQuiz />
       ) : (
         <VisualizerWithProgress problemId={view} onSelectProblem={setView} />
       )}
