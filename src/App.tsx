@@ -120,6 +120,7 @@ import { RelatedProblems } from './components/RelatedProblems';
 import { AchievementsModal } from './components/AchievementsModal';
 import { AchievementToast } from './components/AchievementToast';
 import { RecentProblems } from './components/RecentProblems';
+import { WelcomeBack } from './components/WelcomeBack';
 import { ChevronRight, ChevronDown, ExternalLink, Play, Lock, Lightbulb, LayoutDashboard, Brain, Building2, Mic, Bug, TrendingUp, Target, Sparkles, Star, Check, Download, Upload, Trophy } from 'lucide-react';
 
 type View = 'home' | 'patterns' | 'dashboard' | 'progress' | 'trainer' | 'verbal-trainer' | 'bug-hunter' | 'company-paths' | 'review' | string;
@@ -1225,6 +1226,12 @@ function AppContent({
       ) : (
         <VisualizerWithProgress problemId={view} onSelectProblem={setView} />
       )}
+      
+      {/* Welcome Back Component */}
+      <WelcomeBack 
+        onSelectProblem={setView}
+        onStartQuiz={() => setView('quiz')}
+      />
       
       {/* What's New Modal */}
       <WhatsNew 
