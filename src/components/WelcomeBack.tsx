@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Trophy, Brain, Star, ArrowRight, Calendar, Target, Sparkles } from 'lucide-react';
 import { useCompletions } from '../contexts/CompletionContext';
-import { problems, Category } from '../data/problems';
+import { problems, type Category } from '../data/problems';
 
 const WELCOME_BACK_KEY = 'neetcode-welcome-back-dismissed';
 const DISMISS_DURATION = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
@@ -229,7 +229,7 @@ export function WelcomeBack({ onSelectProblem, onStartQuiz }: WelcomeBackProps) 
                   Your Strongest Areas:
                 </h3>
                 <div className="space-y-2">
-                  {topCategories.map((category, index) => (
+                  {topCategories.map((category) => (
                     <div 
                       key={category.category}
                       className="flex items-center justify-between p-3 rounded-lg"
