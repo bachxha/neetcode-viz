@@ -105,6 +105,8 @@ import { ReviewDue } from './components/ReviewDue';
 import { DailyChallenge } from './components/DailyChallenge';
 import QuickReview from './components/QuickReview';
 import { PatternQuiz } from './components/PatternQuiz';
+import { ComparePage } from './pages/ComparePage';
+import { hasComparison } from './data/comparisons';
 import { problems, categories, type Problem, type Category, type Difficulty } from './data/problems';
 import { BookmarkButton } from './components/BookmarkButton';
 import { CompletionButton } from './components/CompletionButton';
@@ -121,7 +123,7 @@ import { AchievementsModal } from './components/AchievementsModal';
 import { AchievementToast } from './components/AchievementToast';
 import { RecentProblems } from './components/RecentProblems';
 import { WelcomeBack } from './components/WelcomeBack';
-import { ChevronRight, ChevronDown, ExternalLink, Play, Lock, Lightbulb, LayoutDashboard, Brain, Building2, Mic, Bug, TrendingUp, Target, Sparkles, Star, Check, Download, Upload, Trophy } from 'lucide-react';
+import { ChevronRight, ChevronDown, ExternalLink, Play, Lock, Lightbulb, LayoutDashboard, Brain, Building2, Mic, Bug, TrendingUp, Target, Sparkles, Star, Check, Download, Upload, Trophy, BarChart3 } from 'lucide-react';
 
 type View = 'home' | 'patterns' | 'dashboard' | 'progress' | 'trainer' | 'verbal-trainer' | 'bug-hunter' | 'company-paths' | 'review' | string;
 
@@ -138,7 +140,7 @@ function DifficultyBadge({ difficulty }: { difficulty: Problem['difficulty'] }) 
   );
 }
 
-function ProblemCard({ problem, onSelect }: { problem: Problem; onSelect: (id: string) => void }) {
+function ProblemCard({ problem, onSelect, onCompare }: { problem: Problem; onSelect: (id: string) => void; onCompare?: (id: string) => void }) {
   const { hasNote } = useNotes();
   const { getStats, formatTime } = useTimeTracker();
   
@@ -212,9 +214,22 @@ function ProblemCard({ problem, onSelect }: { problem: Problem; onSelect: (id: s
       </div>
       
       <div className="flex items-center gap-2">
+        {hasComparison(problem.id) && onCompare && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onCompare(problem.id);
+            }}
+            className="p-1.5 rounded transition-colors hover:opacity-80"
+            style={{ color: 'var(--text-secondary)' }}
+            title="Compare Approaches"
+          >
+            <BarChart3 size={14} />
+          </button>
+        )}
         <CompletionButton problemId={problem.id} size="sm" />
         <BookmarkButton problemId={problem.id} size="sm" />
-        <a
+        <
           href={problem.leetcodeUrl}
           target="_blank"
           rel="noopener noreferrer"
@@ -239,12 +254,14 @@ function ProblemCard({ problem, onSelect }: { problem: Problem; onSelect: (id: s
 function CategorySection({ 
   category, 
   onSelectProblem,
+  onCompareProblem,
   filterType = 'all',
   searchQuery = '',
   difficultyFilter = 'All'
 }: { 
   category: Category; 
   onSelectProblem: (id: string) => void;
+  onCompareProblem?: (id: string) => void;
   filterType?: 'all' | 'saved' | 'completed';
   searchQuery?: string;
   difficultyFilter?: 'All' | Difficulty;
@@ -314,6 +331,7 @@ function CategorySection({
               key={problem.id}
               problem={problem}
               onSelect={onSelectProblem}
+              onCompare={onCompareProblem}
             />
           ))}
         </div>
@@ -322,7 +340,7 @@ function CategorySection({
   );
 }
 
-function HomePage({ onSelect, onShowExportImport, onShowAchievements }: { onSelect: (view: View) => void; onShowExportImport: () => void; onShowAchievements: () => void }) {
+function HomePage({ onSelect, onCompare, onShowExportImport, onShowAchievements }: { onSelect: (view: View) => void; onCompare?: (problemId: string) => void; onShowExportImport: () => void; onShowAchievements: () => void }) {
   const { bookmarkCount, bookmarks } = useBookmarks();
   const { completionCount, completions } = useCompletions();
   const [selectedFilter, setSelectedFilter] = useState<'all' | 'saved' | 'completed'>('all');
@@ -669,6 +687,7 @@ function HomePage({ onSelect, onShowExportImport, onShowAchievements }: { onSele
             key={category}
             category={category}
             onSelectProblem={onSelect}
+            onCompareProblem={onCompare}
             filterType={selectedFilter}
             searchQuery={searchQuery}
             difficultyFilter={difficultyFilter}
@@ -1175,7 +1194,12 @@ function AppContent({
       )}
       
       {view === 'home' ? (
-        <HomePage onSelect={setView} onShowExportImport={() => setShowExportImportModal(true)} onShowAchievements={() => setShowAchievementsModal(true)} />
+        <HomePage 
+          onSelect={setView} 
+          onCompare={(problemId: string) => setView(`compare:${problemId}`)}
+          onShowExportImport={() => setShowExportImportModal(true)} 
+          onShowAchievements={() => setShowAchievementsModal(true)} 
+        />
       ) : view === 'patterns' ? (
         <PatternsPage onSelectPattern={(patternId) => setView(patternId)} />
       ) : patterns.find(p => p.id === view) ? (
@@ -1223,6 +1247,12 @@ function AppContent({
         </div>
       ) : view === 'quiz' ? (
         <PatternQuiz />
+      ) : view.startsWith('compare:') ? (
+        <ComparePage 
+          problemId={view.replace('compare:', '')}
+          onBack={() => setView('home')}
+          onSelectProblem={setView}
+        />
       ) : (
         <VisualizerWithProgress problemId={view} onSelectProblem={setView} />
       )}
