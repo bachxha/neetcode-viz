@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { ArrowLeft, ExternalLink, BookmarkIcon, CheckCircleIcon } from 'lucide-react';
+import { ArrowLeft, ExternalLink } from 'lucide-react';
 import { ComparisonMode } from '../components/ComparisonMode';
 import { getComparison } from '../data/comparisons';
 import { problems } from '../data/problems';

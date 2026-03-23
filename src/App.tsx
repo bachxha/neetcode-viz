@@ -229,7 +229,7 @@ function ProblemCard({ problem, onSelect, onCompare }: { problem: Problem; onSel
         )}
         <CompletionButton problemId={problem.id} size="sm" />
         <BookmarkButton problemId={problem.id} size="sm" />
-        <
+        <a
           href={problem.leetcodeUrl}
           target="_blank"
           rel="noopener noreferrer"
