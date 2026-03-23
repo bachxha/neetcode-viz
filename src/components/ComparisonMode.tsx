@@ -6,11 +6,15 @@ import type { AlgorithmComparison } from '../data/comparisons';
 // Import visualizers directly for now
 import { TwoSumVisualizer } from '../visualizers/TwoSumVisualizer';
 import { TwoSumBruteVisualizer } from '../visualizers/TwoSumBrute';
+import { LinearSearchVisualizer } from '../visualizers/LinearSearchVisualizer';
+import { BinarySearchComparisonVisualizer } from '../visualizers/BinarySearchComparisonVisualizer';
 
 // Visualizer component mapping
 const VisualizerComponents: Record<string, React.ComponentType<any>> = {
   TwoSumVisualizer: TwoSumVisualizer,
   TwoSumBruteVisualizer: TwoSumBruteVisualizer,
+  LinearSearchVisualizer: LinearSearchVisualizer,
+  BinarySearchComparisonVisualizer: BinarySearchComparisonVisualizer,
 };
 
 interface ComparisonModeProps {
