@@ -65,6 +65,29 @@ export const comparisons: AlgorithmComparison[] = [
       }
     },
     keyInsight: 'On sorted data, you can eliminate half of the possibilities with each comparison. This logarithmic reduction makes binary search exponentially faster than linear search as data size grows.'
+  },
+  {
+    problemId: 'container-with-most-water',
+    title: 'Container With Most Water',
+    approaches: {
+      bruteForce: {
+        name: 'Brute Force',
+        description: 'Check every pair of lines using nested loops to find max area',
+        timeComplexity: 'O(n²)',
+        spaceComplexity: 'O(1)',
+        visualizer: 'ContainerBruteForceVisualizer',
+        codeFile: 'containerBruteForce'
+      },
+      optimal: {
+        name: 'Two Pointers',
+        description: 'Start from both ends, move the shorter pointer inward',
+        timeComplexity: 'O(n)',
+        spaceComplexity: 'O(1)',
+        visualizer: 'ContainerTwoPointersVisualizer',
+        codeFile: 'containerTwoPointers'
+      }
+    },
+    keyInsight: 'The area is limited by the shorter line. Moving the taller line can only decrease area (width shrinks, height stays same or drops). By always moving the shorter pointer, we explore all potentially better configurations in O(n) time.'
   }
 ];
 

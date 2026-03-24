@@ -8,6 +8,8 @@ import { TwoSumVisualizer } from '../visualizers/TwoSumVisualizer';
 import { TwoSumBruteVisualizer } from '../visualizers/TwoSumBrute';
 import { LinearSearchVisualizer } from '../visualizers/LinearSearchVisualizer';
 import { BinarySearchComparisonVisualizer } from '../visualizers/BinarySearchComparisonVisualizer';
+import { ContainerBruteForceVisualizer } from '../visualizers/ContainerBruteForceVisualizer';
+import { ContainerTwoPointersVisualizer } from '../visualizers/ContainerTwoPointersVisualizer';
 
 // Visualizer component mapping
 const VisualizerComponents: Record<string, React.ComponentType<any>> = {
@@ -15,6 +17,8 @@ const VisualizerComponents: Record<string, React.ComponentType<any>> = {
   TwoSumBruteVisualizer: TwoSumBruteVisualizer,
   LinearSearchVisualizer: LinearSearchVisualizer,
   BinarySearchComparisonVisualizer: BinarySearchComparisonVisualizer,
+  ContainerBruteForceVisualizer: ContainerBruteForceVisualizer,
+  ContainerTwoPointersVisualizer: ContainerTwoPointersVisualizer,
 };
 
 interface ComparisonModeProps {
