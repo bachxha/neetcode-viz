@@ -88,6 +88,29 @@ export const comparisons: AlgorithmComparison[] = [
       }
     },
     keyInsight: 'The area is limited by the shorter line. Moving the taller line can only decrease area (width shrinks, height stays same or drops). By always moving the shorter pointer, we explore all potentially better configurations in O(n) time.'
+  },
+  {
+    problemId: 'longest-substring-without-repeating-characters',
+    title: 'Longest Substring Without Repeating Characters',
+    approaches: {
+      bruteForce: {
+        name: 'Brute Force',
+        description: 'Check every substring (n²) and verify each has no duplicates (O(n))',
+        timeComplexity: 'O(n³)',
+        spaceComplexity: 'O(1)',
+        visualizer: 'LongestSubstringBruteVisualizer',
+        codeFile: 'longestSubstringBrute'
+      },
+      optimal: {
+        name: 'Sliding Window',
+        description: 'Maintain window with Set, expand right and shrink left when duplicates found',
+        timeComplexity: 'O(n)',
+        spaceComplexity: 'O(min(m,n))',
+        visualizer: 'LongestSubstringSlidingVisualizer',
+        codeFile: 'longestSubstringSliding'
+      }
+    },
+    keyInsight: 'Instead of checking all substrings, maintain a window of unique characters. When a duplicate is found, slide the left boundary right until the duplicate is removed. Each character is added and removed at most once.'
   }
 ];
 
