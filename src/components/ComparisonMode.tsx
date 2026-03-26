@@ -10,6 +10,7 @@ import { LinearSearchVisualizer } from '../visualizers/LinearSearchVisualizer';
 import { BinarySearchComparisonVisualizer } from '../visualizers/BinarySearchComparisonVisualizer';
 import { ContainerBruteForceVisualizer } from '../visualizers/ContainerBruteForceVisualizer';
 import { ContainerTwoPointersVisualizer } from '../visualizers/ContainerTwoPointersVisualizer';
+import { SortingComparisonVisualizer } from '../visualizers/SortingComparisonVisualizer';
 
 // Visualizer component mapping
 const VisualizerComponents: Record<string, React.ComponentType<any>> = {
@@ -19,6 +20,7 @@ const VisualizerComponents: Record<string, React.ComponentType<any>> = {
   BinarySearchComparisonVisualizer: BinarySearchComparisonVisualizer,
   ContainerBruteForceVisualizer: ContainerBruteForceVisualizer,
   ContainerTwoPointersVisualizer: ContainerTwoPointersVisualizer,
+  SortingComparisonVisualizer: SortingComparisonVisualizer,
 };
 
 interface ComparisonModeProps {

@@ -111,6 +111,29 @@ export const comparisons: AlgorithmComparison[] = [
       }
     },
     keyInsight: 'Instead of checking all substrings, maintain a window of unique characters. When a duplicate is found, slide the left boundary right until the duplicate is removed. Each character is added and removed at most once.'
+  },
+  {
+    problemId: 'sorting',
+    title: 'Sorting Algorithms',
+    approaches: {
+      bruteForce: {
+        name: 'Bubble Sort',
+        description: 'Compare adjacent elements repeatedly, bubbling larger elements to the end',
+        timeComplexity: 'O(n²)',
+        spaceComplexity: 'O(1)',
+        visualizer: 'SortingComparisonVisualizer',
+        codeFile: 'bubbleSort'
+      },
+      optimal: {
+        name: 'Merge Sort',
+        description: 'Divide array into smaller parts, sort them, and merge back efficiently',
+        timeComplexity: 'O(n log n)',
+        spaceComplexity: 'O(n)',
+        visualizer: 'SortingComparisonVisualizer',
+        codeFile: 'mergeSort'
+      }
+    },
+    keyInsight: 'While simple algorithms like Bubble Sort have O(n²) time complexity due to nested comparisons, divide-and-conquer approaches like Merge Sort achieve O(n log n) by breaking the problem into smaller subproblems. The logarithmic factor comes from the depth of recursion, making it significantly faster for large datasets.'
   }
 ];
 
