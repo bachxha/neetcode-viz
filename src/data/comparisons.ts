@@ -105,7 +105,7 @@ export const comparisons: AlgorithmComparison[] = [
         name: 'Sliding Window',
         description: 'Maintain window with Set, expand right and shrink left when duplicates found',
         timeComplexity: 'O(n)',
-        spaceComplexity: 'O(min(m,n))',
+        spaceComplexity: 'O(n)',
         visualizer: 'LongestSubstringSlidingVisualizer',
         codeFile: 'longestSubstringSliding'
       }
