@@ -91,6 +91,7 @@ import { BugHunterPage } from './pages/BugHunterPage';
 import { CompanyPathsPage } from './pages/CompanyPathsPage';
 import { CompanyPathDetailPage } from './pages/CompanyPathDetailPage';
 import { CompanyPrepPage } from './pages/CompanyPrepPage';
+import { Blind75Page } from './pages/Blind75Page';
 import { ProgressTracker, ProgressBadge } from './components/ProgressTracker';
 import { PrepDashboard } from './components/PrepDashboard';
 import { StreakWidget } from './components/StreakWidget';
@@ -452,6 +453,14 @@ function HomePage({ onSelect, onCompare, onShowExportImport, onShowAchievements 
         
         {/* Navigation to Patterns, Dashboard, and Trainer */}
         <div className="mt-6 flex justify-center gap-4 flex-wrap">
+          <button
+            onClick={() => onSelect('blind75')}
+            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-500/20 to-red-500/20 border border-orange-500/30 rounded-lg hover:border-orange-400 transition-all font-medium text-orange-400 hover:text-orange-300"
+          >
+            <Target size={18} />
+            Blind 75
+            <ChevronRight size={16} />
+          </button>
           <button
             onClick={() => onSelect('drill')}
             className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 border border-cyan-500/30 rounded-lg hover:border-cyan-400 transition-all font-medium text-cyan-400 hover:text-cyan-300"
@@ -1140,6 +1149,8 @@ function AppContent({
             <span className="font-medium" style={{ color: 'var(--text-primary)' }}>📝 Quick Review</span>
           ) : view === 'quiz' ? (
             <span className="font-medium" style={{ color: 'var(--text-primary)' }}>🧩 Pattern Quiz</span>
+          ) : view === 'blind75' ? (
+            <span className="font-medium" style={{ color: 'var(--text-primary)' }}>🎯 Blind 75</span>
           ) : (
             <>
               <span style={{ color: 'var(--text-secondary)' }}>{currentProblem?.category}</span>
@@ -1247,6 +1258,8 @@ function AppContent({
         </div>
       ) : view === 'quiz' ? (
         <PatternQuiz />
+      ) : view === 'blind75' ? (
+        <Blind75Page onSelectProblem={setView} />
       ) : view.startsWith('compare:') ? (
         <ComparePage 
           problemId={view.replace('compare:', '')}
