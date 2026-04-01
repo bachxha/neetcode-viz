@@ -107,6 +107,7 @@ import { DailyChallenge } from './components/DailyChallenge';
 import QuickReview from './components/QuickReview';
 import { PatternQuiz } from './components/PatternQuiz';
 import { ComparePage } from './pages/ComparePage';
+import { CompareIndexPage } from './pages/CompareIndexPage';
 import { hasComparison } from './data/comparisons';
 import { problems, categories, type Problem, type Category, type Difficulty } from './data/problems';
 import { BookmarkButton } from './components/BookmarkButton';
@@ -124,7 +125,7 @@ import { AchievementsModal } from './components/AchievementsModal';
 import { AchievementToast } from './components/AchievementToast';
 import { RecentProblems } from './components/RecentProblems';
 import { WelcomeBack } from './components/WelcomeBack';
-import { ChevronRight, ChevronDown, ExternalLink, Play, Lock, Lightbulb, LayoutDashboard, Brain, Building2, Mic, Bug, TrendingUp, Target, Sparkles, Star, Check, Download, Upload, Trophy, BarChart3 } from 'lucide-react';
+import { ChevronRight, ChevronDown, ExternalLink, Play, Lock, Lightbulb, LayoutDashboard, Brain, Building2, Mic, Bug, TrendingUp, Target, Sparkles, Star, Check, Download, Upload, Trophy, BarChart3, GitCompare } from 'lucide-react';
 
 type View = 'home' | 'patterns' | 'dashboard' | 'progress' | 'trainer' | 'verbal-trainer' | 'bug-hunter' | 'company-paths' | 'review' | string;
 
@@ -483,6 +484,14 @@ function HomePage({ onSelect, onCompare, onShowExportImport, onShowAchievements 
           >
             <Building2 size={18} />
             Company Paths
+            <ChevronRight size={16} />
+          </button>
+          <button
+            onClick={() => onSelect('compare-index')}
+            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 rounded-lg hover:border-purple-400 transition-all font-medium text-purple-400 hover:text-purple-300"
+          >
+            <GitCompare size={18} />
+            Compare Algorithms
             <ChevronRight size={16} />
           </button>
           <button
@@ -1151,6 +1160,14 @@ function AppContent({
             <span className="font-medium" style={{ color: 'var(--text-primary)' }}>🧩 Pattern Quiz</span>
           ) : view === 'blind75' ? (
             <span className="font-medium" style={{ color: 'var(--text-primary)' }}>🎯 Blind 75</span>
+          ) : view === 'compare-index' ? (
+            <span className="font-medium" style={{ color: 'var(--text-primary)' }}>🔄 Compare Algorithms</span>
+          ) : view.startsWith('compare:') ? (
+            <>
+              <button onClick={() => setView('compare-index')} className="hover:text-purple-400 transition-colors" style={{ color: 'var(--text-secondary)' }}>Compare</button>
+              <span style={{ color: 'var(--text-muted)' }}>/</span>
+              <span className="font-medium" style={{ color: 'var(--text-primary)' }}>{currentProblem?.title || 'Comparison'}</span>
+            </>
           ) : (
             <>
               <span style={{ color: 'var(--text-secondary)' }}>{currentProblem?.category}</span>
@@ -1260,10 +1277,15 @@ function AppContent({
         <PatternQuiz />
       ) : view === 'blind75' ? (
         <Blind75Page onSelectProblem={setView} />
+      ) : view === 'compare-index' ? (
+        <CompareIndexPage
+          onBack={() => setView('home')}
+          onSelectComparison={(problemId) => setView(`compare:${problemId}`)}
+        />
       ) : view.startsWith('compare:') ? (
         <ComparePage 
           problemId={view.replace('compare:', '')}
-          onBack={() => setView('home')}
+          onBack={() => setView('compare-index')}
           onSelectProblem={setView}
         />
       ) : (
