@@ -92,6 +92,7 @@ import { CompanyPathsPage } from './pages/CompanyPathsPage';
 import { CompanyPathDetailPage } from './pages/CompanyPathDetailPage';
 import { CompanyPrepPage } from './pages/CompanyPrepPage';
 import { Blind75Page } from './pages/Blind75Page';
+import { MockInterviewPage } from './pages/MockInterviewPage';
 import { ProgressTracker, ProgressBadge } from './components/ProgressTracker';
 import { PrepDashboard } from './components/PrepDashboard';
 import { StreakWidget } from './components/StreakWidget';
@@ -125,7 +126,7 @@ import { AchievementsModal } from './components/AchievementsModal';
 import { AchievementToast } from './components/AchievementToast';
 import { RecentProblems } from './components/RecentProblems';
 import { WelcomeBack } from './components/WelcomeBack';
-import { ChevronRight, ChevronDown, ExternalLink, Play, Lock, Lightbulb, LayoutDashboard, Brain, Building2, Mic, Bug, TrendingUp, Target, Sparkles, Star, Check, Download, Upload, Trophy, BarChart3, GitCompare } from 'lucide-react';
+import { ChevronRight, ChevronDown, ExternalLink, Play, Lock, Lightbulb, LayoutDashboard, Brain, Building2, Mic, Bug, TrendingUp, Target, Sparkles, Star, Check, Download, Upload, Trophy, BarChart3, GitCompare, Video } from 'lucide-react';
 
 type View = 'home' | 'patterns' | 'dashboard' | 'progress' | 'trainer' | 'verbal-trainer' | 'bug-hunter' | 'company-paths' | 'review' | string;
 
@@ -454,6 +455,14 @@ function HomePage({ onSelect, onCompare, onShowExportImport, onShowAchievements 
         
         {/* Navigation to Patterns, Dashboard, and Trainer */}
         <div className="mt-6 flex justify-center gap-4 flex-wrap">
+          <button
+            onClick={() => onSelect('mock-interview')}
+            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-rose-500/20 to-pink-500/20 border border-rose-500/30 rounded-lg hover:border-rose-400 transition-all font-medium text-rose-400 hover:text-rose-300"
+          >
+            <Video size={18} />
+            Mock Interview
+            <ChevronRight size={16} />
+          </button>
           <button
             onClick={() => onSelect('blind75')}
             className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-500/20 to-red-500/20 border border-orange-500/30 rounded-lg hover:border-orange-400 transition-all font-medium text-orange-400 hover:text-orange-300"
@@ -1160,6 +1169,8 @@ function AppContent({
             <span className="font-medium" style={{ color: 'var(--text-primary)' }}>🧩 Pattern Quiz</span>
           ) : view === 'blind75' ? (
             <span className="font-medium" style={{ color: 'var(--text-primary)' }}>🎯 Blind 75</span>
+          ) : view === 'mock-interview' ? (
+            <span className="font-medium" style={{ color: 'var(--text-primary)' }}>🎤 Mock Interview</span>
           ) : view === 'compare-index' ? (
             <span className="font-medium" style={{ color: 'var(--text-primary)' }}>🔄 Compare Algorithms</span>
           ) : view.startsWith('compare:') ? (
@@ -1277,6 +1288,8 @@ function AppContent({
         <PatternQuiz />
       ) : view === 'blind75' ? (
         <Blind75Page onSelectProblem={setView} />
+      ) : view === 'mock-interview' ? (
+        <MockInterviewPage onSelectProblem={setView} onGoHome={() => setView('home')} />
       ) : view === 'compare-index' ? (
         <CompareIndexPage
           onBack={() => setView('home')}
